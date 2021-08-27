@@ -1,9 +1,11 @@
 <template>
-  <div class="bg-green-600 border-b-2 border-green-600">
+  <div class="bg-blue-700 border-b-2 border-blue-600">
     <div>
       <div class="flex justify-between p-2 items-center">
         <div>
-          <a href="#" class="font-semibold text-white">Arare.one</a>
+          <a href="/" class="font-semibold text-white focus:outline-none"
+            >Arare.one</a
+          >
         </div>
 
         <SearchBox />

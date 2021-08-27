@@ -9,7 +9,8 @@
       :link-to="linkTo"
       color="pink-600"
     />
-    <div class="text-gray-500 text-sm">{{ extra }}</div>
+    <slot></slot>
+    <div v-if="extra" class="text-gray-500 text-sm">{{ extra }}</div>
   </div>
 </template>
 
@@ -17,7 +18,7 @@
 export default {
   props: {
     aKey: { type: String, required: true },
-    value: { type: String, required: true },
+    value: { type: String, default: null },
     extra: { type: String, default: null },
     valueType: { type: String, default: null },
     linkTo: { type: String, default: null }
