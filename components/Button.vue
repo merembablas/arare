@@ -16,6 +16,7 @@
       button
       hover:shadow-md
       `"
+    @click="onClick"
   >
     <div>{{ text }}</div>
     <div v-if="iconMode">
@@ -29,6 +30,11 @@ export default {
   props: {
     text: { type: String, required: true },
     iconMode: { type: Boolean, default: false }
+  },
+  methods: {
+    onClick() {
+      this.$emit('click')
+    }
   }
 }
 </script>

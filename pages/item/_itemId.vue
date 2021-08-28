@@ -52,7 +52,11 @@
           </ItemFieldInfo>
 
           <div class="mt-10">
-            <Button text="Place Bid" :icon-mode="true">
+            <Button
+              text="Place Bid"
+              :icon-mode="true"
+              @click="placeBidDialogVisible = !placeBidDialogVisible"
+            >
               <template #icon>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +75,8 @@
               </template>
             </Button>
           </div>
+
+          <ModalPlaceBid v-model="placeBidDialogVisible" />
         </div>
       </div>
     </div>
@@ -81,7 +87,8 @@
 export default {
   data() {
     return {
-      itemId: this.$route.params.itemId
+      itemId: this.$route.params.itemId,
+      placeBidDialogVisible: false
     }
   }
 }
