@@ -13,9 +13,9 @@
       />
     </svg>
     <input
+      id="SearchBox"
       type="search"
       name="search"
-      id="SearchBox"
       placeholder="Search keyword/item id"
       class="p-1 bg-transparent w-full focus:outline-none"
       autocomplete="off"

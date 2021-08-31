@@ -31,10 +31,8 @@
           <div>
             <span
               >by:
-              <a href="#" class="text-blue-600 font-semibold"
-                >Galam Zulkifli</a
-              ></span
-            >
+              <ClickableName name="Galam Zulkifli" link-to="/creator/galam" />
+            </span>
           </div>
           <div class="mt-5">
             <div>Collection:</div>

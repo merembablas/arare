@@ -24,7 +24,7 @@
         </div>
 
         <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">Galam Zulkifli</h1>
+          <h1 class="font-extrabold text-2xl">{{ user.name }}</h1>
 
           <ItemFieldInfo
             a-key="Bio"
@@ -75,6 +75,9 @@ export default {
   data() {
     return {
       items: [],
+      user: {
+        name: this.$route.params.userId
+      },
       userId: this.$route.params.userId
     }
   },

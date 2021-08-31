@@ -24,9 +24,7 @@
         </div>
 
         <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">
-            Lukisan Nusantara - Burung Elang {{ itemId }}
-          </h1>
+          <h1 class="font-extrabold text-2xl">{{ name }}</h1>
           <div>
             <span
               >by:
@@ -76,7 +74,7 @@
             </Button>
           </div>
 
-          <ModalPlaceBid v-model="placeBidDialogVisible" />
+          <ModalPlaceBid v-model="placeBidDialogVisible" :item="item" />
         </div>
       </div>
     </div>
@@ -88,7 +86,16 @@ export default {
   data() {
     return {
       itemId: this.$route.params.itemId,
+      item: null,
+      name: '',
       placeBidDialogVisible: false
+    }
+  },
+  fetch() {
+    this.name = `Lukisan #${this.itemId}`
+    this.item = {
+      id: this.itemId,
+      name: this.name
     }
   }
 }

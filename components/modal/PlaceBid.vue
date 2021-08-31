@@ -4,8 +4,29 @@
       <h3 class="text-xl font-semibold p-0 m-0">Place a bid</h3>
     </template>
     <template #body>
-      <div class="text-lg flex flex-col items-center leading-relaxed">
-        <div>Highest Bid:</div>
+      <div
+        class="
+          text-lg
+          flex flex-col
+          items-center
+          justify-center
+          leading-relaxed
+        "
+      >
+        <div class="items-center flex flex-col">
+          <p class="font-semibold">{{ item.name }}</p>
+          <div class="pb-5">
+            <p class="text-sm">
+              by
+              <ClickableName
+                class="text-sm"
+                name="Galam Zulkifli"
+                link-to="/creator/galam"
+              />
+            </p>
+          </div>
+        </div>
+        <div class="text-sm text-gray-500">Highest Bid:</div>
         <div>30 ARA</div>
         <div class="text-sm text-gray-500">(Rp. 9.000.000,-)</div>
         <div
@@ -120,7 +141,7 @@
 export default {
   props: {
     value: { type: Boolean, default: false }, // for visibility toggle
-    title: { type: String, default: 'Confirmation' }
+    item: { type: Object, required: true }
   },
   data() {
     return {

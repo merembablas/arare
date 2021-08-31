@@ -4,7 +4,7 @@
       v-for="i in total"
       :key="i"
       xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6"
+      :class="`h-${size} w-${size}`"
       :fill="i <= star ? 'orange' : 'none'"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -23,7 +23,8 @@
 export default {
   props: {
     star: { type: Number, required: true, default: 0 },
-    total: { type: Number, default: 5 }
+    total: { type: Number, default: 5 },
+    size: { type: String, default: '6' }
   }
 }
 </script>
