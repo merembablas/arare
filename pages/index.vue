@@ -2,52 +2,58 @@
   <div>
     <Navbar />
     <div class="m-10">
-      <div class="flex justify-between">
-        <div
-          class="
-            rounded
-            bg-gray-300
-            w-2/4
-            h-screen
-            flex flex-grow
-            justify-center
-            items-center
-            shadow-md
-          "
-        >
-          <div
-            class="w-2/4 h-screen rounded"
-            style="
-              background: url(https://picsum.photos/seed/anvie/400/400) center
-                no-repeat;
-            "
-          ></div>
+      <div class="flex flex-auto justify-center">
+        <div class="pr-10 max-w-sm">
+          <div class="headline">NFT for the Real World</div>
+          <p class="pt-5">
+            Arare is a NFT Marketplace with real or physical underlying asset.
+            All NFT in Arare had physical asset in gallery around the globe.
+          </p>
         </div>
+        <div class="pl-10">
+          <img src="/img/arare-front.png" alt="Arare front image" />
+        </div>
+      </div>
+    </div>
 
-        <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">
-            Lukisan Nusantara - Ombak Selatan
-          </h1>
-          <div>
-            <span
-              >by:
-              <ClickableName name="Galam Zulkifli" link-to="/creator/galam" />
-            </span>
-          </div>
-          <div class="mt-5">
-            <div>Collection:</div>
-            <div class="font-semibold pl-5">Lukisan Nusantara</div>
-          </div>
-        </div>
+    <div class="bg-gray-200 mt-10 p-10 h-auto w-auto min-w-full">
+      <div class="text-2xl font-semibold pb-10">Top Creators</div>
+      <div class="justify-center flex flex-wrap min-w-full">
+        <UserListItem
+          v-for="creator in creators"
+          :key="creator.id"
+          class="ml-2 mr-2 mt-2"
+          :name="creator.name"
+          :stars="creator.stars"
+          :rank="creator.rank"
+          :collections="creator.collections"
+          :pic="creator.pic"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      creators: this.$dummy.generateUsers(5)
+    }
+  }
+}
 </script>
 
 
 <style lang="less">
+.headline {
+  font-family: Helvetica, sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  color: #0d67e5;
+  line-height: 1em;
+}
+p {
+  color: #777d90;
+}
 </style>
