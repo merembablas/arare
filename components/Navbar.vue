@@ -1,10 +1,13 @@
 <template>
-  <div class="bg-blue-700 border-b-2 border-blue-600">
+  <div class="bg-white border-b-2 border-blue-600">
     <div>
-      <div class="flex justify-between p-2 items-center">
-        <div>
-          <a href="/" class="font-semibold text-white focus:outline-none"
-            >Arare.one</a
+      <div class="flex justify-between p-5 items-center">
+        <div class="flex items-center">
+          <Logo width="32" height="32" />
+          <a
+            href="/"
+            class="pl-3 font-semibold text-2xl text-gray-600 focus:outline-none"
+            >arare.one</a
           >
         </div>
 

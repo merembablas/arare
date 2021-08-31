@@ -28,7 +28,7 @@ const NAME_LIST = [
     "Dian Sastro",
     "Urip Raharjo",
     "Eko Prasetyo",
-    "Yanto Zulkarnaen",
+    "Yanto Zulkarnaen Sihombing",
     "Galam Zulkifli"
 ]
 
@@ -67,9 +67,19 @@ function generateUsers(count) {
     })
 }
 
+function generateItems(count) {
+    return Array.from(Array(count).keys()).map((i) => {
+        return {
+            id: i,
+            name: randomName(i)
+        }
+    })
+}
+
 export default ({ app }, inject) => {
     inject('dummy', {
         generateUsers,
+        generateItems,
         randomPic
     })
 }

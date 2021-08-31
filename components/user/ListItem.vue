@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center">
-    <div class="rounded-3xl bg-white w-60 h-auto pb-6 pl-5 pr-5 pt-7">
+    <div class="rounded-3xl bg-white w-40 h-42 pb-6 pl-5 pr-5 pt-7">
       <div class="flex justify-between">
         <div class="flex">
           <svg
@@ -24,7 +24,6 @@
             rounded-lg
             bg-blue-700
             flex
-            w-20
             items-center
             justify-between
             text-white
@@ -50,7 +49,7 @@
               d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
             />
           </svg>
-          <span class="pr-2">#{{ rank }}</span>
+          <span class="pr-2 truncate" style="max-width: 40px">#{{ rank }}</span>
         </div>
       </div>
       <div
@@ -62,7 +61,9 @@
           class="rounded-full w-24 h-24"
           :style="`background: url(${pic}) no-repeat center; background-size: 96px 96px;`"
         ></div>
-        <div class="text-xl mt-3">{{ name }}</div>
+        <div class="font-semibold mt-3 h-6 w-32 text-center truncate">
+          {{ name }}
+        </div>
         <div class="text-sm text-gray-400">{{ collections }} Collections</div>
       </div>
     </div>
