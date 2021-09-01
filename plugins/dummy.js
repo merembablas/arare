@@ -13,8 +13,8 @@ function getRandomInt(min, max) {
 }
 
 const RANDOM_NUM_INT_CACHE = {};
-const RANDOM_NAME_CACHE = {};
-const RANDOM_ITEM_NAME_CACHE = {};
+// const RANDOM_NAME_CACHE = {};
+// const RANDOM_ITEM_NAME_CACHE = {};
 
 function randomNumber(seed, min, max) {
     if (RANDOM_NUM_INT_CACHE[seed] != null) {
@@ -47,26 +47,15 @@ const USER_PIC_LIST = [
     "https://randomuser.me/api/portraits/men/78.jpg",
     "https://randomuser.me/api/portraits/men/79.jpg",
     "https://randomuser.me/api/portraits/men/80.jpg",
-    "https://randomuser.me/api/portraits/men/81.jpg",
-    "https://randomuser.me/api/portraits/men/82.jpg"
+    "https://randomuser.me/api/portraits/men/81.jpg"
 ]
 
 function randomName(seed) {
-    if (RANDOM_NAME_CACHE[seed] != null) {
-        return RANDOM_NAME_CACHE[seed];
-    }
-    const name = NAME_LIST[seed % NAME_LIST.length];
-    NAME_LIST[seed] = name
-    return name
+    return NAME_LIST[seed % NAME_LIST.length]
 }
 
 function randomItemName(seed) {
-    if (RANDOM_NAME_CACHE[seed] != null) {
-        return RANDOM_ITEM_NAME_CACHE[seed];
-    }
-    const name = ITEM_NAME_LIST[seed % ITEM_NAME_LIST.length];
-    ITEM_NAME_LIST[seed] = name
-    return name
+    return ITEM_NAME_LIST[seed % ITEM_NAME_LIST.length]
 }
 
 function randomUserPic(seed) {
