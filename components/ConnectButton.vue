@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      class="focus:outline-none bg-blue-500 p-2 rounded-xl text-white flex"
+      class="focus:outline-none bg-green-500 p-2 rounded-xl text-white flex"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative cursor-pointer">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-7 w-7"
@@ -15,6 +15,7 @@
       />
     </svg>
     <div
+      v-if="count > 0"
       class="
         rounded-full
         absolute
@@ -28,13 +29,15 @@
         pr-2
       "
     >
-      5
+      {{ count }}
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: { count: { type: Number, required: true, default: 0 } }
+}
 </script>
 
 <style>

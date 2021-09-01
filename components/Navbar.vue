@@ -13,8 +13,8 @@
 
         <SearchBox />
 
-        <div class="flex w-96 justify-end space-x-16 items-center">
-          <NotifIcon />
+        <div class="flex justify-end space-x-16 items-center">
+          <NotifIcon :count="0" />
           <ConnectButton />
         </div>
       </div>
