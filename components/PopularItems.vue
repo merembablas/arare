@@ -7,6 +7,7 @@
         :id="`${i.id}`"
         :key="i.id"
         :name="i.name"
+        :creator="i.creator"
       />
     </div>
   </div>

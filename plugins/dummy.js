@@ -14,6 +14,7 @@ function getRandomInt(min, max) {
 
 const RANDOM_NUM_INT_CACHE = {};
 const RANDOM_NAME_CACHE = {};
+const RANDOM_ITEM_NAME_CACHE = {};
 
 function randomNumber(seed, min, max) {
     if (RANDOM_NUM_INT_CACHE[seed] != null) {
@@ -32,6 +33,15 @@ const NAME_LIST = [
     "Galam Zulkifli"
 ]
 
+const ITEM_NAME_LIST = [
+    "Lorem Ipsum",
+    "Dolor Amet",
+    "Consectetur adipiscing",
+    "Excepteur sint occaecat",
+    "Voluptatem",
+    "Vox"
+]
+
 const USER_PIC_LIST = [
     "https://images.pexels.com/photos/61100/pexels-photo-61100.jpeg?crop=faces&fit=crop&h=200&w=200&auto=compress&cs=tinysrgb",
     "https://randomuser.me/api/portraits/men/78.jpg",
@@ -43,10 +53,19 @@ const USER_PIC_LIST = [
 
 function randomName(seed) {
     if (RANDOM_NAME_CACHE[seed] != null) {
-        return RANDOM_NUM_INT_CACHE[seed];
+        return RANDOM_NAME_CACHE[seed];
     }
     const name = NAME_LIST[seed % NAME_LIST.length];
     NAME_LIST[seed] = name
+    return name
+}
+
+function randomItemName(seed) {
+    if (RANDOM_NAME_CACHE[seed] != null) {
+        return RANDOM_ITEM_NAME_CACHE[seed];
+    }
+    const name = ITEM_NAME_LIST[seed % ITEM_NAME_LIST.length];
+    ITEM_NAME_LIST[seed] = name
     return name
 }
 
@@ -54,16 +73,21 @@ function randomPic(seed) {
     return USER_PIC_LIST[seed % USER_PIC_LIST.length]
 }
 
+function generateUser(seed) {
+    const i = seed
+    return {
+        id: i,
+        name: randomName(i),
+        stars: randomNumber(i, 1, 5),
+        rank: randomNumber(i, 1, 10),
+        collections: randomNumber(i, 1, 100),
+        pic: randomPic(i)
+    }
+}
+
 function generateUsers(count) {
     return Array.from(Array(count).keys()).map((i) => {
-        return {
-            id: i,
-            name: randomName(i),
-            stars: randomNumber(i, 1, 5),
-            rank: randomNumber(i, 1, 10),
-            collections: randomNumber(i, 1, 100),
-            pic: randomPic(i)
-        }
+        return generateUser(i)
     })
 }
 
@@ -71,7 +95,8 @@ function generateItems(count) {
     return Array.from(Array(count).keys()).map((i) => {
         return {
             id: i,
-            name: randomName(i)
+            name: randomItemName(i),
+            creator: generateUser(i),
         }
     })
 }

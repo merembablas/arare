@@ -21,9 +21,21 @@
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">
       <div>
-        <div>{{ name }}</div>
-        <div class="creator-name text-green-600">Galam Zulkifli</div>
-        <PopularityMeter :star="3" :total="5" size="4" />
+        <div class="h-6 w-40 truncate">{{ name }}</div>
+
+        <div class="flex items-center">
+          <div
+            class="w-7 h-7 rounded-full"
+            :style="`
+              background: url('${creator.pic}') no-repeat center; background-size: 100% 100%;
+            `"
+          ></div>
+          <div class="creator-name text-green-600 ml-2 truncate w-40">
+            {{ creator.name }}
+          </div>
+        </div>
+
+        <PopularityMeter class="pt-2 pb-2" :star="3" :total="5" size="4" />
       </div>
       <div class="font-semibold">30 ARA</div>
     </div>
@@ -38,7 +50,8 @@ export default {
       required: true,
       default: () => Math.round(Math.random() * 1000)
     },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    creator: { type: Object, required: true }
   },
   methods: {
     onClick() {
