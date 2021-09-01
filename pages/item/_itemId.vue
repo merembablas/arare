@@ -85,7 +85,7 @@
             :active="0"
           />
           <div class="history flex flex-col pt-10">
-            <ItemHistoryListItem />
+            <ItemHistoryListItem :ping="true" :active="true" />
             <ItemHistoryListItem />
             <ItemHistoryListItem />
           </div>

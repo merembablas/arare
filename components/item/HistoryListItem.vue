@@ -1,8 +1,24 @@
 <template>
   <div class="pl-5 pr-10 flex justify-between items-start">
     <div class="flex space-x-6 h-20">
+      <!-- ping animation -->
       <div class="relative">
+        <span
+          v-if="active"
+          class="
+            animate-ping
+            absolute
+            inline-flex
+            h-5
+            w-5
+            rounded-full
+            bg-blue-400
+            opacity-75
+          "
+          style="left: 2px; top: 1.5px"
+        ></span>
         <svg
+          v-if="active"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -10,14 +26,26 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx="12" cy="12" r="12" fill="#0D67E6" fill-opacity="0.25" />
-          <circle cx="12" cy="12" r="9" fill="#0D67E6" fill-opacity="0.4" />
           <circle cx="12" cy="12" r="6" fill="#0D67E6" />
         </svg>
+
+        <svg
+          v-if="!active"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="12" fill="#cacaca" fill-opacity="0.25" />
+          <circle cx="12" cy="12" r="6" fill="#cacaca" />
+        </svg>
         <div
-          class="absolute h-16 border-l-4 border-gray-200"
+          class="absolute h-14 border-l-4 border-gray-200"
           style="left: 10px"
         ></div>
       </div>
+      <!-- end of ping animation -->
       <div>
         <span>Bought by</span>
         <span class="font-semibold text-green-500">Alan Walker</span>
@@ -44,3 +72,12 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    ping: { type: Boolean, default: false },
+    active: { type: Boolean, default: false }
+  }
+}
+</script>

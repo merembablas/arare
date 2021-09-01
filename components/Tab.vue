@@ -6,7 +6,7 @@
       space-x-7
       flex
       mt-5
-      p-3
+      p-2
       align-middle
       bg-white
       border-gray-300 border-2
@@ -19,7 +19,7 @@
       :key="i"
       :class="`p-2 cursor-pointer rounded-2xl ${
         currentActive == i
-          ? 'rounded-2xl bg-gray-500 text-white'
+          ? 'rounded-2xl selected text-white'
           : 'hover:bg-blue-100'
       }`"
       @click="onClick(i)"
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      currentActive: this.active
+      currentActive: this.items[this.active]
     }
   },
   methods: {
@@ -48,5 +48,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.selected {
+  background-color: #777d90;
+}
 </style>

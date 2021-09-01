@@ -16,9 +16,10 @@
           "
         >
           <div
+            v-if="creator"
             class="w-64 h-64 rounded shadow-md"
             :style="`
-              background: url(https://picsum.photos/seed/${userId}/400/400) center no-repeat;
+              background: url('${creator.pic}') center no-repeat;
             `"
           ></div>
         </div>
@@ -42,7 +43,16 @@
       <div class="border-t-2 border-gray-200"></div>
 
       <div
-        class="flex flex-row justify-center pl-20 pr-20 items-top relative mt-5"
+        class="
+          flex flex-row
+          justify-center
+          items-center
+          pl-20
+          pr-20
+          items-top
+          relative
+          mt-5
+        "
       >
         <div class="w-64">Collections (120)</div>
         <div class="w-64"></div>
@@ -73,7 +83,7 @@ export default {
     return {
       items: [],
       creator: null,
-      userId: this.$route.params.userId
+      creatorId: this.$route.params.creatorId
     }
   },
   mounted() {
@@ -81,7 +91,7 @@ export default {
   },
   methods: {
     fetchItems() {
-      this.creator = this.$dummy.generateUser(this.userId)
+      this.creator = this.$dummy.generateUser(this.creatorId)
       this.items = this.$dummy.generateItems(20)
     }
   }
