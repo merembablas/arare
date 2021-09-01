@@ -16,20 +16,23 @@
           "
         >
           <div
+            v-if="item"
             class="w-2/4 h-3/6 rounded shadow-md"
             :style="`
-              background: url(https://picsum.photos/seed/arare${itemId}/400/400) center no-repeat;
+              background: url('${item.pic}') center no-repeat;
             `"
           ></div>
         </div>
 
         <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">{{ name }}</h1>
-          <div>
-            <span
-              >by:
-              <ClickableName name="Galam Zulkifli" link-to="/creator/galam" />
-            </span>
+          <h1 v-if="item" class="font-extrabold text-2xl">{{ item.name }}</h1>
+          <div v-if="item">
+            <ItemFieldInfo a-key="by">
+              <ClickableName
+                :name="item.creator.name"
+                :link-to="`/creator/${item.creator.id}`"
+              />
+            </ItemFieldInfo>
           </div>
           <ItemFieldInfo a-key="Collection" value="Lukisan Nusantara" />
           <ItemFieldInfo a-key="Value" value="30 ARA" extra="(Rp. 18.000,-)" />
@@ -93,10 +96,7 @@ export default {
   },
   fetch() {
     this.name = `Lukisan #${this.itemId}`
-    this.item = {
-      id: this.itemId,
-      name: this.name
-    }
+    this.item = this.$dummy.generateItem(this.itemId)
   }
 }
 </script>

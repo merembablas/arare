@@ -24,12 +24,13 @@
         </div>
 
         <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">Galam Zulkifli</h1>
+          <h1 v-if="creator != null" class="font-extrabold text-2xl">
+            {{ creator.name }}
+          </h1>
 
-          <ItemFieldInfo
-            a-key="Bio"
-            value="Galam is the one of the greatest artist in the world"
-          />
+          <ItemFieldInfo v-if="creator != null" a-key="Bio">
+            <p>{{ creator.biography }}</p>
+          </ItemFieldInfo>
 
           <ItemFieldInfo a-key="Popularity">
             <PopularityMeter :star="3" :total="5" />
@@ -57,14 +58,10 @@
           items-top
           justify-center
           pt-5
+          p-10
         "
       >
-        <ItemListItem
-          v-for="i in items"
-          :id="`${i.id}`"
-          :key="i.id"
-          :name="i.name"
-        />
+        <ItemListItem v-for="i in items" :key="i.id" :item="i" />
       </div>
     </div>
   </div>
@@ -75,6 +72,7 @@ export default {
   data() {
     return {
       items: [],
+      creator: null,
       userId: this.$route.params.userId
     }
   },
@@ -83,12 +81,8 @@ export default {
   },
   methods: {
     fetchItems() {
-      this.items = Array.from(Array(10).keys()).map((i) => {
-        return {
-          id: i,
-          name: 'Lukisan'
-        }
-      })
+      this.creator = this.$dummy.generateUser(this.userId)
+      this.items = this.$dummy.generateItems(20)
     }
   }
 }

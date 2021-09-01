@@ -58,8 +58,9 @@
       ></div>
       <div class="flex flex-col items-center pt-5">
         <div
-          class="rounded-full w-24 h-24"
+          class="rounded-full w-24 h-24 cursor-pointer"
           :style="`background: url(${pic}) no-repeat center; background-size: 96px 96px;`"
+          @click="onClick"
         ></div>
         <div class="font-semibold mt-3 h-6 w-32 text-center truncate">
           {{ name }}
@@ -82,6 +83,11 @@ export default {
   },
   data() {
     return {}
+  },
+  methods: {
+    onClick() {
+      this.$router.push(`/creator/${this.id}`)
+    }
   }
 }
 </script>

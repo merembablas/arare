@@ -69,8 +69,22 @@ function randomItemName(seed) {
     return name
 }
 
-function randomPic(seed) {
+function randomUserPic(seed) {
     return USER_PIC_LIST[seed % USER_PIC_LIST.length]
+}
+
+function randomItemPic(seed) {
+    return `https://picsum.photos/seed/arare${seed}/400/400`
+}
+
+const LOREM_IPSUM_LIST = [
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+]
+
+function randomBiography(seed) {
+    return LOREM_IPSUM_LIST[seed % LOREM_IPSUM_LIST.length]
 }
 
 function generateUser(seed) {
@@ -81,7 +95,8 @@ function generateUser(seed) {
         stars: randomNumber(i, 1, 5),
         rank: randomNumber(i, 1, 10),
         collections: randomNumber(i, 1, 100),
-        pic: randomPic(i)
+        pic: randomUserPic(i),
+        biography: randomBiography(i)
     }
 }
 
@@ -91,20 +106,29 @@ function generateUsers(count) {
     })
 }
 
+function generateItem(seed) {
+    const i = seed
+    return {
+        id: i,
+        name: randomItemName(i),
+        pic: randomItemPic(i),
+        creator: generateUser(i),
+    }
+}
+
 function generateItems(count) {
     return Array.from(Array(count).keys()).map((i) => {
-        return {
-            id: i,
-            name: randomItemName(i),
-            creator: generateUser(i),
-        }
+        return generateItem(i)
     })
 }
 
 export default ({ app }, inject) => {
     inject('dummy', {
+        generateUser,
         generateUsers,
+        generateItem,
         generateItems,
-        randomPic
+        randomUserPic,
+        randomItemPic,
     })
 }

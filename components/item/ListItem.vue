@@ -16,22 +16,22 @@
     <div
       class="m-2 h-40 rounded shadow-inner bg-pink-100"
       :style="`
-              background: url(https://picsum.photos/seed/arare${id}/400/400) center no-repeat;
+              background: url(https://picsum.photos/seed/arare${item.id}/400/400) center no-repeat;
             `"
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">
       <div>
-        <div class="h-6 w-40 truncate">{{ name }}</div>
+        <div class="h-6 w-40 truncate">{{ item.name }}</div>
 
         <div class="flex items-center">
           <div
             class="w-7 h-7 rounded-full"
             :style="`
-              background: url('${creator.pic}') no-repeat center; background-size: 100% 100%;
+              background: url('${item.creator.pic}') no-repeat center; background-size: 100% 100%;
             `"
           ></div>
           <div class="creator-name text-green-600 ml-2 truncate w-40">
-            {{ creator.name }}
+            {{ item.creator.name }}
           </div>
         </div>
 
@@ -45,17 +45,11 @@
 <script>
 export default {
   props: {
-    id: {
-      type: String,
-      required: true,
-      default: () => Math.round(Math.random() * 1000)
-    },
-    name: { type: String, required: true },
-    creator: { type: Object, required: true }
+    item: { type: Object, required: true }
   },
   methods: {
     onClick() {
-      this.$router.push(`/item/${this.id}`)
+      this.$router.push(`/item/${this.item.id}`)
     }
   }
 }
