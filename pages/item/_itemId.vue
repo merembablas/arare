@@ -78,6 +78,17 @@
           </div>
 
           <ModalPlaceBid v-model="placeBidDialogVisible" :item="item" />
+
+          <!-- TABS -->
+          <Tab
+            :items="['History', 'Ownership', 'Bids', 'Comments']"
+            :active="0"
+          />
+          <div class="history flex flex-col pt-10">
+            <ItemHistoryListItem />
+            <ItemHistoryListItem />
+            <ItemHistoryListItem />
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border-b-2 border-blue-600">
+  <div class="bg-white border-b-2 border-gray-300">
     <div>
       <div class="flex justify-between p-3 items-center">
         <div class="flex items-center">
