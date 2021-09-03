@@ -4,25 +4,12 @@
     <div class="m-10 items-center min-h-screen">
       <div class="relative flex items-top justify-center">
         <div
-          class="
-            rounded
-            bg-gray-300
-            w-64
-            h-64
-            flex
-            justify-center
-            items-center
-            shadow-md
-          "
-        >
-          <div
-            v-if="creator"
-            class="w-64 h-64 rounded shadow-md"
-            :style="`
-              background: url('${creator.pic}') center no-repeat;
+          v-if="creator"
+          class="w-64 h-64 rounded shadow-md"
+          :style="`
+              background: url('${creator.pic}') center no-repeat; background-size: cover;
             `"
-          ></div>
-        </div>
+        ></div>
 
         <div class="w-2/4 ml-10">
           <h1 v-if="creator != null" class="font-extrabold text-2xl">
@@ -44,7 +31,7 @@
 
       <div
         class="
-          flex flex-row
+          flex flex-wrap
           justify-center
           items-center
           pl-20
@@ -68,7 +55,7 @@
           items-top
           justify-center
           pt-5
-          p-10
+          md:p-10
         "
       >
         <ItemListItem v-for="i in items" :key="i.id" :item="i" />

@@ -1,18 +1,16 @@
 <template>
   <div>
     <Navbar />
-    <div class="m-10 items-start">
+    <div class="mt-10 items-start">
       <!-- LEFT SIDE -->
-      <div class="flex justify-end">
-        <div
-          class="w-2/4 flex flex-auto justify-end pr-10 items-start border-r-2"
-        >
-          <div class="rounded w-96 flex flex-col">
-            <div class="rounded-xl">
+      <div class="flex flex-wrap justify-center md:justify-center">
+        <div class="md:w-1/3 md:pr-10">
+          <div>
+            <div>
               <img
                 src="/img/gallery-dummy-main.png"
                 alt=""
-                class="rounded-xl"
+                class="md:rounded-xl"
               />
             </div>
             <div class="flex pt-1 space-x-1 justify-center">
@@ -30,9 +28,9 @@
         </div>
 
         <!-- RIGHT SIDE -->
-        <div class="w-2/3 ml-10">
+        <div class="md:w-1/3 mt-5 md:mt-0 items-start">
           <h1 class="font-extrabold text-3xl">Gallery Artamedia Yogyakarta</h1>
-          <div class="w-2/3">
+          <div class="w-full">
             <p>
               JL. Pekapalan No.7, Prawirodirjan, Kec. Gondomanan, Kota
               Yogyakarta, Daerah Istimewa Yogyakarta 55131
@@ -142,12 +140,12 @@
         </div>
       </div>
 
-      <div class="border-b-2 pt-5 border-gray-300"></div>
-      <div class="border-t-2 border-gray-200"></div>
+      <!-- <div class="border-b-2 pt-5 border-gray-300"></div>
+      <div class="border-t-2 border-gray-200"></div> -->
 
       <div
         class="
-          flex flex-row
+          flex flex-wrap
           justify-center
           items-center
           pl-20
@@ -171,7 +169,7 @@
           items-top
           justify-center
           pt-5
-          p-10
+          md:p-10
         "
       >
         <ItemListItem v-for="i in items" :key="i.id" :item="i" />

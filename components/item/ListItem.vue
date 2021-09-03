@@ -3,8 +3,9 @@
     class="
       rounded
       bg-gray-100
-      w-64
-      h-64
+      w-full
+      md:w-64
+      md:h-64
       flex flex-col
       justify-top
       shadow-md
@@ -14,9 +15,9 @@
     @click="onClick"
   >
     <div
-      class="m-2 h-40 rounded shadow-inner bg-pink-100"
+      class="w-full h-96 md:h-40 rounded-t shadow-inner bg-pink-100"
       :style="`
-              background: url(https://picsum.photos/seed/arare${item.id}/400/400) center no-repeat;
+              background: url(https://picsum.photos/seed/arare${item.id}/400/400) center no-repeat; background-size: cover;
             `"
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">

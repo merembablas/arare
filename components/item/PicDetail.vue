@@ -2,7 +2,6 @@
   <div
     class="
       rounded
-      w-4/2
       flex flex-grow
       justify-center
       items-center
@@ -13,7 +12,7 @@
     <div
       v-if="item"
       class="
-        rounded-3xl
+        md:rounded-3xl
         flex flex-col
         items-center
         bg-white
@@ -25,8 +24,8 @@
       "
     >
       <div
-        class="rounded-t-2xl"
-        :style="`background: url('${item.pic}') no-repeat center; width: 350px; height: 400px;`"
+        class="md:rounded-t-2xl w-screen md:w-96 h-96"
+        :style="`background: url('${item.pic}') no-repeat center; background-size: cover`"
       ></div>
       <div class="flex w-full pl-5 pr-5 justify-between items-center">
         <div class="flex flex-col items-center pt-4">
