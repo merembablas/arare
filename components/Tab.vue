@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      w-auto
+      w-full
       items-center
       space-x-7
       flex

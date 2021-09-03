@@ -6,14 +6,21 @@
           <Logo width="32" height="32" />
           <a
             href="/"
-            class="pl-3 font-semibold text-2xl text-gray-600 focus:outline-none"
+            class="
+              pl-3
+              hidden
+              md:block
+              font-semibold
+              text-3xl text-gray-600
+              focus:outline-none
+            "
             >arare.one</a
           >
         </div>
 
-        <SearchBox />
+        <SearchBox class="ml-2" />
 
-        <div class="flex justify-end space-x-16 items-center">
+        <div class="flex space-x-7 justify-end md:space-x-16 items-center">
           <NotifIcon :count="0" />
           <ConnectButton />
         </div>

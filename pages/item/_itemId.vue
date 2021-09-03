@@ -1,16 +1,54 @@
 <template>
   <div>
     <Navbar />
-    <div class="m-10">
-      <div class="flex h-screen justify-between">
-        <ItemPicDetail :item="item" />
-
-        <div class="w-2/4 ml-10">
-          <h1 v-if="item" class="font-extrabold text-3xl">{{ item.name }}</h1>
-          <div class="flex items-center">
+    <div class="mt-2 md:m-10">
+      <div class="flex flex-wrap h-screen items-start justify-between w-full">
+        <div
+          v-if="item"
+          class="
+            justify-center
+            align-center
+            text-center
+            font-extrabold
+            md:hidden
+            text-3xl
+            w-full
+            pb-2
+          "
+        >
+          <h1>
+            {{ item.name }}
+          </h1>
+          <div
+            class="
+              flex
+              align-center
+              text-center
+              w-full
+              items-center
+              justify-center
+            "
+          >
             <div class="text-color-2 text-sm">This item has been verified</div>
             <IconVerified class="ml-1" />
           </div>
+        </div>
+
+        <ItemPicDetail :item="item" />
+
+        <div class="md:w-2/4 ml-10">
+          <div class="hidden md:block">
+            <h1 v-if="item" class="font-extrabold text-3xl">
+              {{ item.name }}
+            </h1>
+            <div class="flex items-center">
+              <div class="text-color-2 text-sm">
+                This item has been verified
+              </div>
+              <IconVerified class="ml-1" />
+            </div>
+          </div>
+
           <!-- <div v-if="item">
             <ItemFieldInfo a-key="by">
               <ClickableName
