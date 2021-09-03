@@ -26,10 +26,7 @@
         <div class="w-2/4 ml-10">
           <h1 class="font-extrabold text-2xl">{{ user.name }}</h1>
 
-          <ItemFieldInfo
-            a-key="Bio"
-            value="Galam is the one of the greatest artist in the world"
-          />
+          <ItemFieldInfo a-key="Bio" :value="user.bio" />
 
           <ItemFieldInfo a-key="Popularity">
             <PopularityMeter :star="3" :total="5" />
@@ -50,6 +47,7 @@
 
       <!-- collection list -->
       <div
+        v-if="items"
         class="
           collection-list
           relative
@@ -63,7 +61,7 @@
           v-for="i in items"
           :id="`${i.id}`"
           :key="i.id"
-          :name="i.name"
+          :item="i"
         />
       </div>
     </div>
@@ -86,12 +84,7 @@ export default {
   },
   methods: {
     fetchItems() {
-      this.items = Array.from(Array(10).keys()).map((i) => {
-        return {
-          id: i,
-          name: 'Lukisan'
-        }
-      })
+      this.items = this.$dummy.generateItems(20)
     }
   }
 }

@@ -30,7 +30,7 @@ const NAME_LIST = [
     "Urip Raharjo",
     "Eko Prasetyo",
     "Yanto Zulkarnaen Sihombing",
-    "Galam Zulkifli"
+    "Anton Sadewa"
 ]
 
 const ITEM_NAME_LIST = [

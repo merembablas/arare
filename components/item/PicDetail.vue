@@ -28,13 +28,21 @@
         <div class="flex flex-col items-center pt-4">
           <span class="text-gray-400 text-sm">Creator:</span>
           <div
-            class="w-7 h-7 rounded-full mt-2"
+            class="w-7 h-7 rounded-full mt-2 cursor-pointer"
             :style="`background: url('${item.creator.pic}') center center / 100% 100% no-repeat;`"
-            data-v-6b9a30c2=""
+            @click="onCreatorClick"
           ></div>
           <div
-            class="creator-name text-green-600 ml-2 truncate w-auto"
-            data-v-6b9a30c2=""
+            class="
+              creator-name
+              text-green-600
+              ml-2
+              truncate
+              w-auto
+              cursor-pointer
+              text-sm
+            "
+            @click="onCreatorClick"
           >
             {{ item.creator.name }}
           </div>
@@ -53,6 +61,11 @@
 export default {
   props: {
     item: { type: Object, required: true }
+  },
+  methods: {
+    onCreatorClick() {
+      this.$router.push(`/creator/${this.item.creator.id}`)
+    }
   }
 }
 </script>
