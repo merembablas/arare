@@ -109,7 +109,7 @@
                   </svg>
                   <div class="ml-2">
                     <a href="https://www.artmedia.com" class="link"
-                      >www.artmedia.com</a
+                      >www.artamedia.com</a
                     >
                   </div>
                 </div>
@@ -125,7 +125,7 @@
                     />
                   </svg>
                   <div class="ml-2">
-                    <a href="https://twitter.com/artmedia">@artmedia</a>
+                    <a href="https://twitter.com/artmedia">@artamedia</a>
                   </div>
                 </div>
               </div>
