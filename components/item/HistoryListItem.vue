@@ -46,10 +46,11 @@
         ></div>
       </div>
       <!-- end of ping animation -->
-      <div>
-        <span>Bought by</span>
-        <span class="font-semibold text-green-500">Alan Walker</span>
-        <div class="pt-2 text-gray-400">28 April 2021</div>
+      <div class="text-sm">
+        <div>
+          <slot></slot>
+          <div class="pt-2 text-gray-400">{{ time }}</div>
+        </div>
       </div>
     </div>
     <div class="flex items-center space-x-2">
@@ -68,7 +69,7 @@
           fill="white"
         />
       </svg>
-      <div style="color: #777d90">30 ARA</div>
+      <div class="text-sm" style="color: #777d90">30 ARA</div>
     </div>
   </div>
 </template>
@@ -77,7 +78,8 @@
 export default {
   props: {
     ping: { type: Boolean, default: false },
-    active: { type: Boolean, default: false }
+    active: { type: Boolean, default: false },
+    time: { type: String, required: true }
   }
 }
 </script>

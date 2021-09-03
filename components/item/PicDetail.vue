@@ -6,7 +6,8 @@
       justify-center
       items-center
       md:border-r-2
-      pr-2
+      md:pr-2
+      w-1/3
     "
   >
     <div
@@ -16,7 +17,8 @@
         flex flex-col
         items-center
         bg-white
-        w-auto
+        w-screen
+        md:w-auto
         h-auto
         pb-6
         border-2

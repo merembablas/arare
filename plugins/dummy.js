@@ -102,6 +102,7 @@ function generateItem(seed) {
         name: randomItemName(i),
         pic: randomItemPic(i),
         creator: generateUser(i),
+        owner: generateUser(i + 1),
     }
 }
 
