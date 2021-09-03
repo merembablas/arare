@@ -8,7 +8,7 @@
         <div class="w-2/4 ml-10">
           <h1 v-if="item" class="font-extrabold text-3xl">{{ item.name }}</h1>
           <div class="flex items-center">
-            <div class="text-biru-2 text-sm">This item has been verified</div>
+            <div class="text-color-2 text-sm">This item has been verified</div>
             <IconVerified class="ml-1" />
           </div>
           <!-- <div v-if="item">
@@ -29,9 +29,9 @@
           />
           <ItemFieldInfo
             a-key="Asset location"
-            value="ArtJog Gallery Yogyakarta"
+            value="Artamedia Gallery Yogyakarta"
             value-type="location"
-            link-to="/gallery/artjog"
+            link-to="/gallery/artamedia"
           />
           <ItemFieldInfo a-key="Popularity">
             <PopularityMeter :star="3" :total="5" />
