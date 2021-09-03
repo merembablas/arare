@@ -3,7 +3,12 @@
     <div>
       <div class="flex justify-between p-3 items-center">
         <div class="flex items-center">
-          <Logo width="32" height="32" />
+          <Logo
+            width="32"
+            height="32"
+            class="cursor-pointer"
+            @click="$router.push('/')"
+          />
           <a
             href="/"
             class="
