@@ -62,7 +62,18 @@
           :style="`background: url(${pic}) no-repeat center; background-size: 96px 96px;`"
           @click="onClick"
         ></div>
-        <div class="font-semibold mt-3 h-6 w-32 text-center truncate">
+        <div
+          class="
+            font-semibold
+            mt-3
+            h-6
+            w-32
+            text-center
+            truncate
+            cursor-pointer
+          "
+          @click="onClick"
+        >
           {{ name }}
         </div>
         <div class="text-sm text-gray-400">{{ collections }} Collections</div>
