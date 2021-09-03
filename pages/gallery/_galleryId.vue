@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <div class="mt-10 items-start">
+    <div class="md:mt-10 items-start">
       <!-- LEFT SIDE -->
       <div class="flex flex-wrap justify-center md:justify-center">
         <div class="md:w-1/3 md:pr-10">
@@ -28,7 +28,7 @@
         </div>
 
         <!-- RIGHT SIDE -->
-        <div class="md:w-1/3 mt-5 md:mt-0 items-start">
+        <div class="md:w-1/3 p-2 w-full mt-5 md:mt-0 items-start">
           <h1 class="font-extrabold text-3xl">Gallery Artamedia Yogyakarta</h1>
           <div class="w-full">
             <p>
@@ -38,7 +38,7 @@
 
             <div class="border-b-2 pt-5 border-gray-200"></div>
             <!-- CONTACTS -->
-            <div class="flex items-center">
+            <div class="flex flex-wrap items-center">
               <div class="flex flex-col">
                 <div class="flex p-2">
                   <svg
