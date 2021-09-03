@@ -11,7 +11,7 @@
 export default {
   data() {
     return {
-      items: this.$dummy.generateItems(5)
+      items: this.$dummy.generateItems(8)
     }
   }
 }

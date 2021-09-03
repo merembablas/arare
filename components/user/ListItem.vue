@@ -1,6 +1,8 @@
 <template>
   <div class="flex justify-center items-center">
-    <div class="rounded-3xl bg-white w-40 h-42 pb-6 pl-5 pr-5 pt-7">
+    <div
+      class="rounded-3xl bg-white w-screen md:w-full h-42 pb-6 pl-5 pr-5 pt-7"
+    >
       <div class="flex justify-between">
         <div class="flex">
           <svg
