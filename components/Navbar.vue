@@ -10,7 +10,7 @@
             @click="$router.push('/')"
           />
           <a
-            href="/"
+            href="javascript://"
             class="
               pl-3
               hidden
@@ -19,6 +19,7 @@
               text-3xl text-gray-600
               focus:outline-none
             "
+            @click="$router.push('/')"
             >arare.one</a
           >
         </div>

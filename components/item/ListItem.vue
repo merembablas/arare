@@ -17,7 +17,7 @@
     <div
       class="w-full h-96 md:h-40 rounded-t shadow-inner bg-pink-100"
       :style="`
-              background: url(https://picsum.photos/seed/arare${item.id}/400/400) center no-repeat; background-size: cover;
+              background: url(${item.pic}) center no-repeat; background-size: cover;
             `"
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">

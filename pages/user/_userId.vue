@@ -4,29 +4,21 @@
     <div class="m-10 items-center min-h-screen">
       <div class="relative flex items-top justify-center">
         <div
-          class="
-            rounded
-            bg-gray-300
-            w-64
-            h-64
-            flex
-            justify-center
-            items-center
-            shadow-md
-          "
-        >
-          <div
-            class="w-64 h-64 rounded shadow-md"
-            :style="`
-              background: url(https://picsum.photos/seed/${userId}/400/400) center no-repeat;
+          v-if="user"
+          class="w-64 h-64 rounded shadow-md"
+          :style="`
+              background: url('${user.pic}') center no-repeat; background-size: cover;
             `"
-          ></div>
-        </div>
+        ></div>
 
         <div class="w-2/4 ml-10">
-          <h1 class="font-extrabold text-2xl">{{ user.name }}</h1>
+          <h1 v-if="user != null" class="font-extrabold text-2xl">
+            {{ user.name }}
+          </h1>
 
-          <ItemFieldInfo a-key="Bio" :value="user.bio" />
+          <ItemFieldInfo v-if="user != null" a-key="Bio">
+            <p>{{ user.biography }}</p>
+          </ItemFieldInfo>
 
           <ItemFieldInfo a-key="Popularity">
             <PopularityMeter :star="3" :total="5" />
@@ -73,9 +65,7 @@ export default {
   data() {
     return {
       items: [],
-      user: {
-        name: this.$route.params.userId
-      },
+      user: null,
       userId: this.$route.params.userId
     }
   },
@@ -84,6 +74,7 @@ export default {
   },
   methods: {
     fetchItems() {
+      this.user = this.$dummy.generateUser(this.$route.params.userId)
       this.items = this.$dummy.generateItems(20)
     }
   }

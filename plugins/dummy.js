@@ -63,6 +63,10 @@ function randomUserPic(seed) {
 }
 
 function randomItemPic(seed) {
+    const i = parseInt(seed) + 1;
+    if (i < 6) {
+        return `/img/dummy-art-${i}.png`
+    }
     return `https://picsum.photos/seed/arare${seed}/400/400`
 }
 

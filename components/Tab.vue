@@ -38,7 +38,8 @@
 export default {
   props: {
     items: { type: Array, required: true },
-    active: { type: Number, required: true, default: 0 }
+    active: { type: Number, required: true, default: 0 },
+    value: { type: String, required: true, default: '' }
   },
   data() {
     return {
@@ -48,6 +49,7 @@ export default {
   methods: {
     onClick(i) {
       this.currentActive = i
+      this.$emit('input', this.currentActive)
     }
   }
 }

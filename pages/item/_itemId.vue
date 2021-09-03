@@ -96,35 +96,18 @@
 
           <!-- TABS -->
           <Tab
+            v-model="currentTab"
             :items="['History', 'Ownership', 'Bids', 'Comments']"
             :active="0"
           />
-          <div class="history flex flex-col pt-10">
-            <ItemHistoryListItem
-              :ping="true"
-              :active="true"
-              time="28 April 2021"
-            >
-              <div>
-                <span>Bought by</span>
-                <span class="font-semibold text-green-500">{{
-                  item.owner.name
-                }}</span>
-              </div>
-            </ItemHistoryListItem>
-            <ItemHistoryListItem time="1 April 2021">
-              <div>
-                <span>Bought by</span>
-                <span class="font-semibold text-green-500">Alan Walker</span>
-              </div>
-            </ItemHistoryListItem>
-            <ItemHistoryListItem time="1 April 2021">
-              <div>
-                <span>Bought by</span>
-                <span class="font-semibold text-green-500">Alan Walker</span>
-              </div>
-            </ItemHistoryListItem>
-          </div>
+          <ItemTabContentHistory
+            v-if="item"
+            v-show="currentTab == 'History'"
+            :item="item"
+          />
+          <div v-show="currentTab == 'Ownership'" class="p-5">Ownership</div>
+          <div v-show="currentTab == 'Bids'" class="p-5">Bids</div>
+          <div v-show="currentTab == 'Comments'" class="p-5">Comments</div>
         </div>
       </div>
     </div>
@@ -138,7 +121,8 @@ export default {
       itemId: this.$route.params.itemId,
       item: null,
       name: '',
-      placeBidDialogVisible: false
+      placeBidDialogVisible: false,
+      currentTab: 'History'
     }
   },
   fetch() {

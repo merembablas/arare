@@ -1,7 +1,6 @@
 <template>
   <div
     class="
-      rounded
       flex flex-grow
       justify-center
       items-center
@@ -18,7 +17,7 @@
         items-center
         bg-white
         w-screen
-        md:w-auto
+        md:w-96
         h-auto
         pb-6
         border-2
@@ -26,7 +25,7 @@
       "
     >
       <div
-        class="md:rounded-t-2xl w-screen md:w-96 h-96"
+        class="md:rounded-t-3xl w-screen md:w-96 h-96"
         :style="`background: url('${item.pic}') no-repeat center; background-size: cover`"
       ></div>
       <div class="flex w-full pl-5 pr-5 justify-between items-center">
