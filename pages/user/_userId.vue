@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <div class="m-10 items-center min-h-screen">
+    <div class="md:m-10 items-center min-h-screen">
       <div class="relative flex items-top justify-center">
         <div
           v-if="user"
