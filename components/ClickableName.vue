@@ -1,5 +1,7 @@
 <template>
-  <a :href="linkTo" :class="`text-${color} font-semibold`">{{ name }}</a>
+  <a :href="linkTo" :class="`text-${color} font-semibold`">
+    <div class="w-32 truncate">{{ name }}</div>
+  </a>
 </template>
 
 <script>

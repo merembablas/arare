@@ -3,47 +3,54 @@
     <div class="flex space-x-6 h-20">
       <!-- ping animation -->
       <div class="relative">
-        <span
-          v-if="active"
-          class="
-            animate-ping
-            absolute
-            inline-flex
-            h-5
-            w-5
-            rounded-full
-            bg-blue-400
-            opacity-75
-          "
-          style="left: 2px; top: 1.5px"
-        ></span>
-        <svg
-          v-if="active"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="12" cy="12" r="12" fill="#0D67E6" fill-opacity="0.25" />
-          <circle cx="12" cy="12" r="6" fill="#0D67E6" />
-        </svg>
+        <slot name="icon">
+          <span
+            v-if="active && ping"
+            class="
+              animate-ping
+              absolute
+              inline-flex
+              h-5
+              w-5
+              rounded-full
+              opacity-75
+            "
+            :style="`left: 2px; top: 1.5px; background-color: ${baseColor}`"
+          ></span>
+          <svg
+            v-if="active"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="12"
+              :fill="baseColor"
+              fill-opacity="0.25"
+            />
+            <circle cx="12" cy="12" r="6" :fill="baseColor" />
+          </svg>
 
-        <svg
-          v-if="!active"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="12" cy="12" r="12" fill="#cacaca" fill-opacity="0.25" />
-          <circle cx="12" cy="12" r="6" fill="#cacaca" />
-        </svg>
-        <div
-          class="absolute h-14 border-l-4 border-gray-200"
-          style="left: 10px"
-        ></div>
+          <svg
+            v-if="!active"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="12" cy="12" r="12" fill="#cacaca" fill-opacity="0.25" />
+            <circle cx="12" cy="12" r="6" fill="#cacaca" />
+          </svg>
+          <div
+            class="absolute h-14 border-l-4 border-gray-200"
+            style="left: 10px"
+          ></div>
+        </slot>
       </div>
       <!-- end of ping animation -->
       <div class="text-sm">
@@ -79,7 +86,8 @@ export default {
   props: {
     ping: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
-    time: { type: String, required: true }
+    time: { type: String, required: true },
+    baseColor: { type: String, default: '#0D67E6' }
   }
 }
 </script>

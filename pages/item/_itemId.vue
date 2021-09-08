@@ -1,8 +1,8 @@
 <template>
   <div>
     <Navbar />
-    <div class="mt-2 md:m-10">
-      <div class="flex flex-wrap h-screen items-start justify-between w-full">
+    <div class="mt-2 md:m-10 h-full">
+      <div class="flex flex-wrap h-full items-start justify-between w-full">
         <div
           v-if="item"
           class="
