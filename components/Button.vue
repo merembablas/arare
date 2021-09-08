@@ -7,7 +7,7 @@
       hover:-translate-y-1
       hover:scale-105
       rounded-xl
-      bg-blue-600
+      ${colorClass}
       text-white
       ${iconMode ? 'pl-5 pr-2' : 'p-5'}
       py-2
@@ -29,7 +29,8 @@
 export default {
   props: {
     text: { type: String, required: true },
-    iconMode: { type: Boolean, default: false }
+    iconMode: { type: Boolean, default: false },
+    colorClass: { type: String, default: 'bg-blue-600' }
   },
   methods: {
     onClick() {

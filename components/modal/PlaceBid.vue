@@ -72,66 +72,14 @@
           flex
           items-center
           justify-end
+          space-x-5
           p-6
           border-t border-solid border-blueGray-200
           rounded-b
         "
       >
-        <button
-          class="
-            text-red-500
-            bg-transparent
-            border border-solid border-red-500
-            hover:bg-red-500
-            hover:text-white
-            active:bg-red-600
-            font-bold
-            uppercase
-            text-sm
-            px-6
-            py-3
-            rounded
-            outline-none
-            focus:outline-none
-            mr-1
-            mb-1
-            ease-linear
-            transition-all
-            duration-150
-          "
-          type="button"
-          @click="visible = false"
-        >
-          Cancel
-        </button>
-        <button
-          class="
-            text-green-500
-            font-bold
-            uppercase
-            px-6
-            py-3
-            text-sm
-            outline-none
-            focus:outline-none
-            mr-1
-            mb-1
-            ease-linear
-            transition-all
-            duration-150
-            rounded
-            border border-solid border-green-500
-            ease-linear
-            transition-all
-            duration-150
-            hover:bg-green-500
-            hover:text-white
-          "
-          type="button"
-          @click="onBid"
-        >
-          BID!
-        </button>
+        <Button text="Cancel" color-class="bg-red-600" @click="onCancel" />
+        <Button text="BID!" color-class="bg-green-600" @click="onBid" />
       </div>
     </template>
   </ModalBaseModal>
@@ -159,6 +107,10 @@ export default {
     }
   },
   methods: {
+    onCancel() {
+      this.visible = false
+      this.$emit('input', this.visible)
+    },
     onBid() {
       this.visible = !this.visible
       this.$emit('input', this.visible)

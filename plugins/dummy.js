@@ -26,7 +26,7 @@ function randomNumber(seed, min, max) {
 }
 
 const NAME_LIST = [
-    "Dian Sastro",
+    "Tiya Damayanti",
     "Urip Raharjo",
     "Eko Prasetyo",
     "Yanto Zulkarnaen Sihombing",
