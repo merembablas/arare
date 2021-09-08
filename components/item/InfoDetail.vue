@@ -21,7 +21,7 @@
         a-key="Asset location"
         value="Artamedia Gallery Yogyakarta"
         value-type="location"
-        link-to="/gallery/artamedia"
+        :link-to="`/gallery/${item.gallery.id}`"
       />
       <ItemFieldInfo a-key="Popularity">
         <PopularityMeter :star="3" :total="5" />

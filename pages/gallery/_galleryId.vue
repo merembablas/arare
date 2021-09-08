@@ -175,6 +175,7 @@
         <ItemListItem v-for="i in items" :key="i.id" :item="i" />
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -184,7 +185,7 @@ export default {
     return {
       items: [],
       creator: null,
-      creatorId: this.$route.params.creatorId
+      galleryId: this.$route.params.galleryId
     }
   },
   mounted() {
@@ -192,7 +193,7 @@ export default {
   },
   methods: {
     fetchItems() {
-      this.creator = this.$dummy.generateUser(this.creatorId)
+      this.creator = this.$dummy.generateUser(this.galleryId)
       this.items = this.$dummy.generateItems(20)
     }
   }

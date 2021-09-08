@@ -94,6 +94,7 @@
         <ItemListItem v-for="i in items" :key="i.id" :item="i" />
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 

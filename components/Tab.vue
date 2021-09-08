@@ -25,7 +25,7 @@
       :class="`p-2 cursor-pointer ${
         currentActive == i
           ? 'rounded-2xl selected text-white'
-          : 'hover:bg-blue-100'
+          : 'hover:bg-blue-100 rounded-2xl'
       }`"
       @click="onClick(i)"
     >

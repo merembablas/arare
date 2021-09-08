@@ -125,6 +125,7 @@
         <ItemInfoDetail :item="item" />
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 

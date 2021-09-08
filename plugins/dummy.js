@@ -127,6 +127,9 @@ function generateItem(seed) {
         pic: randomItemPic(i),
         creator: generateUser(i),
         owner: generateUser(i + 1),
+        gallery: {
+            id: 1
+        }
     }
 }
 
