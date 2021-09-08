@@ -28,7 +28,7 @@
           <div
             class="w-7 h-7 rounded-full"
             :style="`
-              background: url('${item.creator.pic}') no-repeat center; background-size: 100% 100%;
+              background: url('${item.creator.pic}') no-repeat center; background-size: cover;
             `"
           ></div>
           <div class="creator-name text-green-600 ml-2 truncate w-40">

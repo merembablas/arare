@@ -30,7 +30,10 @@ const NAME_LIST = [
     "Urip Raharjo",
     "Eko Prasetyo",
     "Yanto Zulkarnaen Sihombing",
-    "Anton Sadewa"
+    "Anton Sadewa",
+    "Eka Makarya",
+    "Intan",
+    "Ar"
 ]
 
 const ITEM_NAME_LIST = [
@@ -39,7 +42,8 @@ const ITEM_NAME_LIST = [
     "Consectetur adipiscing",
     "Excepteur sint occaecat",
     "Voluptatem",
-    "Vox"
+    "Vox",
+    "Quis autem"
 ]
 
 const USER_PIC_LIST = [
@@ -47,8 +51,12 @@ const USER_PIC_LIST = [
     "https://randomuser.me/api/portraits/men/78.jpg",
     "https://randomuser.me/api/portraits/men/79.jpg",
     "https://randomuser.me/api/portraits/men/80.jpg",
-    "https://randomuser.me/api/portraits/men/81.jpg"
+    "https://randomuser.me/api/portraits/men/81.jpg",
+    "https://images.unsplash.com/photo-1545996124-0501ebae84d0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1578489758854-f134a358f08b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZhY2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
+    "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTYwfHxmYWNlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
 ]
+
 
 function randomName(seed) {
     return NAME_LIST[seed % NAME_LIST.length]
@@ -70,6 +78,14 @@ function randomItemPic(seed) {
     return `https://picsum.photos/seed/arare${seed}/400/400`
 }
 
+function randomCoverPic(seed) {
+    const i = parseInt(seed) + 1;
+    if (i < 3) {
+        return `/img/dummy-user-cover-${i}.jpg`
+    }
+    return `https://picsum.photos/seed/arare${((i + 1) * 5)}/1024/400`
+}
+
 const LOREM_IPSUM_LIST = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
@@ -82,14 +98,18 @@ function randomBiography(seed) {
 
 function generateUser(seed) {
     const i = seed
+    const name = randomName(i);
+    // let patt = new RegExp('\\W+', 'g')
     return {
         id: i,
-        name: randomName(i),
+        name,
         stars: randomNumber(i, 1, 5),
         rank: randomNumber(i, 1, 10),
         collections: randomNumber(i, 1, 100),
         pic: randomUserPic(i),
-        biography: randomBiography(i)
+        coverPic: randomCoverPic(i),
+        biography: randomBiography(i),
+        twitter: name.replace(/\W+/g, '_')
     }
 }
 

@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$router.push(`/creator/${this.id}`)
+      this.$router.push(`/user/${this.id}`)
     }
   }
 }

@@ -22,7 +22,7 @@
           <span class="text-gray-400 text-sm">Creator:</span>
           <div
             class="w-7 h-7 rounded-full mt-2 cursor-pointer"
-            :style="`background: url('${item.creator.pic}') center center / 100% 100% no-repeat;`"
+            :style="`background: url('${item.creator.pic}') center center / cover no-repeat;`"
             @click="onCreatorClick"
           ></div>
           <div
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     onCreatorClick() {
-      this.$router.push(`/creator/${this.item.creator.id}`)
+      this.$router.push(`/user/${this.item.creator.id}`)
     }
   }
 }
