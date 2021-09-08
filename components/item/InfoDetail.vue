@@ -15,7 +15,7 @@
         a-key="Owner"
         :value="item.owner.name"
         value-type="user"
-        link-to="/user/grayzein"
+        :link-to="`/user/${item.owner.id}`"
       />
       <ItemFieldInfo
         a-key="Asset location"
