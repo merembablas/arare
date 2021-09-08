@@ -83,7 +83,7 @@ function randomCoverPic(seed) {
     if (i < 3) {
         return `/img/dummy-user-cover-${i}.jpg`
     }
-    return `https://picsum.photos/seed/arare${((i + 1) * 5)}/1024/400`
+    return `https://picsum.photos/seed/arare${((i + 1) * 10)}/1024/400`
 }
 
 const LOREM_IPSUM_LIST = [
