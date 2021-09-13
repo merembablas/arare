@@ -1,22 +1,30 @@
 <template>
   <div class="mt-7">
-    <h2>Transactions</h2>
+    <SearchBox placeholder="Search" class="p-2" />
     <table class="table-auto mt-5 w-full border rounded">
       <thead>
         <tr>
-          <th>Time</th>
-          <th>Activity</th>
           <th>Item</th>
-          <th>Amount</th>
+          <th>Popularity</th>
+          <th>Value</th>
+          <th>View</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="i in 5" :key="i" :class="i % 2 == 1 ? 'odd' : ''">
-          <td>09 Sept 2021</td>
-          <td>Royalty</td>
-          <td>Lukisan Nusantara</td>
-          <td :class="i % 2 == 1 ? 'positive' : 'negative'">
-            {{ i % 2 == 1 ? '+' : '-' }} 103 ARA
+          <td>
+            <div class="flex items-center">
+              <img src="/img/dummy-art-small-1.png" alt="dummy" />
+              <div class="ml-5">Lukisan Nusantara</div>
+            </div>
+          </td>
+          <td>
+            <PopularityMeter :star="3" />
+          </td>
+          <td>130 ARA</td>
+          <td class="flex">
+            <div>127</div>
+            <IconEye class="ml-2" />
           </td>
         </tr>
       </tbody>
@@ -29,6 +37,10 @@ export default {}
 </script>
 
 <style lang="less" scoped>
+h2 {
+  color: @brand-color-blue;
+  font-size: 1.2em;
+}
 th {
   background-color: @bg-color-2;
   text-align: left;

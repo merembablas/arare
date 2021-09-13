@@ -4,7 +4,7 @@
       id="SearchBox"
       type="search"
       name="search"
-      placeholder="Search keyword/item id"
+      :placeholder="placeholder"
       class="p-1 bg-transparent w-full focus:outline-none"
       autocomplete="off"
       @focus="onFocus"
@@ -37,6 +37,13 @@
 
 <script>
 export default {
+  props: {
+    placeholder: {
+      type: String,
+      required: false,
+      default: 'Search keyword/item id'
+    }
+  },
   data() {
     return {
       glassColor: '#cacaca'

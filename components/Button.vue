@@ -9,7 +9,7 @@
       rounded-xl
       ${colorClass}
       text-white
-      ${iconMode ? 'pl-5 pr-2' : 'p-5'}
+      ${iconMode ? 'pl-2 pr-2' : 'p-5'}
       py-2
       font-semibold
       hover:bg-purple-600
@@ -19,10 +19,10 @@
       `"
     @click="onClick"
   >
-    <div>{{ text }}</div>
     <div v-if="iconMode">
       <slot name="icon"></slot>
     </div>
+    <div class="ml-2">{{ text }}</div>
   </button>
 </template>
 

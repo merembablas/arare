@@ -24,12 +24,11 @@ export default {
 
 
 <style lang="less">
-@blue: #0d67e5;
 .headline {
   font-family: 'RobotoSlab bold', Helvetica, sans-serif;
   font-size: 50px;
   font-weight: bold;
-  color: @blue;
+  color: @brand-color-blue;
   line-height: 1em;
 }
 p {

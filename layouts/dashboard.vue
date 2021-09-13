@@ -8,3 +8,10 @@
     <Footer />
   </div>
 </template>
+
+<style lang="less">
+h2 {
+  color: @brand-color-blue;
+  font-size: 1.2em;
+}
+</style>

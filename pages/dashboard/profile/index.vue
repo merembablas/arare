@@ -10,7 +10,17 @@
         <Button text="Change Photo" class="mt-5" />
       </div>
 
-      <div class="flex flex-col ml-5">
+      <div class="flex flex-col ml-5 relative">
+        <Button
+          text="Edit"
+          :icon-mode="true"
+          class="w-24 absolute"
+          style="right: 10px"
+        >
+          <template #icon>
+            <IconEditPencil />
+          </template>
+        </Button>
         <ItemFieldInfo a-key="Full name" value="Ara Syailendra" />
         <ItemFieldInfo
           a-key="Bio"

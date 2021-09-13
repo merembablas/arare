@@ -31,6 +31,7 @@ export default {
   .text-semibold {
     font-family: 'RobotoSlab bold', Helvetica, sans-serif;
     color: @brand-color-blue;
+    font-size: 1.2em;
   }
 }
 </style>
