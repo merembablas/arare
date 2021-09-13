@@ -101,7 +101,7 @@ export default {
         return
       }
       const accounts = await this.$nuchainJs.web3Accounts()
-      console.log(accounts)
+      // console.log(accounts)
       if (accounts && accounts[0]) {
         this.setCurrentNuchainAccount(accounts[0])
         this.close()

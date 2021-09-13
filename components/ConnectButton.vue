@@ -60,11 +60,7 @@
         </div>
       </div>
     </div>
-    <ModalConnect
-      v-model="showConnectModal"
-      title="Connect Account"
-      value="Are you sure?"
-    />
+    <ModalConnect v-model="showConnectModal" title="Connect Account" />
   </div>
 </template>
 
