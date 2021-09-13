@@ -30,9 +30,11 @@
               <PopularityMeter :star="3" :total="5" />
             </ItemFieldInfo>
             <ItemFieldInfo a-key="Address">
-              <NuchainAddress
-                address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
-              />
+              <client-only>
+                <NuchainAddress
+                  address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
+                />
+              </client-only>
             </ItemFieldInfo>
           </div>
         </div>

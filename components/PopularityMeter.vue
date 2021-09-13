@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center justify-center">
     <svg
       v-for="i in total"
       :key="i"

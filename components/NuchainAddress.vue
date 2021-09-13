@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="flex relative justify-center">
     <div v-if="copied" class="absolute w-40 bg-yellow-300 rounded-xl pl-2 pr-2">
       Address copied!
     </div>
