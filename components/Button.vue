@@ -15,6 +15,7 @@
       hover:bg-purple-600
       button
       hover:shadow-md
+      text-center items-center justify-center
       `"
     @click="onClick"
   >

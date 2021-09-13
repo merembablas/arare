@@ -1,6 +1,29 @@
 <template>
   <div class="p-10">
-    <h1>Profile</h1>
+    <div class="flex">
+      <div class="flex flex-col">
+        <img
+          src="https://www.thispersondoesnotexist.com/image"
+          alt="dummy"
+          class="w-64 h-64 rounded-xl"
+        />
+        <Button text="Change Photo" class="mt-5" />
+      </div>
+
+      <div class="flex flex-col ml-5">
+        <ItemFieldInfo a-key="Full name" value="Ara Syailendra" />
+        <ItemFieldInfo
+          a-key="Bio"
+          value="Creator of minimalistic bold graphic and digital artwork. ✹ Artist / Creative Director ✹ #NFT minting "
+        />
+        <ItemFieldInfo a-key="Address">
+          <NuchainAddress
+            address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
+            :truncate="false"
+          />
+        </ItemFieldInfo>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -26,7 +26,7 @@
       @mouseover="showTooltip()"
       @mouseleave="hideTooltip()"
     >
-      <div>{{ truncatedAddress }}</div>
+      <div>{{ formattedAddress }}</div>
     </div>
   </div>
 </template>
@@ -35,7 +35,8 @@
 let tooltipTimeout = null
 export default {
   props: {
-    address: { type: String, required: true }
+    address: { type: String, required: true },
+    truncate: { type: Boolean, default: true }
   },
   data() {
     return {
@@ -48,6 +49,9 @@ export default {
   computed: {
     truncatedAddress() {
       return this.formatAddress(this.address)
+    },
+    formattedAddress() {
+      return this.truncate ? this.truncatedAddress : this.address
     }
   },
   methods: {
@@ -69,6 +73,9 @@ export default {
       }, 600)
     },
     showTooltip() {
+      if (!this.truncate) {
+        return
+      }
       if (this.lastCopied > new Date().getTime() - 1000) {
         return
       }

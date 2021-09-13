@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <div class="text-sm text-gray-500">{{ aKey }}:</div>
-    <div v-if="!valueType" class="font-semibold">{{ value }}</div>
+    <div v-if="!valueType" class="w-96">{{ value }}</div>
     <ClickableName v-if="valueType == 'user'" :name="value" :link-to="linkTo" />
     <ClickableName
       v-if="valueType == 'location'"
