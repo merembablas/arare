@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`flex cursor-pointer menu-item ${
+    :class="`flex cursor-pointer menu-item rounded-l-xl ${
       active ? 'selected' : 'menu-item-hover'
     } ml-2 mt-1 p-3 items-center`"
     @click="$emit('click')"

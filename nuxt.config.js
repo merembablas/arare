@@ -19,7 +19,11 @@ export default {
   css: ['~/assets/css/main'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/dummy'],
+  plugins: [
+    '~/plugins/dummy',
+    '~/plugins/persistedState.client.js',
+    '~/plugins/formatter.client.js'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

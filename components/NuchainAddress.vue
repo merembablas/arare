@@ -56,10 +56,7 @@ export default {
   },
   methods: {
     formatAddress(addr) {
-      return `${addr.substring(0, 4)}...${addr.substring(
-        addr.length - 4,
-        addr.length
-      )}`
+      return this.$formatter.truncateCryptoAddress(addr)
     },
     copyAddress() {
       navigator.clipboard.writeText(this.address.trim())
