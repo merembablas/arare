@@ -22,7 +22,8 @@ export default {
   plugins: [
     '~/plugins/dummy',
     '~/plugins/persistedState.client.js',
-    '~/plugins/formatter.client.js'
+    '~/plugins/formatter.client.js',
+    '~/plugins/nuchain.client.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

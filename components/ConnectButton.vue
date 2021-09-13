@@ -6,7 +6,19 @@
       @mouseenter="showMenu(true)"
       @mouseleave="showMenu(false)"
     >
-      {{ formattedAddress }}
+      <div class="flex items-center">
+        <div
+          v-if="isNuchain"
+          class="w-5 h-5"
+          :style="`background: url('/img/nuchain-icon.png') no-repeat center center; background-size: cover;`"
+        ></div>
+        <div
+          v-if="isMetamask"
+          class="w-5 h-5"
+          :style="`background: url('${require('~/assets/img/metamask.svg')}') no-repeat center center; background-size: cover;`"
+        ></div>
+        <div class="ml-2">{{ formattedAddress }}</div>
+      </div>
     </div>
     <button
       v-if="!account"
@@ -31,7 +43,7 @@
     </button>
     <div
       v-show="showMenuState"
-      class="bg-white absolute p-2 border-2 border-gray-2 rounded-b-xl z-40"
+      class="bg-white absolute p-4 border-2 border-gray-2 rounded-b-xl z-40"
       @mouseenter="showMenu(true)"
       @mouseleave="showMenu(false)"
     >
@@ -48,6 +60,11 @@
         </div>
       </div>
     </div>
+    <ModalConnect
+      v-model="showConnectModal"
+      title="Connect Account"
+      value="Are you sure?"
+    />
   </div>
 </template>
 
@@ -59,29 +76,47 @@ let menuTimeout = null
 export default {
   data() {
     return {
-      showMenuState: false
+      showMenuState: false,
+      showConnectModal: false
     }
   },
   computed: {
     account() {
-      return this.$store.state.eth.currentAccount
+      return (
+        this.$store.state.eth.currentAccount ||
+        this.$store.state.nuchain.currentAccount
+      )
+    },
+    isNuchain() {
+      return this.account && this.account.meta && this.account.address
+    },
+    isMetamask() {
+      return !this.isNuchain
     },
     formattedAddress() {
+      let account = this.account
+      if (!account) {
+        return '?'
+      }
+      if (this.isNuchain) {
+        // nuchain account object
+        account = account.address
+      }
       return this.$formatter.truncateCryptoAddress(
-        this.$store.state.eth.currentAccount
+        // this.$store.state.eth.currentAccount
+        account
       )
     }
   },
   methods: {
-    ...mapMutations({ setCurrentAccount: 'eth/setCurrentAccount' }),
-    async onClick() {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts'
-      })
-      if (accounts && accounts[0]) {
-        this.setCurrentAccount(accounts[0])
-      }
+    ...mapMutations({
+      setCurrentEthAccount: 'eth/setCurrentAccount',
+      setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
+    }),
+    onClick() {
+      this.showConnectModal = true
     },
+
     showMenu(visibility) {
       if (visibility === false) {
         menuTimeout = setTimeout(() => {
@@ -95,7 +130,8 @@ export default {
       this.showMenuState = visibility
     },
     logout() {
-      this.setCurrentAccount(null)
+      this.setCurrentEthAccount(null)
+      this.setCurrentNuchainAccount(null)
       this.showMenuState = false
     }
   }

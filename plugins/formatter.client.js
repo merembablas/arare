@@ -1,6 +1,9 @@
 export default ({ app }, inject) => {
   inject('formatter', {
     truncateCryptoAddress(address) {
+      if (!address) {
+        return '??'
+      }
       if (address.length < 11) {
         return '???'
       }
