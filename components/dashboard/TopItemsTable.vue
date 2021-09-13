@@ -1,23 +1,26 @@
 <template>
   <div class="mt-7">
-    <h2>Transactions</h2>
+    <h2>Top Items</h2>
     <table class="table-auto mt-5 w-full border rounded">
       <thead>
         <tr>
-          <th>Time</th>
-          <th>Activity</th>
           <th>Item</th>
-          <th>Amount</th>
+          <th>Popularity</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="i in 5" :key="i" :class="i % 2 == 1 ? 'odd' : ''">
-          <td>09 Sept 2021</td>
-          <td>Royalty</td>
-          <td>Lukisan Nusantara</td>
-          <td :class="i % 2 == 1 ? 'positive' : 'negative'">
-            {{ i % 2 == 1 ? '+' : '-' }} 103 ARA
+          <td>
+            <div class="flex items-center">
+              <img src="/img/dummy-art-small-1.png" alt="dummy" />
+              <div class="ml-5">Lukisan Nusantara</div>
+            </div>
           </td>
+          <td>
+            <PopularityMeter :star="3" />
+          </td>
+          <td>130 ARA</td>
         </tr>
       </tbody>
     </table>

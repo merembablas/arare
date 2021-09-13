@@ -1,39 +1,36 @@
-
 @font-face {
-    font-family: 'RobotoSlab';
-    font-weight: 200;
-    font-display: swap;
-    src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
+  font-family: 'RobotoSlab';
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'RobotoSlab bold';
-    font-weight: 400;
-    font-display: swap;
-    src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
+  font-family: 'RobotoSlab bold';
+  font-weight: 500;
+  font-display: swap;
+  src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
 }
 
-@brand-color-blue: #0D67E5;
-@text-color-2: #777D90;
-@link-color: #0D67E5;
+@import 'variables.less';
 
 p {
-    color: @text-color-2;
+  color: @text-color-2;
 }
 
 a {
-    color: @link-color;
+  color: @link-color;
 }
 
 body {
-    font-family: 'RobotoSlab','Verdana','Tahoma','Courier';
+  font-family: 'RobotoSlab', 'Verdana', 'Tahoma', 'Courier';
 }
 
 .text-color-2 {
-    color: @text-color-2;
+  color: @text-color-2;
 }
 
 .brand-color-blue {
-    color: @brand-color-blue;
+  color: @brand-color-blue;
 }
-

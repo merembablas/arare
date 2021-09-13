@@ -40,7 +40,7 @@
             duration-150
           "
           type="button"
-          v-on:click="toggleModal()"
+          @click="toggleModal()"
         >
           Close
         </button>
@@ -62,7 +62,7 @@
             duration-150
           "
           type="button"
-          v-on:click="toggleModal()"
+          @click="toggleModal()"
         >
           Save Changes
         </button>
