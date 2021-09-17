@@ -21,17 +21,36 @@
             <IconEditPencil />
           </template>
         </Button>
-        <ItemFieldInfo a-key="Full name" value="Ara Syailendra" />
         <ItemFieldInfo
-          a-key="Bio"
-          value="Creator of minimalistic bold graphic and digital artwork. ✹ Artist / Creative Director ✹ #NFT minting "
+          :value="user.fullName"
+          a-key="Full name"
+          :editable="true"
+          :on-changed="updateFullname"
         />
+        <ItemFieldInfo
+          v-model="userBio"
+          a-key="Bio"
+          :editable="true"
+          :multi-line="true"
+          :on-changed="updateBio"
+        />
+        <ItemFieldInfo
+          v-model="user.twitter"
+          a-key="Twitter"
+          :editable="true"
+        />
+        <ItemFieldInfo a-key="Instagram" value="@arya" />
+        <ItemFieldInfo a-key="Email" value="arya@stark.com" />
         <ItemFieldInfo a-key="Address">
           <NuchainAddress
             address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
             :truncate="false"
           />
         </ItemFieldInfo>
+
+        <div class="mt-5 pt-5">
+          <Button text="Sync to on-chain data" />
+        </div>
       </div>
     </div>
   </div>
@@ -42,7 +61,33 @@ export default {
   layout: 'dashboard',
   data() {
     return {
-      creators: this.$dummy.generateUsers(5)
+      user: { fullName: 'Arya Syailendra', twitter: '@hello' },
+      userBio:
+        'Creator of minimalistic bold graphic and digital artwork. ✹ Artist / Creative Director ✹ #NFT minting'
+    }
+  },
+  watch: {
+    userBio(newBio) {
+      console.log('newBio:', newBio)
+    },
+    user(newUser) {
+      console.log('🚀 ~ file: index.vue ~ line 63 ~ user ~ newUser', newUser)
+    }
+  },
+  methods: {
+    async updateFullname(newFullname) {
+      console.log(
+        '🚀 ~ file: index.vue ~ line 69 ~ updateFullname ~ newFullname',
+        newFullname
+      )
+      await new Promise((resolve, reject) => {
+        setTimeout(() => resolve(true), 1500)
+      })
+    },
+    async updateBio(newBio) {
+      await new Promise((resolve, reject) => {
+        setTimeout(() => resolve(true), 1500)
+      })
     }
   }
 }
