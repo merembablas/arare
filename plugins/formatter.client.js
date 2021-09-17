@@ -1,3 +1,5 @@
+const DECIMAL = 10 * 1000000000
+
 export default ({ app }, inject) => {
   inject('formatter', {
     truncateCryptoAddress(address) {
@@ -13,6 +15,17 @@ export default ({ app }, inject) => {
         addr.length - 4,
         addr.length
       )}`
+    },
+    formatBalance(balance) {
+      try {
+        const bal = balance / DECIMAL
+        if (bal % 1 === 0) {
+          return bal.toString() + ' ARA'
+        }
+        return bal.toFixed(2).toString() + ' ARA'
+      } catch {
+        return balance.toString() + ' ARA'
+      }
     }
   })
 }

@@ -5,7 +5,8 @@
     </template>
     <template #body>
       <client-only>
-        <div class="flex space-x-10 w-96 justify-center">
+        <!-- PAGE 1 -->
+        <div v-show="page === 1" class="flex space-x-10 w-96 justify-center">
           <div
             class="
               flex flex-col
@@ -46,6 +47,30 @@
             <div>Nuchain App</div>
           </div>
         </div>
+
+        <!-- PAGE 2 -->
+        <div v-show="page === 2" class="flex space-x-10 w-auto justify-center">
+          <div class="flex flex-col">
+            <div>Select account:</div>
+            <div
+              v-for="acc in accounts"
+              :key="acc.address"
+              class="
+                p-2
+                border-2
+                rounded-xl
+                flex
+                mt-1
+                cursor-pointer
+                hover:bg-blue-100
+              "
+              @click="selectNuchainAccount(acc)"
+            >
+              <div class="w-auto rounded-full bg-color-gray-200"></div>
+              <div>{{ acc.address }}</div>
+            </div>
+          </div>
+        </div>
       </client-only>
     </template>
   </ModalBaseModal>
@@ -59,7 +84,9 @@ export default {
   },
   data() {
     return {
-      visible: this.value
+      visible: this.value,
+      page: 1,
+      addresses: []
     }
   },
   watch: {
@@ -100,10 +127,15 @@ export default {
         alert('Cannot connect #1 :(')
         return
       }
-      const accounts = await this.$nuchainJs.web3Accounts()
-      // console.log(accounts)
-      if (accounts && accounts[0]) {
-        this.setCurrentNuchainAccount(accounts[0])
+      this.accounts = await this.$nuchainJs.web3Accounts()
+      // this.addresses = accounts.map((acc) => acc.address)
+      this.page = 2
+    },
+    selectNuchainAccount(account) {
+      // const accounts = await this.$nuchainJs.web3Accounts()
+
+      if (account) {
+        this.setCurrentNuchainAccount(account)
         this.close()
       } else {
         alert('Cannot connect :(')

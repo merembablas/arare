@@ -1,7 +1,7 @@
 <template>
   <div class="p-10 w-2/3 h-full">
     <div class="grid grid-cols-3 gap-4 h-full">
-      <DashboardStatItem name="Balance" value="1.000 ARA" />
+      <DashboardStatItem name="Balance" :value="balance" />
       <DashboardStatItem name="Collections" value="5" />
       <DashboardStatItem name="Items" value="100 ARA" />
     </div>
@@ -12,11 +12,41 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   layout: 'dashboard',
   data() {
     return {
+      balance: '-',
       creators: this.$dummy.generateUsers(5)
+    }
+  },
+  computed: {
+    account() {
+      return this.$store.state.nuchain.currentAccount
+    }
+  },
+  watch: {
+    '$store.state.nuchain.currentAccount'(account) {
+      this.fetchBalance()
+    }
+  },
+  async mounted() {
+    await this.fetchBalance()
+  },
+  methods: {
+    ...mapMutations({
+      setCurrentNuchainAccountBalance: 'nuchain/setCurrentAccountBalance'
+    }),
+    async fetchBalance() {
+      if (!this.account || !this.account.address) {
+        return '-'
+      }
+      const { data } = await this.$nuchain.api.query.system.account(
+        this.account.address
+      )
+      this.balance = this.$formatter.formatBalance(data.free)
+      this.setCurrentNuchainAccountBalance(data)
     }
   }
 }

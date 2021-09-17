@@ -15,6 +15,10 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
+  env: {
+    nuchainEndpoint: process.env.NUCHAIN_ENDPOINT
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['~/assets/css/main'],
 
