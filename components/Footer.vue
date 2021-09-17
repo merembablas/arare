@@ -21,9 +21,12 @@
     </div>
     <div class="m-10 footer flex flex-wrap items-center justify-center w-64">
       <div>Powered by</div>
-      <a class="ml-2" href="https://nuchain.network" target="_blank">
-        <img src="/img/logo-nuchain-with-text-small.png" alt="nuchain logo" />
-      </a>
+      <a class="ml-2" href="https://nuchain.network" target="_blank"> </a>
+      <img
+        :src="require('~/assets/img/logo-nuchain.svg')"
+        alt=""
+        style="width: 100px"
+      />
     </div>
   </div>
 </template>
