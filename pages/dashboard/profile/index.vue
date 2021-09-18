@@ -1,7 +1,7 @@
 <template>
   <div class="p-10">
     <div class="flex">
-      <div class="flex flex-col">
+      <div v-if="identity" class="flex flex-col">
         <img
           src="https://www.thispersondoesnotexist.com/image"
           alt="dummy"
@@ -10,7 +10,7 @@
         <Button text="Change Photo" class="mt-5" />
       </div>
 
-      <div class="flex flex-col ml-5 relative">
+      <div v-if="identity" class="flex flex-col ml-5 relative">
         <Button
           text="Edit"
           :icon-mode="true"
@@ -22,48 +22,69 @@
           </template>
         </Button>
         <ItemFieldInfo
-          :value="user.fullName"
+          :value="identity.fullName"
           a-key="Full name"
           :editable="true"
           :on-changed="updateFullname"
         />
         <ItemFieldInfo
-          v-model="userBio"
+          v-model="identity.bio"
           a-key="Bio"
           :editable="true"
           :multi-line="true"
           :on-changed="updateBio"
         />
         <ItemFieldInfo
-          v-model="user.twitter"
+          v-model="identity.twitter"
           a-key="Twitter"
           :editable="true"
         />
-        <ItemFieldInfo a-key="Instagram" value="@arya" />
-        <ItemFieldInfo a-key="Email" value="arya@stark.com" />
+        <ItemFieldInfo a-key="Instagram" :value="identity.instagram" />
+        <ItemFieldInfo a-key="Email" :value="identity.email" />
         <ItemFieldInfo a-key="Address">
-          <NuchainAddress
-            address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
-            :truncate="false"
-          />
+          <NuchainAddress :address="accountAddress" :truncate="false" />
         </ItemFieldInfo>
 
         <div class="mt-5 pt-5">
           <Button text="Sync to on-chain data" />
         </div>
       </div>
+
+      <!-- when user not have identity yet, show register button -->
+      <div v-if="!identity" class="flex flex-col ml-5 relative">
+        <h1>You have no identity data</h1>
+        <p class="mt-5">
+          Please set your identity data so you will easily recognized by
+          community members.
+        </p>
+        <Button
+          text="Set identity now"
+          class="mt-5 w-64"
+          @click="showRegisterDialog = true"
+        />
+      </div>
+
+      <ModalRegister v-model="showRegisterDialog" />
     </div>
   </div>
 </template>
 
 <script>
+import AccountMethods from '~/components/AccountMethods'
+
 export default {
+  extends: AccountMethods,
   layout: 'dashboard',
   data() {
     return {
-      user: { fullName: 'Arya Syailendra', twitter: '@hello' },
+      showRegisterDialog: false,
       userBio:
         'Creator of minimalistic bold graphic and digital artwork. ✹ Artist / Creative Director ✹ #NFT minting'
+    }
+  },
+  computed: {
+    identity() {
+      return this.getCurrentIdentity()
     }
   },
   watch: {
@@ -73,6 +94,9 @@ export default {
     user(newUser) {
       console.log('🚀 ~ file: index.vue ~ line 63 ~ user ~ newUser', newUser)
     }
+  },
+  mounted() {
+    console.log('this.getCurrentIdentity():', this.getCurrentIdentity())
   },
   methods: {
     async updateFullname(newFullname) {
@@ -95,16 +119,4 @@ export default {
 
 
 <style lang="less">
-.headline {
-  font-family: 'RobotoSlab bold', Helvetica, sans-serif;
-  font-size: 50px;
-  font-weight: bold;
-  color: #0d67e5;
-  line-height: 1em;
-}
-p {
-  color: #6c7080;
-  font-size: 1.7em;
-  font-weight: bold;
-}
 </style>

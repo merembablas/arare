@@ -5,8 +5,9 @@
       <DashboardSidebar v-if="hasBalance" class="w-auto md:w-64" />
       <Nuxt v-if="hasBalance" />
     </div>
-    <client-side>
-      <div class="flex flex-col h-screen items-center pt-10 justify-top">
+
+    <div class="flex flex-col h-screen items-center pt-10 justify-top">
+      <client-only>
         <div
           v-if="loaded && !hasBalance"
           class="bg-yellow-200 rounded-xl p-10 w-2/3 h-42"
@@ -14,8 +15,9 @@
           Account not exists, for nuchain account you need at least 1 ARA
           (existential deposit).
         </div>
-      </div>
-    </client-side>
+      </client-only>
+    </div>
+
     <Footer />
   </div>
 </template>

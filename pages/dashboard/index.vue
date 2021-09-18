@@ -39,17 +39,8 @@ export default {
 </script>
 
 
-<style lang="less">
-.headline {
-  font-family: 'RobotoSlab bold', Helvetica, sans-serif;
-  font-size: 50px;
-  font-weight: bold;
-  color: @brand-color-blue;
-  line-height: 1em;
-}
+<style lang="less" scoped>
 p {
   color: #6c7080;
-  font-size: 1.7em;
-  font-weight: bold;
 }
 </style>

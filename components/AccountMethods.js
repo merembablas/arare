@@ -1,4 +1,5 @@
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   computed: {
     account() {
@@ -6,6 +7,15 @@ export default {
         this.$store.state.eth.currentAccount ||
         this.$store.state.nuchain.currentAccount
       )
+    },
+    accountAddress() {
+      if (!this.account) {
+        return '???'
+      }
+      if (this.account.address) {
+        return this.account.address
+      }
+      return this.account
     },
     isNuchain() {
       return this.account && this.account.meta && this.account.address
@@ -15,6 +25,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('user', ['getCurrentIdentity']),
     ...mapMutations({
       setCurrentNuchainAccountBalance: 'nuchain/setCurrentAccountBalance'
     }),
