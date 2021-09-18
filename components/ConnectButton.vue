@@ -66,10 +66,12 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import AccountMethods from '~/components/AccountMethods'
 
 let menuTimeout = null
 
 export default {
+  extends: AccountMethods,
   data() {
     return {
       showMenuState: false,
@@ -77,18 +79,18 @@ export default {
     }
   },
   computed: {
-    account() {
-      return (
-        this.$store.state.eth.currentAccount ||
-        this.$store.state.nuchain.currentAccount
-      )
-    },
-    isNuchain() {
-      return this.account && this.account.meta && this.account.address
-    },
-    isMetamask() {
-      return !this.isNuchain
-    },
+    // account() {
+    //   return (
+    //     this.$store.state.eth.currentAccount ||
+    //     this.$store.state.nuchain.currentAccount
+    //   )
+    // },
+    // isNuchain() {
+    //   return this.account && this.account.meta && this.account.address
+    // },
+    // isMetamask() {
+    //   return !this.isNuchain
+    // },
     formattedAddress() {
       let account = this.account
       if (!account) {
@@ -112,7 +114,6 @@ export default {
     onClick() {
       this.showConnectModal = true
     },
-
     showMenu(visibility) {
       if (visibility === false) {
         menuTimeout = setTimeout(() => {

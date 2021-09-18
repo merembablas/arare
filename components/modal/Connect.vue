@@ -86,7 +86,7 @@ export default {
     return {
       visible: this.value,
       page: 1,
-      addresses: []
+      accounts: []
     }
   },
   watch: {

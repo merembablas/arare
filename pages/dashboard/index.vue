@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import AccountMethods from '~/components/AccountMethods'
 export default {
+  extends: AccountMethods,
   layout: 'dashboard',
   data() {
     return {
@@ -33,21 +34,6 @@ export default {
   },
   async mounted() {
     await this.fetchBalance()
-  },
-  methods: {
-    ...mapMutations({
-      setCurrentNuchainAccountBalance: 'nuchain/setCurrentAccountBalance'
-    }),
-    async fetchBalance() {
-      if (!this.account || !this.account.address) {
-        return '-'
-      }
-      const { data } = await this.$nuchain.api.query.system.account(
-        this.account.address
-      )
-      this.balance = this.$formatter.formatBalance(data.free)
-      this.setCurrentNuchainAccountBalance(data)
-    }
   }
 }
 </script>
