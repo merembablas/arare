@@ -40,7 +40,7 @@ export default {
 </script>
 
 
-<style lang="less">
+<style lang="less" scoped>
 .headline {
   font-family: 'RobotoSlab bold', Helvetica, sans-serif;
   font-size: 50px;
