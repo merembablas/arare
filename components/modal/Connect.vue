@@ -101,6 +101,7 @@ export default {
   methods: {
     ...mapMutations({
       setCurrentEthAccount: 'eth/setCurrentAccount',
+      setCurrentEthAccountBalance: 'eth/setCurrentAccountBalance',
       setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
     }),
     onCancel() {

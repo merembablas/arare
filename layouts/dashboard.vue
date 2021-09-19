@@ -33,7 +33,13 @@ export default {
   },
   computed: {
     hasBalance() {
-      return this.$store.state.nuchain.hasBalance
+      if (this.isNuchain) {
+        return this.$store.state.nuchain.hasBalance
+      }
+      if (this.isMetamask) {
+        return true
+      }
+      return false
     }
   },
   watch: {
