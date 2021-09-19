@@ -59,3 +59,5 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: update_arare.sh
+        env:
+          NUCHAIN_ENDPOINT: ${{ secrets.NUCHAIN_ENDPOINT }}
