@@ -55,12 +55,10 @@
             </button>
           </div>
 
-          <!--body-->
           <div class="relative p-6 flex-auto">
             <slot name="body" />
           </div>
 
-          <!--footer-->
           <slot name="actions" />
         </div>
       </div>

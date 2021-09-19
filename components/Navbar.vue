@@ -33,7 +33,6 @@
       </div>
 
       <div>
-        <!-- menu -->
         <div>
           <a href="#" class="block"></a>
         </div>

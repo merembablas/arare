@@ -40,27 +40,6 @@
       @blur="onBlur"
     />
   </div>
-  <!-- <div class="flex bg-white rounded-md w-64 border p-1">
-    <input
-      id="SearchBox"
-      type="search"
-      name="search"
-      :placeholder="placeholder"
-      class="
-        p-1
-        bg-transparent
-        w-full
-        outline-none
-        focus:outline-none
-        border-0
-        focus:border-0 focus:border-transparent
-      "
-      autocomplete="off"
-      @focus="onFocus"
-      @blur="onBlur"
-    />
-    
-  </div> -->
 </template>
 
 <script>
