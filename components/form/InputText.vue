@@ -5,6 +5,7 @@
     <input
       v-if="!multiLine"
       ref="inputRef"
+      v-model="value"
       type="text"
       class="
         p-2
@@ -21,6 +22,7 @@
     <textarea
       v-if="multiLine"
       ref="inputRef"
+      v-model="value"
       :class="`w-full border-2 border-gray-300 p-2 rounded-xl outline-none ${
         inSaving ? 'bg-gray-300' : ''
       }`"
@@ -41,12 +43,21 @@ export default {
   },
   data() {
     return {
-      inSaving: false
+      inSaving: false,
+      value: ''
     }
   },
   mounted() {
     if (this.autoFocus) {
       setTimeout(() => this.$refs.inputRef.focus(), 300)
+    }
+  },
+  methods: {
+    getKey() {
+      return this.name
+    },
+    getValue() {
+      return this.value
     }
   }
 }

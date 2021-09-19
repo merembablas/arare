@@ -1,9 +1,9 @@
 <template>
   <label class="inline-flex items-center mt-3">
     <input
+      v-model="dChecked"
       type="checkbox"
       class="form-checkbox h-5 w-5 text-gray-600 rounded"
-      :checked="checked"
     /><span class="ml-2 text-gray-700">{{ name }}</span>
   </label>
 </template>
@@ -16,7 +16,16 @@ export default {
   },
   data() {
     return {
-      inSaving: false
+      inSaving: false,
+      dChecked: this.checked
+    }
+  },
+  methods: {
+    getKey() {
+      return this.name
+    },
+    getValue() {
+      return this.checked
     }
   }
 }

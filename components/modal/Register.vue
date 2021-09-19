@@ -7,9 +7,11 @@
       <div
         class="text-lg flex flex-col items-start justify-start leading-relaxed"
       >
-        <FormInputText name="Full name" :auto-focus="true" />
-        <FormInputText name="Bio" :multi-line="true" />
-        <FormCheckBox name="I am creator" />
+        <FormSmartForm ref="form">
+          <FormInputText name="Full name" :auto-focus="true" />
+          <FormInputText name="Bio" :multi-line="true" />
+          <FormCheckBox name="I am creator" />
+        </FormSmartForm>
       </div>
     </template>
     <template #actions>
@@ -65,8 +67,14 @@ export default {
       this.$emit('input', this.visible)
     },
     onRegister() {
-      this.visible = !this.visible
-      this.$emit('input', this.visible)
+      const encoded = this.$refs.form.toJSON()
+      console.log(
+        '🚀 ~ file: Register.vue ~ line 72 ~ onRegister ~ encoded',
+        encoded
+      )
+
+      // this.visible = !this.visible
+      // this.$emit('input', this.visible)
     }
   }
 }
