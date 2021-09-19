@@ -1,6 +1,10 @@
 <template>
   <div>
     <Navbar />
+    <div
+      v-if="!user"
+      class="w-screen h-80 bg-gray-100 loading placeholder"
+    ></div>
     <UserCover v-if="user" :pic="user.coverPic" />
 
     <div class="flex items-top justify-center" style="margin-top: -8em">
@@ -11,14 +15,56 @@
               background: url('${user.pic}') center no-repeat; background-size: cover;
             `"
       ></div>
+      <div
+        v-if="!user"
+        class="
+          w-64
+          h-64
+          rounded-full
+          shadow-xl
+          border-white border-2
+          bg-gray-100
+          loading
+          placeholder
+          items-center
+          justify-center
+          flex
+        "
+      >
+        <div
+          class="
+            w-60
+            h-60
+            rounded-full
+            loading
+            placeholder
+            bg-gray-300
+            animate-pulse
+          "
+        ></div>
+      </div>
     </div>
 
     <div class="md:m-10 items-center min-h-screen">
       <div class="relative flex items-top justify-center text-center">
-        <div class="w-full pl-3 pr-3 md:w-2/4">
+        <div class="w-full pl-3 pr-3 md:w-2/4 items-center flex flex-col">
           <h1 v-if="user != null" class="font-extrabold text-2xl">
             {{ user.name }}
           </h1>
+          <div
+            v-else
+            class="
+              font-extrabold
+              text-2xl
+              bg-gray-400
+              animate-pulse
+              w-44
+              items-center
+              justify-center
+            "
+          >
+            &nbsp;
+          </div>
           <small class="text-green-600">CREATOR</small>
 
           <ItemFieldInfo v-if="user != null" a-key="Bio">
