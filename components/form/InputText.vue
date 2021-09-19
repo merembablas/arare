@@ -7,7 +7,7 @@
       ref="inputRef"
       v-model="value"
       type="text"
-      class="
+      :class="`
         p-2
         block
         border-2 border-solid border-gray-300
@@ -15,7 +15,9 @@
         focus:outline-none
         rounded-xl
         w-full
-      "
+        ${inSaving ? 'bg-gray-300' : ''}
+        `"
+      :disabled="inSaving"
       :placeholder="placeholder"
     />
 
@@ -34,7 +36,10 @@
 </template>
 
 <script>
+import FormHelpers from './FormHelpers'
+
 export default {
+  extends: FormHelpers,
   props: {
     name: { type: String, required: true },
     placeholder: { type: String, default: '' },
@@ -54,7 +59,7 @@ export default {
   },
   methods: {
     getKey() {
-      return this.name
+      return this.normalizeKey(this.name)
     },
     getValue() {
       return this.value

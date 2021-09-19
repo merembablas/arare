@@ -9,7 +9,9 @@
 </template>
 
 <script>
+import FormHelpers from './FormHelpers'
 export default {
+  extends: FormHelpers,
   props: {
     name: { type: String, required: true },
     checked: { type: Boolean, required: false }
@@ -22,7 +24,7 @@ export default {
   },
   methods: {
     getKey() {
-      return this.name
+      return this.normalizeKey(this.name)
     },
     getValue() {
       return this.checked

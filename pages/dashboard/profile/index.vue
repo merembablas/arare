@@ -22,31 +22,47 @@
           </template>
         </Button>
         <ItemFieldInfo
-          :value="identity.fullName"
+          :value="identity.full_name"
           a-key="Full name"
           :editable="true"
           :on-changed="updateFullname"
         />
         <ItemFieldInfo
-          v-model="identity.bio"
+          :value="identity.bio"
           a-key="Bio"
           :editable="true"
           :multi-line="true"
           :on-changed="updateBio"
         />
         <ItemFieldInfo
-          v-model="identity.twitter"
+          :value="identity.twitter"
           a-key="Twitter"
           :editable="true"
+          :on-changed="updateTwitter"
         />
-        <ItemFieldInfo a-key="Instagram" :value="identity.instagram" />
-        <ItemFieldInfo a-key="Email" :value="identity.email" />
+        <ItemFieldInfo
+          a-key="Instagram"
+          :value="identity.instagram"
+          :editable="true"
+          :on-changed="updateInstagram"
+        />
+        <ItemFieldInfo
+          a-key="Email"
+          :value="identity.email"
+          :editable="true"
+          :on-changed="updateEmail"
+        />
         <ItemFieldInfo a-key="Address">
           <NuchainAddress :address="accountAddress" :truncate="false" />
         </ItemFieldInfo>
 
         <div class="mt-5 pt-5">
           <Button text="Sync to on-chain data" />
+          <Button
+            text="Clear Data"
+            color-class="bg-red-500"
+            @click="clearData"
+          />
         </div>
       </div>
 
@@ -70,8 +86,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import AccountMethods from '~/components/AccountMethods'
-
 export default {
   extends: AccountMethods,
   layout: 'dashboard',
@@ -99,19 +115,34 @@ export default {
     console.log('this.getCurrentIdentity():', this.getCurrentIdentity())
   },
   methods: {
+    ...mapMutations('user', ['setIdentity', 'setIdentityAttr']),
     async updateFullname(newFullname) {
       console.log(
         '🚀 ~ file: index.vue ~ line 69 ~ updateFullname ~ newFullname',
         newFullname
       )
+      this.setIdentityAttr({ key: 'full_name', value: newFullname })
       await new Promise((resolve, reject) => {
         setTimeout(() => resolve(true), 1500)
       })
     },
     async updateBio(newBio) {
+      this.setIdentityAttr({ key: 'bio', value: newBio })
       await new Promise((resolve, reject) => {
         setTimeout(() => resolve(true), 1500)
       })
+    },
+    updateTwitter(newTwitter) {
+      this.setIdentityAttr({ key: 'twitter', value: newTwitter })
+    },
+    updateInstagram(newInstagram) {
+      this.setIdentityAttr({ key: 'instagram', value: newInstagram })
+    },
+    updateEmail(newEmail) {
+      this.setIdentityAttr({ key: 'email', value: newEmail })
+    },
+    clearData() {
+      this.setIdentity(null)
     }
   }
 }

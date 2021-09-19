@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
@@ -62,6 +63,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('user', ['setIdentity']),
     onCancel() {
       this.visible = false
       this.$emit('input', this.visible)
@@ -73,8 +75,9 @@ export default {
         encoded
       )
 
-      // this.visible = !this.visible
-      // this.$emit('input', this.visible)
+      this.setIdentity(encoded)
+      this.visible = !this.visible
+      this.$emit('input', this.visible)
     }
   }
 }
