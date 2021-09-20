@@ -27,7 +27,14 @@
         <SearchBox class="ml-2" />
 
         <div class="flex space-x-3 justify-end pl-2 md:space-x-16 items-center">
-          <NotifIcon :count="0" />
+          <!-- <NotifIcon :count="0" /> -->
+          <div>
+            <NuxtLink
+              class="p-2 rounded bg-blue-500 text-white hover:bg-blue-400"
+              to="/explorer"
+              >EXPLORE</NuxtLink
+            >
+          </div>
           <ConnectButton />
         </div>
       </div>

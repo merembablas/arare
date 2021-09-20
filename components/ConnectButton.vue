@@ -3,7 +3,7 @@
     <div v-if="loaded">
       <div
         v-if="account"
-        class="cursor-pointer bg-gray-200 p-2"
+        class="cursor-pointer bg-gray-200 p-2 rounded"
         @mouseenter="showMenu(true)"
         @mouseleave="showMenu(false)"
       >

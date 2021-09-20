@@ -54,7 +54,7 @@ export default {
   ],
 
   styleResources: {
-    less: ['~/assets/css/variables.less']
+    less: ['~/assets/css/variables.less', '~/assets/css/linear-gradient.less']
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

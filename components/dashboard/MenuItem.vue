@@ -97,12 +97,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .menu-item.selected {
   font-family: 'RobotoSlab bold';
   background-color: #fff;
 }
+
 .menu-item-hover:hover {
-  background-color: #e8eaf7;
+  .linear-gradient(to right,#f6f7fc, #fff);
 }
 </style>
