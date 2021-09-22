@@ -20,7 +20,7 @@
     "core-js": "^3.17.3",
     "nuchain-api": "^0.1.1",
     "nuxt": "^2.15.7",
-    "vuex-persistedstate": "^4.0.0"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.15.4",
