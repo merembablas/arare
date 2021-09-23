@@ -30,6 +30,10 @@ export default {
     '~/plugins/nuchain.client.js'
   ],
 
+  serverMiddleware: {
+    '/uploader': '~/server-middleware/uploader.js'
+  },
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
