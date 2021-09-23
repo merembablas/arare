@@ -8,7 +8,18 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        brand: {
+          blue: '#0d67e5',
+          green: '#7fe11d'
+        },
+        gray: {
+          a: '#f3f8fe',
+          b: '#e6e7ec'
+        }
+      }
+    }
   },
   variants: {
     extend: {}

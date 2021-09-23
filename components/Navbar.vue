@@ -32,7 +32,12 @@
             <NuxtLink class="p-2 hover:bg-blue-100 rounded-xl" to="/explorer"
               >EXPLORE</NuxtLink
             >
-            <Button text="CREATE" :icon-mode="true" :icon-on-mobile="true">
+            <Button
+              text="CREATE"
+              :icon-mode="true"
+              :icon-on-mobile="true"
+              @click="showAssetCreator"
+            >
               <template #icon>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -61,5 +66,22 @@
         </div>
       </div>
     </div>
+
+    <ModalAssetCreator v-model="assetCreatorVisible" />
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      assetCreatorVisible: false
+    }
+  },
+  methods: {
+    showAssetCreator() {
+      this.assetCreatorVisible = true
+    }
+  }
+}
+</script>
