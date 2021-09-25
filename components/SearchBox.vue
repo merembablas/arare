@@ -1,31 +1,30 @@
 <template>
-  <div
-    class="
-      relative
-      text-gray-400
-      focus-within:text-gray-600
-      flex
-      justify-center
-      border-gray-200 border-2
-      rounded-xl
-    "
-  >
-    <div style="position: absolute; left: 2px; top: 3px">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 text-gray-400 duration-500 ease-in-out color-blue-600"
-        :fill="glassColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-          clip-rule="evenodd"
-        />
-      </svg>
+  <div>
+    <div
+      v-if="!inputBoxMobileVisible"
+      :class="`text-gray-400 bg-gray-200 p-2 md:hidden rounded-xl`"
+      @click="showInputBox(true)"
+    >
+      <IconSearch color="#0d67e5" />
     </div>
-    <input
+    <div
       :class="`
+        relative
+        text-gray-400
+        focus-within:text-gray-600
+        md:flex
+        justify-center
+        border-gray-200 border-2
+        rounded-xl
+        ${inputBoxMobileVisible ? '' : 'hidden'}
+      `"
+    >
+      <div style="position: absolute; left: 2px; top: 3px">
+        <IconSearch :color="glassColor" />
+      </div>
+      <input
+        ref="inputBox"
+        :class="`
         pl-8
         pt-1
         pb-1
@@ -34,11 +33,12 @@
         focus:outline-none
         rounded-xl
         ${inFocus ? 'w-96' : 'w-full'}`"
-      autocomplete="off"
-      :placeholder="placeholder"
-      @focus="onFocus"
-      @blur="onBlur"
-    />
+        autocomplete="off"
+        :placeholder="placeholder"
+        @focus="onFocus"
+        @blur="onBlur"
+      />
+    </div>
   </div>
 </template>
 
@@ -54,7 +54,8 @@ export default {
   data() {
     return {
       glassColor: '#cacaca',
-      inFocus: false
+      inFocus: false,
+      inputBoxMobileVisible: false
     }
   },
   methods: {
@@ -65,6 +66,15 @@ export default {
     onBlur() {
       this.glassColor = '#cacaca'
       this.inFocus = false
+      this.showInputBox(false)
+    },
+    showInputBox(state) {
+      this.inputBoxMobileVisible = state
+      if (state) {
+        setTimeout(() => {
+          this.$refs.inputBox.focus()
+        }, 300)
+      }
     }
   }
 }
