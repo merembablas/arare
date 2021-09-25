@@ -49,11 +49,19 @@ export default {
       const formData = new FormData()
       //   console.log(this.$refs.imageUpload.file)
       formData.append('picture', this.$refs.imageUpload.files[0])
-      this.$axios.post('/uploader/upload_picture', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      this.$axios
+        .post('/uploader/upload_picture', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(({ data: { error, url, hash } }) => {
+          if (error) {
+            alert(error)
+          } else {
+            this.$emit('on-success', { url, hash })
+          }
+        })
     }
   }
 }

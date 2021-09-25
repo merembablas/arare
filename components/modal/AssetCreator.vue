@@ -12,7 +12,13 @@
           @item-click="onSelectType"
         />
         <div v-if="page === 2">
-          <ModalAssetCreatorUploadPicture v-if="objectType === 'picture'" />
+          <ModalAssetCreatorUploadPicture
+            v-if="objectType === 'picture'"
+            @on-success="onUploadPictureSuccess"
+          />
+        </div>
+        <div v-if="page === 3">
+          <LazyModalAssetCreatorSetAttributes :thumbnail="thumbnail" />
         </div>
       </div>
     </template>
@@ -43,7 +49,7 @@
         />
         <Button
           v-if="hasNext"
-          text="Next"
+          :text="nextCaption"
           color-class="bg-green-500"
           class="w-42"
           @click="onNext"
@@ -67,7 +73,10 @@ export default {
       prevPage: 0,
       hasNext: false,
       objectType: null,
-      title: 'Select object type'
+      title: 'Select object type',
+      thumbnail:
+        'http://localhost:3000/uploads/up_the_hillside_by_donmalo-d82ehde.png',
+      nextCaption: 'Next'
     }
   },
   watch: {
@@ -114,7 +123,13 @@ export default {
       this.page = this.page - 1
       this.hasNext = this.page > 1 && this.page < 3
     },
-    onNext() {}
+    onNext() {},
+    onUploadPictureSuccess({ url, hash }) {
+      this.thumbnail = `${url}?${hash}`
+      this.setPage(3)
+      this.hasNext = true
+      this.nextCaption = 'Mint'
+    }
   }
 }
 </script>
