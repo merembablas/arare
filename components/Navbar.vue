@@ -33,7 +33,9 @@
             to="/explorer"
             >EXPLORE</NuxtLink
           >
-          <CreateButton v-if="connected" @click="showAssetCreator" />
+          <client-only>
+            <CreateButton v-if="connected" @click="showAssetCreator" />
+          </client-only>
           <ConnectButton />
         </div>
       </div>

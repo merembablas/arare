@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-5 space-x-10">
+    <div class="flex flex-wrap mt-5">
       <div
         class="
           flex flex-col
@@ -13,6 +13,7 @@
           cursor-pointer
           hover:bg-blue-100
           hover:border-blue-100
+          m-2
         "
         @click="onItemClick('picture')"
       >
@@ -45,6 +46,7 @@
           cursor-pointer
           hover:bg-blue-100
           hover:border-blue-100
+          m-2
         "
         @click="onItemClick('file')"
       >
@@ -76,6 +78,7 @@
           cursor-pointer
           hover:bg-blue-100
           hover:border-blue-100
+          m-2
         "
         @click="onItemClick('url')"
       >
