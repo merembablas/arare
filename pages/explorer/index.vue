@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 relative w-2/3">
+  <div class="p-5 relative w-full md:w-2/3">
     <!-- FEATURED -->
     <div class="flex flex-col">
       <div class="p-5 rounded-xl w-full h-64 bg-blue-100">
