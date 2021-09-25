@@ -33,7 +33,8 @@ export default {
     ],
 
     serverMiddleware: {
-        '/uploader': '~/server-middleware/uploader.js'
+        '/uploader': '~/server-middleware/uploader.js',
+        '/api': '~/api/index.js'
     },
 
     // Auto import components: https://go.nuxtjs.dev/config-components

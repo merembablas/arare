@@ -15,7 +15,7 @@
         flex
       "
     >
-      <div class="relative w-auto max-w-6xl">
+      <div class="relative w-full md:w-auto md:max-w-6xl">
         <div class="relative flex flex-col bg-white w-full rounded-xl">
           <div class="flex items-start justify-between p-5 border-b rounded-t">
             <slot name="caption" />

@@ -50,6 +50,7 @@
         `"
         :disabled="inSaving"
         :placeholder="placeholder"
+        @keypress="onlyNumeric"
       />
       <div class="p-2 border-r-2 border-t-2 border-b-2 rounded-r-xl">%</div>
     </div>
@@ -71,6 +72,7 @@
         `"
       :disabled="inSaving"
       :placeholder="placeholder"
+      @keypress="onlyNumeric"
     />
   </div>
 </template>
@@ -103,7 +105,23 @@ export default {
       return this.normalizeKey(this.name)
     },
     getValue() {
+      if (this.type === 'numeric' || this.type === 'percentage') {
+        return parseFloat(this.value)
+      }
       return this.value
+    },
+    onlyNumeric(evt) {
+      evt = evt || window.event
+      const charCode = evt.which ? evt.which : evt.keyCode
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault()
+      } else {
+        return true
+      }
     }
   }
 }

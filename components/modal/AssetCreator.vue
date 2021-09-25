@@ -18,7 +18,10 @@
           />
         </div>
         <div v-if="page === 3">
-          <LazyModalAssetCreatorSetAttributes :thumbnail="thumbnail" />
+          <LazyModalAssetCreatorSetAttributes
+            ref="attributes"
+            :thumbnail="thumbnail"
+          />
         </div>
       </div>
     </template>
@@ -123,7 +126,15 @@ export default {
       this.page = this.page - 1
       this.hasNext = this.page > 1 && this.page < 3
     },
-    onNext() {},
+    onNext() {
+      if (this.page === 3) {
+        const data = this.$refs.attributes.getMapped()
+        console.log(
+          '🚀 ~ file: AssetCreator.vue ~ line 132 ~ onNext ~ data',
+          data
+        )
+      }
+    },
     onUploadPictureSuccess({ url, hash }) {
       this.thumbnail = `${url}?${hash}`
       this.setPage(3)

@@ -10,6 +10,7 @@
       w-96
       bg-gray-a
     "
+    @click="openUploadDialog"
   >
     <div class="flex flex-col justify-center items-center cursor-pointer">
       <div>Drag &amp; Drop</div>

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="grid grid-cols-2 gap-4">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start justify-start"
+    >
       <div class="flex flex-col">
         <div
           class="
@@ -19,21 +21,17 @@
           ></div>
         </div>
 
-        <FormCheckBox name="Has physical asset" />
-        <FormSelect
-          name="Asset location"
-          :items="['Gallery ArtJog', 'Gallery Artmedia', 'Gallery ISI']"
-        />
-        <div>Custom Address</div>
-        <textarea
-          id="CustomAddress"
-          name="CustomAddress"
-          cols="30"
-          rows="3"
-        ></textarea>
+        <FormSmartForm ref="form1">
+          <FormCheckBox name="Has physical asset" />
+          <FormSelect
+            name="Asset location"
+            :items="['Gallery ArtJog', 'Gallery Artmedia', 'Gallery ISI']"
+          />
+          <FormInputText name="Custom address" :multi-line="true" />
+        </FormSmartForm>
       </div>
-      <div class="flex flex-col">
-        <FormSmartForm ref="form">
+      <div class="flex flex-col items-start justify-start">
+        <FormSmartForm ref="form2">
           <FormInputText name="Title" :auto-focus="true" />
           <FormInputText name="Description" :multi-line="true" />
           <FormInputText name="Royalties" type="percentage" />
@@ -52,6 +50,14 @@
 export default {
   props: {
     thumbnail: { type: String, required: true }
+  },
+  methods: {
+    getMapped() {
+      const form1 = this.$refs.form1.toJSON()
+      const form2 = this.$refs.form2.toJSON()
+      const data = { ...form1, ...form2 }
+      return data
+    }
   }
 }
 </script>
