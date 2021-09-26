@@ -1,23 +1,23 @@
-const express = require('express')
-// const { Router } = require('express')
-const multer = require('multer')
-
 const path = require('path')
 const fs = require('fs')
 
+const express = require('express')
+const multer = require('multer')
+
+
 const hasha = require('hasha')
 
-var app = express()
+const app = express()
 
-console.log('process.env.uploadDir:', process.env.UPLOAD_DIR)
+// console.log('process.env.uploadDir:', process.env.UPLOAD_DIR)
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination(req, file, cb) {
         cb(null, process.env.UPLOAD_DIR)
     },
 
     // By default, multer removes file extensions so let's add them back
-    filename: function (req, file, cb) {
+    filename(req, file, cb) {
         cb(
             null,
             file.fieldname + '-' + Date.now() + path.extname(file.originalname)
@@ -35,8 +35,8 @@ const imageFilter = function (req, file, cb) {
 }
 
 app.post('/upload_picture', (req, res) => {
-    let upload = multer({
-        storage: storage,
+    const upload = multer({
+        storage,
         fileFilter: imageFilter
     }).single('picture')
 
@@ -50,10 +50,10 @@ app.post('/upload_picture', (req, res) => {
         } else if (err) {
             return res.json({ error: err })
         }
-        let stream = fs.createReadStream(req.file.path)
+        const stream = fs.createReadStream(req.file.path)
         console.log("🚀 ~ file: uploader.js ~ line 56 ~ req.file", req.file)
 
-        let hash = await hasha.fromStream(stream, { algorithm: 'sha256' })
+        const hash = await hasha.fromStream(stream, { algorithm: 'sha256' })
         console.log('🚀 ~ file: uploader.js ~ line 65 ~ hash', hash)
 
         res.on('close', () => {
