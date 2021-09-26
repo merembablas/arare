@@ -11,11 +11,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="i in 5" :key="i" :class="i % 2 == 1 ? 'odd' : ''">
+        <tr
+          v-for="(item, i) in items"
+          :key="i"
+          :class="i % 2 == 1 ? 'odd' : ''"
+        >
           <td>
             <div class="flex items-center">
-              <img src="/img/dummy-art-small-1.png" alt="dummy" />
-              <div class="ml-5">Lukisan Nusantara</div>
+              <img
+                style="width: 64px; height: 64px"
+                :src="`${baseUploadUrl}/${item.hash}${item.fileExtension}`"
+                alt="dummy"
+              />
+              <div class="ml-5">{{ item.title }}</div>
             </div>
           </td>
           <td>
@@ -33,7 +41,26 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      baseUploadUrl: process.env.baseUploadUrl
+    }
+  },
+  computed: {
+    items() {
+      return this.$store.state.items.myItems
+    }
+  },
+  mounted() {
+    this.$arare.fetchMyItems(0, 20)
+  }
+  // watch: {
+  //     '$store.state.items.myItems'(items){
+
+  //     }
+  // }
+}
 </script>
 
 <style lang="less" scoped>

@@ -29,7 +29,8 @@ export default {
         '~/plugins/dummy',
         '~/plugins/persistedState.client.js',
         '~/plugins/formatter.client.js',
-        '~/plugins/nuchain.client.js'
+        '~/plugins/nuchain.client.js',
+        '~/plugins/arare.client.js'
     ],
 
     serverMiddleware: {

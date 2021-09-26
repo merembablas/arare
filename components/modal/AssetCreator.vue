@@ -65,7 +65,10 @@
 
 <script>
 // import { mapMutations } from 'vuex'
+import AccountMethods from '~/components/AccountMethods'
 export default {
+  extends: AccountMethods,
+
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
   },
@@ -79,7 +82,8 @@ export default {
       title: 'Select object type',
       thumbnail:
         'http://localhost:3000/uploads/up_the_hillside_by_donmalo-d82ehde.png',
-      nextCaption: 'Next'
+      nextCaption: 'Next',
+      extraData: {}
     }
   },
   watch: {
@@ -99,10 +103,13 @@ export default {
       this.prevPage = 0
       this.hasNext = false
     },
-    onCancel() {
+    close() {
       this.visible = false
       this.reset()
       this.$emit('input', this.visible)
+    },
+    onCancel() {
+      this.close()
     },
     setPage(page) {
       this.prevPage = this.page
@@ -129,14 +136,31 @@ export default {
     onNext() {
       if (this.page === 3) {
         const data = this.$refs.attributes.getMapped()
+        data.hash = this.extraData.hash
+        data.objectType = this.extraData.objectType
+        data.fileExtension = this.extraData.fileExtension
+        data.ownerAddress = this.accountAddress
         console.log(
           '🚀 ~ file: AssetCreator.vue ~ line 132 ~ onNext ~ data',
           data
         )
+        this.$axios
+          .post('/api/item/mint', data)
+          .then(({ data: { error, hash, id } }) => {
+            if (error) {
+              alert(error)
+              return
+            }
+            this.$arare.fetchMyItems(0, 20)
+            this.close()
+          })
       }
     },
-    onUploadPictureSuccess({ url, hash }) {
-      this.thumbnail = `${url}?${hash}`
+    onUploadPictureSuccess({ url, hash, fileExtension }) {
+      this.thumbnail = url
+      this.extraData.hash = hash
+      this.extraData.objectType = 'picture'
+      this.extraData.fileExtension = fileExtension
       this.setPage(3)
       this.hasNext = true
       this.nextCaption = 'Mint'

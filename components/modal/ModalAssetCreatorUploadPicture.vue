@@ -15,9 +15,7 @@
     <div class="flex flex-col justify-center items-center cursor-pointer">
       <div>Drag &amp; Drop</div>
       <div>or</div>
-      <div class="hover:text-blue-500" @click="openUploadDialog">
-        Upload Picture
-      </div>
+      <div class="hover:text-blue-500">Upload Picture</div>
       <div>Here</div>
     </div>
     <form
@@ -56,11 +54,11 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        .then(({ data: { error, url, hash } }) => {
+        .then(({ data: { error, url, hash, fileExtension } }) => {
           if (error) {
             alert(error)
           } else {
-            this.$emit('on-success', { url, hash })
+            this.$emit('on-success', { url, hash, fileExtension })
           }
         })
     }

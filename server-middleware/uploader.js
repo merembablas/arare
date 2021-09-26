@@ -61,7 +61,8 @@ app.post('/upload_picture', (req, res) => {
         })
 
         // rename
-        const newBaseName = `${hash}${path.extname(req.file.path)}`
+        const fileExtension = path.extname(req.file.path)
+        const newBaseName = `${hash}${fileExtension}`
         const newName = `${process.env.UPLOAD_DIR}/${newBaseName}`
         console.log("🚀 ~ file: uploader.js ~ line 62 ~ newName", newName)
         fs.rename(req.file.path, newName, (err, existing) => {
@@ -74,7 +75,8 @@ app.post('/upload_picture', (req, res) => {
         res.json({
             error: null,
             url,
-            hash
+            hash,
+            fileExtension
         })
     })
 })

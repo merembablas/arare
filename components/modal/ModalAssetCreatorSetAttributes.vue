@@ -55,7 +55,7 @@ export default {
     getMapped() {
       const form1 = this.$refs.form1.toJSON()
       const form2 = this.$refs.form2.toJSON()
-      const data = { ...form1, ...form2 }
+      const data = { ...form1, ...form2, objectType: 'picture' }
       return data
     }
   }
