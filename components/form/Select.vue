@@ -2,13 +2,14 @@
   <div class="mt-5 flex flex-col items-start justify-start w-full">
     <div>{{ name }}:</div>
     <select
-      class="
+      :class="`
         border-r border-t border-b border-solid border-gray-400
         rounded-xl
         outline-none
         focus:outline-none
         w-full
-      "
+        ${inSaving ? 'bg-gray-300' : ''}`"
+      :disabled="inSaving"
     >
       <option v-for="item in items" :key="item">{{ item }}</option>
     </select>
@@ -44,6 +45,9 @@ export default {
     },
     getValue() {
       return this.value
+    },
+    setDisabled(state) {
+      this.inSaving = state
     }
   }
 }

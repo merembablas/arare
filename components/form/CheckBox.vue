@@ -3,7 +3,10 @@
     <input
       v-model="dChecked"
       type="checkbox"
-      class="form-checkbox h-5 w-5 text-gray-600 rounded"
+      :disabled="inSaving"
+      :class="`form-checkbox h-5 w-5 text-gray-600 rounded ${
+        inSaving ? 'bg-gray-300' : ''
+      }`"
     /><span class="ml-2 text-gray-700">{{ name }}</span>
   </label>
 </template>
@@ -28,6 +31,9 @@ export default {
     },
     getValue() {
       return this.checked
+    },
+    setDisabled(state) {
+      this.inSaving = state
     }
   }
 }

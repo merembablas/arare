@@ -14,12 +14,14 @@
         <div v-if="page === 2">
           <ModalAssetCreatorUploadPicture
             v-if="objectType === 'picture'"
+            @in-process="onInProcess"
             @on-success="onUploadPictureSuccess"
           />
         </div>
         <div v-if="page === 3">
           <LazyModalAssetCreatorSetAttributes
             ref="attributes"
+            :in-process="inProcess"
             :thumbnail="thumbnail"
           />
         </div>
@@ -41,6 +43,8 @@
           text="Cancel"
           color-class="bg-red-600"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onCancel"
         />
         <Button
@@ -48,6 +52,8 @@
           text="Back"
           color-class="bg-blue-400"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onBack"
         />
         <Button
@@ -55,6 +61,8 @@
           :text="nextCaption"
           color-class="bg-green-500"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onNext"
         />
         <!-- <Button text="Next" color-class="bg-green-600" @click="setPage(2)" /> -->
@@ -68,7 +76,6 @@
 import AccountMethods from '~/components/AccountMethods'
 export default {
   extends: AccountMethods,
-
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
   },
@@ -83,7 +90,8 @@ export default {
       thumbnail:
         'http://localhost:3000/uploads/up_the_hillside_by_donmalo-d82ehde.png',
       nextCaption: 'Next',
-      extraData: {}
+      extraData: {},
+      inProcess: false
     }
   },
   watch: {
@@ -116,6 +124,10 @@ export default {
       this.page = page
     },
     onSelectType(type) {
+      console.log(
+        '🚀 ~ file: AssetCreator.vue ~ line 119 ~ onSelectType ~ type',
+        type
+      )
       this.setPage(2)
       this.objectType = type
       if (this.page > 1) {
@@ -124,7 +136,7 @@ export default {
         this.title = 'Select object type'
       }
 
-      this.hasNext = this.page > 1 && this.page < 3
+      this.hasNext = this.page > 2 && this.page < 3
     },
     onBack() {
       if (!this.prevPage) {
@@ -135,6 +147,7 @@ export default {
     },
     onNext() {
       if (this.page === 3) {
+        this.inProcess = true
         const data = this.$refs.attributes.getMapped()
         data.hash = this.extraData.hash
         data.objectType = this.extraData.objectType
@@ -147,6 +160,7 @@ export default {
         this.$axios
           .post('/api/item/mint', data)
           .then(({ data: { error, hash, id } }) => {
+            this.inProcess = false
             if (error) {
               alert(error)
               return
@@ -164,6 +178,9 @@ export default {
       this.setPage(3)
       this.hasNext = true
       this.nextCaption = 'Mint'
+    },
+    onInProcess(state) {
+      this.inProcess = state
     }
   }
 }
