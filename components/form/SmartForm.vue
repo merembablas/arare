@@ -6,8 +6,15 @@
 
 <script>
 export default {
+  props: { disabled: { type: Boolean, default: false } },
+  watch: {
+    disabled(state) {
+      this.setDisabled(state)
+    }
+  },
   mounted() {
     console.log('form childrens:', this.$children)
+    this.setDisabled(this.disabled)
   },
   methods: {
     toJSON() {
@@ -19,6 +26,12 @@ export default {
         }
       }
       return encoded
+    },
+    setDisabled(state) {
+      for (let i = 0; i < this.$children.length; i++) {
+        const item = this.$children[i]
+        item.setDisabled(state)
+      }
     }
   }
 }

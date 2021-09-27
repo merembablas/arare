@@ -21,23 +21,24 @@
           ></div>
         </div>
 
-        <FormSmartForm ref="form1">
+        <FormSmartForm ref="form1" :disabled="disabled">
           <FormCheckBox name="Has physical asset" />
           <FormSelect
             name="Asset location"
+            :disabled="disabled"
             :items="['Gallery ArtJog', 'Gallery Artmedia', 'Gallery ISI']"
           />
           <FormInputText name="Custom address" :multi-line="true" />
         </FormSmartForm>
       </div>
       <div class="flex flex-col items-start justify-start">
-        <FormSmartForm ref="form2">
+        <FormSmartForm ref="form2" :disabled="disabled">
           <FormInputText name="Title" :auto-focus="true" />
           <FormInputText name="Description" :multi-line="true" />
           <FormInputText name="Royalties" type="percentage" />
           <FormSelect
             name="Collections"
-            :items="['Jogjarockarta', 'Seroja One']"
+            :items="['JogjaRockarta', 'Seroja One']"
           />
           <FormInputText name="Count" type="numeric" />
         </FormSmartForm>
@@ -49,7 +50,18 @@
 <script>
 export default {
   props: {
-    thumbnail: { type: String, required: true }
+    thumbnail: { type: String, required: true },
+    inProcess: { type: Boolean, default: false }
+  },
+  data() {
+    return {
+      disabled: this.inProcess
+    }
+  },
+  watch: {
+    inProcess(state) {
+      this.disabled = state
+    }
   },
   methods: {
     getMapped() {

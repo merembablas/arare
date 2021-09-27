@@ -23,7 +23,11 @@
                 :src="`${baseUploadUrl}/${item.hash}${item.fileExtension}`"
                 alt="dummy"
               />
-              <div class="ml-5">{{ item.title }}</div>
+              <div class="ml-5">
+                <NuxtLink :to="`/items/${item.hash}`">{{
+                  item.title
+                }}</NuxtLink>
+              </div>
             </div>
           </td>
           <td>
@@ -72,6 +76,9 @@ th {
   background-color: @bg-color-2;
   text-align: left;
   padding: 10px;
+}
+tr {
+  background-color: lighten(@bg-color-1, 5);
 }
 tr.odd {
   background-color: @bg-color-1;

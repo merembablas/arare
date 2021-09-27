@@ -110,6 +110,9 @@ export default {
       }
       return this.value
     },
+    setDisabled(state) {
+      this.inSaving = state
+    },
     onlyNumeric(evt) {
       evt = evt || window.event
       const charCode = evt.which ? evt.which : evt.keyCode
