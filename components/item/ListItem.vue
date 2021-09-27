@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$router.push(`/item/${this.item.id}`)
+      this.$router.push(`/items/${this.item.id}`)
     }
   }
 }
