@@ -31,7 +31,7 @@ export default {
       return this.useKey || this.normalizeKey(this.name)
     },
     getValue() {
-      return this.checked
+      return this.dChecked
     },
     setDisabled(state) {
       this.inSaving = state

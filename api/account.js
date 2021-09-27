@@ -2,8 +2,10 @@
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const Account = require('./models/Account');
+// const Account = require('./models/Account');
+import { Account, getById as getAccountById, getByPrimaryAddress } from './models/account'
 const NftItem = require('./models/Item');
+import ItemMapper from '../lib/ItemMapper'
 
 import { accountToApiType } from '../lib/AccountUtil'
 import { Types } from 'mongoose'
@@ -39,32 +41,6 @@ const register = [
     }
 ]
 
-// get account by it id
-async function getById(objectId) {
-    return new Promise((resolve, reject) => {
-        return Account.findOne({ _id: objectId }, (err, account) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            return resolve(account)
-        })
-    })
-}
-
-// get account by hash
-async function getByPrimaryAddress(primaryAddress) {
-    return new Promise((resolve, reject) => {
-        return Account.findOne({ primaryAddress }, (err, account) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            return resolve(account)
-        })
-    })
-}
-
 const accountInfo = [
     validator.param('id', 'Invalid id').isAlphanumeric(),
     async (req, res) => {
@@ -75,7 +51,7 @@ const accountInfo = [
 
         try {
             const _id = new Types.ObjectId(req.params.id)
-            return res.json({ error: null, result: accountToApiType(await getById(_id)) })
+            return res.json({ error: null, result: accountToApiType(await getAccountById(_id)) })
         } catch {
             // try to request by it hash
             try {
@@ -92,8 +68,8 @@ const accountInfo = [
 
 const items = [
     validator.param('accountId', 'Invalid id').isAlphanumeric(),
-    validator.query('offset', 'Invalid offset').isInt(),
-    validator.query('limit', 'Invalid limit').isInt(),
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
     (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
@@ -104,15 +80,15 @@ const items = [
             if (!acc) {
                 return res.status(404).json({ errors: "Not found" })
             }
-            let ownerAddress = accountToApiType(acc).prefixedAddress
-            console.log("🚀 ~ file: account.js ~ line 95 ~ Account.findOne ~ ownerAddress", ownerAddress)
-            NftItem.find({ ownerAddress }, (err, items) => {
+            // let ownerAddress = accountToApiType(acc).prefixedAddress
+            // console.log("🚀 ~ file: account.js ~ line 95 ~ Account.findOne ~ ownerAddress", ownerAddress)
+            NftItem.find({ creatorId: acc.id }, (err, items) => {
                 if (err) {
                     throw err
                 }
                 return res.json({
                     error: null,
-                    result: items
+                    result: items.map(item => ItemMapper(item, accountToApiType(acc)))
                 })
             })
         })

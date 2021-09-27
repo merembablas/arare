@@ -153,6 +153,7 @@ export default {
         data.objectType = this.extraData.objectType
         data.fileExtension = this.extraData.fileExtension
         data.ownerAddress = this.accountAddressWithPrefix
+        data.creatorId = this.getCurrentIdentity().id
         console.log(
           '🚀 ~ file: AssetCreator.vue ~ line 132 ~ onNext ~ data',
           data

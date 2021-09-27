@@ -2,7 +2,8 @@
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const Account = require('./models/account');
+// const Account = require('./models/account');
+import { Account, getById as getAccountById } from './models/account'
 const NftItem = require('./models/Item');
 import ItemMapper from '../lib/ItemMapper'
 
@@ -31,6 +32,7 @@ const mint = [
             objectType: req.body.objectType,
             fileExtension: req.body.fileExtension,
             ownerAddress: req.body.ownerAddress,
+            creatorId: req.body.creatorId,
         })
 
         item.save((err, itemResult) => {
@@ -75,11 +77,36 @@ const getItem = [
     }
 ]
 
+const popular = [
+    validator.param('offset', 'Invalid offset').optional().isNumeric(),
+    validator.param('limit', 'Invalid limit').optional().isNumeric(),
+    async (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+        // @TODO: add filtering
+        NftItem.find({}, async (err, items) => {
+            if (err) {
+                return res.status(500).json({ errors: "Cannot get items" })
+            }
+            const result = await Promise.all(items.map(async (item) => {
+                console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                const creator = await Account.findById(item.creatorId).exec()
+                return ItemMapper(item, accountToApiType(creator))
+            }))
+            return res.json({
+                error: null,
+                result
+            })
+        })
+    }
+]
+
 // Mint new item
 router.post('/item/mint', mint)
 
-// Burn existing item
-// router.get('/items/burn', burn)
+router.get('/item/popular', popular)
 
 router.get('/items/:id', getItem)
 

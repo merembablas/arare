@@ -33,6 +33,9 @@ export default ({ $axios, store }, inject) => {
             // .then(({data: {error, item}}) => {
             //     this.handleResult(error, 'items/setItem', item)
             // })
+        },
+        fetchPopularItems() {
+            return $axios.get(`${baseEndpoint}/item/popular`)
         }
     }
     inject('arare', methods)

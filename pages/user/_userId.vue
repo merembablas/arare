@@ -77,9 +77,7 @@
             </ItemFieldInfo>
             <ItemFieldInfo a-key="Address">
               <client-only>
-                <NuchainAddress
-                  address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
-                />
+                <NuchainAddress :address="user.primaryAddress" />
               </client-only>
             </ItemFieldInfo>
           </div>
@@ -158,9 +156,17 @@ export default {
         }
         return result
       })
+    const items = await $axios
+      .get(`/api/accounts/${params.userId}/items`)
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          return
+        }
+        return result
+      })
     console.log('🚀 ~ file: _userId.vue ~ line 154 ~ asyncData ~ user', user)
     return {
-      items: [],
+      items,
       user,
       userId: params.userId
     }

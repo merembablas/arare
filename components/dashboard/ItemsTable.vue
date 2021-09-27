@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -55,7 +56,14 @@ export default {
     }
   },
   mounted() {
-    this.$arare.fetchMyItems(0, 20)
+    if (this.$store.state.user.identity) {
+      this.$arare.fetchMyItems(0, 20)
+    } else {
+      this.setMyItems([])
+    }
+  },
+  methods: {
+    ...mapMutations('items', ['setMyItems'])
   }
   // watch: {
   //     '$store.state.items.myItems'(items){

@@ -9,7 +9,8 @@ const Item = new Schema({
     hash: { type: String, required: true, index: { unique: true } },
     objectType: { type: String, required: true },
     fileExtension: { type: String }, // optional
-    ownerAddress: { type: String, required: true } // crypto address
+    ownerAddress: { type: String, required: true }, // crypto address
+    creatorId: { type: String, required: true }
 });
 
 const NftItem = mongoose.models.Item || mongoose.model('Item', Item)

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Account = new Schema({
+const AccountModel = new Schema({
     name: { type: String, required: true },
     bio: { type: String, required: true },
     accountType: { type: String, required: true },
@@ -12,4 +12,37 @@ const Account = new Schema({
     isCreator: { type: Boolean, required: true, default: false }
 });
 
-module.exports = mongoose.models.Account || mongoose.model('Account', Account);
+
+// get account by it id
+async function getById(objectId) {
+    return new Promise((resolve, reject) => {
+        return Account.findOne({ _id: objectId }, (err, account) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            return resolve(account)
+        })
+    })
+}
+
+// get account by hash
+async function getByPrimaryAddress(primaryAddress) {
+    return new Promise((resolve, reject) => {
+        return Account.findOne({ primaryAddress }, (err, account) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            return resolve(account)
+        })
+    })
+}
+
+const Account = mongoose.models.Account || mongoose.model('Account', AccountModel)
+
+export {
+    Account,
+    getById,
+    getByPrimaryAddress
+}

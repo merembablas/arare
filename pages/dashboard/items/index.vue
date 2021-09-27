@@ -32,9 +32,7 @@
 export default {
   layout: 'dashboard',
   data() {
-    return {
-      creators: this.$dummy.generateUsers(5)
-    }
+    return {}
   }
 }
 </script>

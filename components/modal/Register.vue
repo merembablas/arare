@@ -65,6 +65,9 @@ export default {
       this.$emit('input', visibility)
     }
   },
+  mounted() {
+    this.inProcess = false
+  },
   methods: {
     ...mapMutations('user', ['setIdentity']),
     onCancel() {
@@ -104,8 +107,9 @@ export default {
             result
           )
           this.setIdentity(result)
-          this.inProcess = false
         })
+        .catch((err) => alert(err))
+        .finally(() => (this.inProcess = false))
 
       this.visible = !this.visible
       this.$emit('input', this.visible)
