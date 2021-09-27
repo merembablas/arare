@@ -102,7 +102,8 @@ export default {
     ...mapMutations({
       setCurrentEthAccount: 'eth/setCurrentAccount',
       setCurrentEthAccountBalance: 'eth/setCurrentAccountBalance',
-      setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
+      setCurrentNuchainAccount: 'nuchain/setCurrentAccount',
+      setUserIdentity: 'user/setIdentity'
     }),
     onCancel() {
       this.close()
@@ -134,13 +135,33 @@ export default {
     },
     selectNuchainAccount(account) {
       // const accounts = await this.$nuchainJs.web3Accounts()
-
       if (account) {
         this.setCurrentNuchainAccount(account)
+        this.fetchAccountInfo(account.address)
         this.close()
       } else {
         alert('Cannot connect :(')
       }
+    },
+    fetchAccountInfo(cryptoAddress) {
+      // untuk mendapatkan informasi account dan
+      // meng-save ke store.user.identity
+      this.$axios
+        .get(`/api/accounts/${cryptoAddress}`)
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          this.setUserIdentity(result)
+        })
+        .catch((err) => {
+          console.log(
+            '🚀 ~ file: Connect.vue ~ line 159 ~ fetchAccountInfo ~ err',
+            err
+          )
+          this.setUserIdentity(null)
+        })
     }
   }
 }

@@ -111,13 +111,14 @@
               v-if="showDescription"
               class="p-5 border-b-2 border-l-2 border-r-2"
             >
-              <p>
+              <!-- <p>
                 At vero eos et accusamus et iusto odio dignissimos ducimus qui
                 blanditiis praesentium voluptatum deleniti atque corrupti quos
                 dolores et quas molestias excepturi sint occaecati cupiditate
                 non provident, similique sunt in culpa qui officia deserunt
                 mollitia animi, id est laborum et dolorum fuga. Et harum quidem
-              </p>
+              </p> -->
+              <p>{{ item.description }}</p>
             </div>
           </div>
         </div>

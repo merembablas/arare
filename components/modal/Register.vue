@@ -90,7 +90,7 @@ export default {
         encoded
       )
 
-      this.inProcess = false
+      this.inProcess = true
 
       this.$axios
         .post('/api/account/register', encoded)
@@ -103,8 +103,8 @@ export default {
             '🚀 ~ file: Register.vue ~ line 92 ~ this.$axios.post ~ result',
             result
           )
-          this.setIdentity(encoded)
-          this.inProcess = true
+          this.setIdentity(result)
+          this.inProcess = false
         })
 
       this.visible = !this.visible

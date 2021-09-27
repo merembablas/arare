@@ -24,9 +24,7 @@
                 alt="dummy"
               />
               <div class="ml-5">
-                <NuxtLink :to="`/items/${item.hash}`">{{
-                  item.title
-                }}</NuxtLink>
+                <NuxtLink :to="`/items/${item.hash}`">{{ item.name }}</NuxtLink>
               </div>
             </div>
           </td>

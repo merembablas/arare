@@ -62,6 +62,16 @@ export default {
   },
   methods: {
     showAssetCreator() {
+      // pastikan user sudah punya identity dulu
+      // kalau belum suruh register
+
+      if (!this.getCurrentIdentity()) {
+        alert(
+          'Please set the identity in dashboard > profile first before creating'
+        )
+        this.$router.push('/dashboard/profile')
+        return
+      }
       this.assetCreatorVisible = true
     }
   }

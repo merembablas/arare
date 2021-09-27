@@ -26,6 +26,7 @@ const register = [
             ethAddress: req.body.ethAddress,
             nuchainAddress: req.body.nuchainAddress,
             primaryAddress: req.body.primaryAddress,
+            isCreator: req.body.isCreator,
         })
 
         account.save((err, result) => {
@@ -33,33 +34,58 @@ const register = [
                 console.log("🚀 ~ file: account.js ~ line 28 ~ account.save ~ err", err)
                 return res.status(500).json({ error: "Cannot register account" })
             }
-            return res.json({ error: null, id: result._id })
+            return res.json({ error: null, result: accountToApiType(result) })
         })
     }
 ]
 
+// get account by it id
+async function getById(objectId) {
+    return new Promise((resolve, reject) => {
+        return Account.findOne({ _id: objectId }, (err, account) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            return resolve(account)
+        })
+    })
+}
+
+// get account by hash
+async function getByPrimaryAddress(primaryAddress) {
+    return new Promise((resolve, reject) => {
+        return Account.findOne({ primaryAddress }, (err, account) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            return resolve(account)
+        })
+    })
+}
+
 const accountInfo = [
     validator.param('id', 'Invalid id').isAlphanumeric(),
-    (req, res) => {
+    async (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.mapped() })
         }
 
-        let _id = null
-
         try {
-            _id = new Types.ObjectId(req.params.id)
+            const _id = new Types.ObjectId(req.params.id)
+            return res.json({ error: null, result: accountToApiType(await getById(_id)) })
         } catch {
-            return res.status(400).json({ errors: "Invalid id type" })
+            // try to request by it hash
+            try {
+                return res.json({ error: null, result: accountToApiType(await getByPrimaryAddress(req.params.id)) })
+            } catch {
+                return res.status(400).json({ errors: "Not found or invalid id type" })
+            }
+
         }
 
-        Account.findOne({ _id }, (err, account) => {
-            if (err) {
-                throw err
-            }
-            return res.json({ error: null, result: account })
-        })
     }
 ]
 
@@ -74,7 +100,7 @@ const items = [
             return res.status(400).json({ errors: errors.mapped() })
         }
 
-        Account.findOne({ primaryAddress: req.params.accountId }, (err, acc) => {
+        Account.findById(req.params.accountId, (err, acc) => {
             if (!acc) {
                 return res.status(404).json({ errors: "Not found" })
             }

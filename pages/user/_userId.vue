@@ -65,7 +65,7 @@
           >
             &nbsp;
           </div>
-          <small class="text-green-600">CREATOR</small>
+          <small v-if="user.isCreator" class="text-green-600">CREATOR</small>
 
           <ItemFieldInfo v-if="user != null" a-key="Bio">
             <p>{{ user.biography }}</p>
@@ -148,22 +148,32 @@
 
 <script>
 export default {
-  data() {
+  async asyncData({ params, $axios }) {
+    const user = await $axios
+      .get(`/api/accounts/${params.userId}`)
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          alert(error)
+          return
+        }
+        return result
+      })
+    console.log('🚀 ~ file: _userId.vue ~ line 154 ~ asyncData ~ user', user)
     return {
       items: [],
-      user: null,
-      userId: this.$route.params.userId
-    }
-  },
-  mounted() {
-    this.fetchItems()
-  },
-  methods: {
-    fetchItems() {
-      this.user = this.$dummy.generateUser(this.userId)
-      this.items = this.$dummy.generateItems(20)
+      user,
+      userId: params.userId
     }
   }
+  //   mounted() {
+  //     this.fetchItems()
+  //   },
+  //   methods: {
+  //     fetchItems() {
+  //       this.user = this.$dummy.generateUser(this.userId)
+  //       this.items = this.$dummy.generateItems(20)
+  //     }
+  //   }
 }
 </script>
 

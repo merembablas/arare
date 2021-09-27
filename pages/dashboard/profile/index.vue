@@ -2,11 +2,7 @@
   <div class="p-10">
     <div class="flex">
       <div v-if="identity" class="flex flex-col">
-        <img
-          src="https://www.thispersondoesnotexist.com/image"
-          alt="dummy"
-          class="w-64 h-64 rounded-xl"
-        />
+        <img :src="identity.pic" alt="dummy" class="w-64 h-64 rounded-xl" />
         <Button text="Change Photo" class="mt-5" />
       </div>
 
@@ -55,6 +51,12 @@
         <ItemFieldInfo a-key="Address">
           <NuchainAddress :address="accountAddress" :truncate="false" />
         </ItemFieldInfo>
+
+        <FormCheckBox
+          name="Creator"
+          use-key="isCreator"
+          :checked="identity.isCreator"
+        />
 
         <div class="mt-5 pt-5">
           <Button text="Sync to on-chain data" />

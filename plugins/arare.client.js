@@ -24,7 +24,8 @@ export default ({ $axios, store }, inject) => {
                 })
         },
         fetchMyItems(offset, limit) {
-            const accountId = store.state.nuchain.currentAccount ? store.state.nuchain.currentAccount.address : store.state.eth.currentAccount
+            // const accountId = store.state.nuchain.currentAccount ? store.state.nuchain.currentAccount.address : store.state.eth.currentAccount
+            const accountId = store.state.user.identity.id
             this.fetchUsersItems(accountId, offset, limit)
         },
         fetchItem(itemId) {

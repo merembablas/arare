@@ -11,7 +11,7 @@ import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
 const router = Router()
 
 const mint = [
-    validator.body('title', 'Please enter title').isLength({ min: 1 }),
+    validator.body('name', 'Please enter name').isLength({ min: 1 }),
     validator.body('description', 'Please enter description').isLength({ min: 1 }),
     validator.body('royalties', 'Please enter royalties').isLength({ min: 1 }),
     validator.body('count', 'Please enter count').isLength({ min: 1 }),
@@ -23,7 +23,7 @@ const mint = [
         }
 
         const item = new NftItem({
-            title: req.body.title,
+            name: req.body.name,
             description: req.body.description,
             royalties: req.body.royalties,
             count: req.body.count,
