@@ -22,10 +22,10 @@
           </template>
         </Button>
         <ItemFieldInfo
-          :value="identity.full_name"
-          a-key="Full name"
+          :value="identity.name"
+          a-key="Name"
           :editable="true"
-          :on-changed="updateFullname"
+          :on-changed="updateName"
         />
         <ItemFieldInfo
           :value="identity.bio"
@@ -116,12 +116,12 @@ export default {
   },
   methods: {
     ...mapMutations('user', ['setIdentity', 'setIdentityAttr']),
-    async updateFullname(newFullname) {
+    async updateName(newName) {
       console.log(
-        '🚀 ~ file: index.vue ~ line 69 ~ updateFullname ~ newFullname',
-        newFullname
+        '🚀 ~ file: index.vue ~ line 69 ~ updateName ~ newName',
+        newName
       )
-      this.setIdentityAttr({ key: 'full_name', value: newFullname })
+      this.setIdentityAttr({ key: 'full_name', value: newName })
       await new Promise((resolve, reject) => {
         setTimeout(() => resolve(true), 1500)
       })

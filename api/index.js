@@ -12,4 +12,6 @@ const account = require('./account')
 app.use(items)
 app.use(account)
 
-module.exports = app
+// module.exports = app
+
+export default app

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Item = new Schema({
-    title: { type: String, required: true },
+    name: { type: String, required: true },
     description: { type: String, required: true },
     royalties: { type: Number, required: true },
     count: { type: Number, required: true },
@@ -12,5 +12,6 @@ const Item = new Schema({
     ownerAddress: { type: String, required: true } // crypto address
 });
 
-module.exports = mongoose.model('Item', Item)
+const NftItem = mongoose.models.Item || mongoose.model('Item', Item)
 
+module.exports = NftItem;

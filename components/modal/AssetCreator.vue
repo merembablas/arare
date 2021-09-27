@@ -152,7 +152,7 @@ export default {
         data.hash = this.extraData.hash
         data.objectType = this.extraData.objectType
         data.fileExtension = this.extraData.fileExtension
-        data.ownerAddress = this.accountAddress
+        data.ownerAddress = this.accountAddressWithPrefix
         console.log(
           '🚀 ~ file: AssetCreator.vue ~ line 132 ~ onNext ~ data',
           data

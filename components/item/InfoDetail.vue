@@ -1,6 +1,6 @@
 <template>
   <div class="md:w-2/4 md:ml-10">
-    <div class="pl-2 pr-2">
+    <div v-if="item" class="pl-2 pr-2">
       <div class="hidden md:block">
         <h1 v-if="item" class="font-extrabold text-3xl">
           {{ item.name }}
@@ -13,15 +13,15 @@
 
       <ItemFieldInfo
         a-key="Owner"
-        :value="item.owner.name"
+        :value="item.creator.name"
         value-type="user"
-        :link-to="`/user/${item.owner.id}`"
+        :link-to="`/user/${item.creator.id}`"
       />
       <ItemFieldInfo
         a-key="Asset location"
         value="Artamedia Gallery Yogyakarta"
         value-type="location"
-        :link-to="`/gallery/${item.gallery.id}`"
+        :link-to="`/gallery/${item.creator.id}`"
       />
       <ItemFieldInfo a-key="Popularity">
         <PopularityMeter :star="3" :total="5" />

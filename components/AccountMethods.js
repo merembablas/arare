@@ -21,6 +21,19 @@ export default {
             }
             return this.account
         },
+        accountType() {
+            console.log('this.$store.state.eth.currentAccount', this.$store.state.eth.currentAccount)
+            console.log('this.$store.state.nuchain.currentAccount', this.$store.state.nuchain.currentAccount)
+            if (this.$store.state.eth.currentAccount) {
+                return 'eth'
+            }
+            if (this.$store.state.nuchain.currentAccount) {
+                return 'nuchain'
+            }
+        },
+        accountAddressWithPrefix() {
+            return `${this.accountType}:${this.accountAddress}`
+        },
         isNuchain() {
             return this.account && this.account.meta && this.account.address
         },

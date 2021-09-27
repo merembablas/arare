@@ -2,7 +2,11 @@
 
 const { Router } = require('express')
 const validator = require('express-validator')
+const Account = require('./models/account');
 const NftItem = require('./models/Item');
+import ItemMapper from '../lib/ItemMapper'
+
+import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
 
 const router = Router()
 
@@ -44,11 +48,40 @@ const mint = [
     }
 ]
 
+const getItem = [
+    validator.param('id', 'Invalid id').isAlphanumeric().isLength({ min: 1, max: 256 }),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+        NftItem.findOne({ hash: req.params.id }, (err, item) => {
+            // console.log("🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err", err)
+            // console.log("🚀 ~ file: items.js ~ line 55 ~ NftItem.findOne ~ item", item)
+            if (err) {
+                console.log("🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err", err)
+                alert("Cannot fetch data")
+                return res.status(500).json({ error: err })
+            }
+            if (!item) {
+                return res.status(404).json({ error: "Not found" })
+            }
+            // get creator
+            Account.findOne(toAddressFilter(item.ownerAddress), (err, creator) => {
+                if (err) return res.status(404).json({ error: 'Item has no owner' })
+                return res.json(ItemMapper(item, accountToApiType(creator)))
+            })
+        })
+    }
+]
+
 // Mint new item
 router.post('/item/mint', mint)
 
 // Burn existing item
 // router.get('/items/burn', burn)
+
+router.get('/items/:id', getItem)
 
 module.exports = router
 

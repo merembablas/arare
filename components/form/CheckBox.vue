@@ -17,6 +17,7 @@ export default {
   extends: FormHelpers,
   props: {
     name: { type: String, required: true },
+    useKey: { type: String, default: null },
     checked: { type: Boolean, required: false }
   },
   data() {
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     getKey() {
-      return this.normalizeKey(this.name)
+      return this.useKey || this.normalizeKey(this.name)
     },
     getValue() {
       return this.checked

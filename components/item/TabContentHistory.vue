@@ -5,8 +5,8 @@
         <span>Bought by</span>
         <div class="font-semibold text-green-500 ml-1">
           <ClickableName
-            :name="item.owner.name"
-            :link-to="`/user/${item.owner.id}`"
+            :name="item.creator.name"
+            :link-to="`/user/${item.creator.id}`"
           />
         </div>
       </div>

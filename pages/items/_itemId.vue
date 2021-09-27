@@ -1,10 +1,9 @@
 <template>
   <div>
     <Navbar />
-    <div class="mt-2 md:m-10 h-full">
+    <div v-if="item" class="mt-2 md:m-10 h-full">
       <div class="flex flex-wrap h-full items-start justify-between w-full">
         <div
-          v-if="item"
           class="
             justify-center
             align-center
@@ -27,6 +26,7 @@
               w-full
               items-center
               justify-center
+              pt-5
             "
           >
             <div class="text-color-2 text-sm">This item has been verified</div>
@@ -36,7 +36,7 @@
 
         <div
           class="
-            flex flex-col flex flex-grow
+            flex flex-col flex-grow
             justify-center
             items-center
             md:pr-2
@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <ItemInfoDetail :item="item" />
+        <ItemInfoDetail v-if="item" :item="item" />
       </div>
     </div>
     <Footer />
@@ -130,18 +130,58 @@
 </template>
 
 <script>
+// import ItemMapper from '../../lib/ItemMapper'
 export default {
+  //   fetch() {
+  //     this.$axios
+  //       .get(`/api/items/${this.$route.params.itemId}`)
+  //       .then(({ data }) => {
+  //         console.log('🚀 ~ file: _itemId.vue ~ line 163 ~ .then ~ data', data)
+  //         this.item = data
+  //       })
+  //   },
+  //   activated() {
+  //     // Call fetch again if last fetch more than 30 sec ago
+  //     // if (this.$fetchState.timestamp <= Date.now() - 30000) {
+  //     //   this.$fetch()
+  //     // }
+  //   }
+  //   //   mounted() {
+  //   //     this.$fetch()
+  //   //   }
+  async asyncData({ params, $axios }) {
+    if (!params.itemId) return
+    const item = await $axios
+      .get(`/api/items/${params.itemId}`)
+      .then(({ data }) => {
+        console.log('🚀 ~ file: _itemId.vue ~ line 163 ~ .then ~ data', data)
+        return data
+      })
+    return {
+      item,
+      showDescription: false
+    }
+  },
+  //   //   async asyncData({ params, $arareServer }) {
+  //   //     const item = ItemMapper(await $arareServer.getItem(params.itemId))
+  //   //     console.log('🚀 ~ file: _itemId.vue ~ line 140 ~ asyncData ~ item', item)
+  //   //     return {
+  //   //       item: { name: 'satu', pic: 'xxx' },
+  //   //       name: '',
+  //   //       showDescription: false
+  //   //     }
+  //   //   }
+  //   //   data: () => ({
+  //   //     item: null,
+  //   //     name: '',
+  //   //     showDescription: false
+  //   //   }),
   data() {
     return {
-      itemId: this.$route.params.itemId,
       item: null,
       name: '',
       showDescription: false
     }
-  },
-  fetch() {
-    this.name = `Lukisan #${this.itemId}`
-    this.item = this.$dummy.generateItem(this.itemId)
   }
 }
 </script>

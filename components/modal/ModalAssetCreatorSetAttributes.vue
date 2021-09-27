@@ -33,7 +33,7 @@
       </div>
       <div class="flex flex-col items-start justify-start">
         <FormSmartForm ref="form2" :disabled="disabled">
-          <FormInputText name="Title" :auto-focus="true" />
+          <FormInputText name="Name" :auto-focus="true" />
           <FormInputText name="Description" :multi-line="true" />
           <FormInputText name="Royalties" type="percentage" />
           <FormSelect
