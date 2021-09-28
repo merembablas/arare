@@ -1,10 +1,8 @@
 
-
-// const Account = require('./models/Account');
 import { Types } from 'mongoose'
 import ItemMapper from '../lib/ItemMapper'
 import { accountToApiType } from '../lib/AccountUtil'
-import { Account, getById as getAccountById, getByPrimaryAddress } from './models/account'
+import { Account, getById as getAccountById, getByPrimaryAddress } from './models/Account'
 
 const { Router } = require('express')
 const validator = require('express-validator')

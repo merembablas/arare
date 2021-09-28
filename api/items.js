@@ -1,10 +1,8 @@
 
-
-// const Account = require('./models/account');
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
-import { Account } from './models/account'
+import { Account } from './models/Account'
 import { isAuthenticated } from './auth_checker'
 import { getUtcSeconds } from '../lib/TimeUtil'
 import { sanitizeDoc } from '../lib/sanitizer'
