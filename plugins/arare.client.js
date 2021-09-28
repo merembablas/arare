@@ -39,6 +39,12 @@ export default ({ $axios, store }, inject) => {
         },
         fetchPopularCreators(offset, limit) {
             return $axios.get(`${baseEndpoint}/creator/popular?offset=${offset}&limit=${limit}`)
+        },
+        authenticate(accountAddress, signature) {
+            return $axios.post(`${baseEndpoint}/auth/authenticate`, { accountAddress, signature })
+        },
+        authRefreshToken() {
+            return $axios.post('/api/auth/refresh-token')
         }
     }
     inject('arare', methods)

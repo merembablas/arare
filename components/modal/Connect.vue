@@ -103,7 +103,8 @@ export default {
       setCurrentEthAccount: 'eth/setCurrentAccount',
       setCurrentEthAccountBalance: 'eth/setCurrentAccountBalance',
       setCurrentNuchainAccount: 'nuchain/setCurrentAccount',
-      setUserIdentity: 'user/setIdentity'
+      setUserIdentity: 'user/setIdentity',
+      setJwtToken: 'user/setJwtToken'
     }),
     onCancel() {
       this.close()
@@ -136,12 +137,46 @@ export default {
     selectNuchainAccount(account) {
       // const accounts = await this.$nuchainJs.web3Accounts()
       if (account) {
-        this.setCurrentNuchainAccount(account)
-        this.fetchAccountInfo(account.address)
+        // authenticate
+        this.authenticate(account, ({ error }) => {
+          if (error) {
+            alert('Cannot authenticate, signature not verified,', error)
+            return
+          }
+          this.setCurrentNuchainAccount(account)
+          this.fetchAccountInfo(account.address)
+        })
+
         this.close()
       } else {
         alert('Cannot connect :(')
       }
+    },
+    authenticate(account, cb) {
+      // range to 30 seconds
+      const duration = Math.floor(new Date().getTime() / 1000 / 30)
+      console.log(
+        '🚀 ~ file: Connect.vue ~ line 152 ~ authenticate ~ otp',
+        duration
+      )
+      const message = `ch:${duration}`
+      this.$nuchain.signer.sign(account, message).then((signature) => {
+        // get jwt token from server by sending our signature
+        this.$arare
+          .authenticate(account.address, signature)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return alert('Cannot authenticate your account')
+            }
+            const token = result
+
+            this.setJwtToken(token)
+
+            const rv = { error, token }
+
+            cb(rv)
+          })
+      })
     },
     fetchAccountInfo(cryptoAddress) {
       // untuk mendapatkan informasi account dan

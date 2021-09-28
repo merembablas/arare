@@ -5,6 +5,9 @@ import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
 import { Account } from './models/account'
+import { isAuthenticated } from './auth_checker'
+import { getUtcSeconds } from '../lib/TimeUtil'
+
 const { Router } = require('express')
 const validator = require('express-validator')
 const NftItem = require('./models/Item');
@@ -26,6 +29,8 @@ const mint = [
             return res.status(400).json({ errors: errors.mapped() })
         }
 
+        console.log("currentUser:", req.currentUser)
+
         const item = new NftItem({
             name: req.body.name,
             description: req.body.description,
@@ -36,7 +41,10 @@ const mint = [
             fileExtension: req.body.fileExtension,
             ownerAddress: req.body.ownerAddress,
             creatorId: req.body.creatorId,
-            mint: null,
+            mint: {
+                block: '1333333',
+                timestamp: getUtcSeconds()
+            },
             likes: 0,
             value: 0,
             verified: false,
@@ -63,8 +71,8 @@ const mint = [
             const itemHistory = new ItemHistory({
                 activity: 'mint',
                 objectId: `${createdItem._id}`,
-                initiatorId: req.body.creatorId,
-                initiatorName: req.body.creatorName,
+                initiatorId: req.currentUser.id,
+                initiatorName: req.currentUser.name,
                 value: 0,
                 timestamp: new Date().getTime(),
                 meta: {}
@@ -124,7 +132,7 @@ const popular = [
                 return res.status(500).json({ errors: "Cannot get items" })
             }
             const result = await Promise.all(items.map(async (item) => {
-                console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
                 const creator = await Account.findById(item.creatorId).exec()
                 return ItemMapper(item, accountToApiType(creator))
             }))
@@ -150,7 +158,7 @@ const histories = [
                 return res.status(500).json({ errors: "Cannot get items" })
             }
             const result = await Promise.all(items.map(async (item) => {
-                console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
                 const creator = await Account.findById(item.creatorId).exec()
                 return ItemMapper(item, accountToApiType(creator))
             }))
@@ -163,7 +171,7 @@ const histories = [
 ]
 
 // Mint new item
-router.post('/item/mint', mint)
+router.post('/item/mint', isAuthenticated, mint)
 
 router.get('/item/popular', popular)
 

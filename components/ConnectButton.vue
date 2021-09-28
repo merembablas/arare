@@ -137,7 +137,9 @@ export default {
   methods: {
     ...mapMutations({
       setCurrentEthAccount: 'eth/setCurrentAccount',
-      setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
+      setCurrentNuchainAccount: 'nuchain/setCurrentAccount',
+      setIdentity: 'user/setIdentity',
+      setJwtToken: 'user/setJwtToken'
     }),
     onClick() {
       this.showConnectModal = true
@@ -157,6 +159,8 @@ export default {
     logout() {
       this.setCurrentEthAccount(null)
       this.setCurrentNuchainAccount(null)
+      this.setIdentity(null)
+      this.setJwtToken(null)
       this.showMenuState = false
     }
   }

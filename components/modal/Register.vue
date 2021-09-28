@@ -69,7 +69,7 @@ export default {
     this.inProcess = false
   },
   methods: {
-    ...mapMutations('user', ['setIdentity']),
+    ...mapMutations('user', ['setIdentity', 'setJwtToken']),
     onCancel() {
       this.visible = false
       this.$emit('input', this.visible)
@@ -106,6 +106,14 @@ export default {
             '🚀 ~ file: Register.vue ~ line 92 ~ this.$axios.post ~ result',
             result
           )
+          // refersh access token
+          this.$arare.authRefreshToken().then(({ data: { error, result } }) => {
+            if (error) {
+              alert('Cannot refresh token,', error)
+              return
+            }
+            this.setJwtToken(result)
+          })
           this.setIdentity(result)
         })
         .catch((err) => alert(err))

@@ -1,5 +1,6 @@
 export const state = () => ({
-    identity: null
+    identity: null,
+    jwtToken: null
 })
 
 export const getters = {
@@ -16,6 +17,9 @@ export const mutations = {
         // state.identity = state.identity || {}
         // this.$set(state.identity, key, value)
         state.identity[key] = value
+    },
+    setJwtToken(state, token) {
+        state.jwtToken = token
     }
 }
 
