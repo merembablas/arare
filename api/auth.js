@@ -39,9 +39,11 @@ const authenticate = [
         console.log("🚀 ~ file: auth.js ~ line 36 ~ primaryAddress", primaryAddress)
 
         if (isValidSignature(`ch:${otp}`, req.body.signature, primaryAddress) ||
-            /* Tambahkan +1 digit untuk mentoleransi keterlambatan waktu/pergantian
+            /* Kurangi/tambahi -/+ 1 digit untuk mentoleransi keterlambatan waktu/pergantian
                batas waktu 30 detik */
-            isValidSignature(`ch:${(otp + 1)}`, req.body.signature, primaryAddress)) {
+            isValidSignature(`ch:${(otp - 1)}`, req.body.signature, primaryAddress) ||
+            isValidSignature(`ch:${(otp + 1)}`, req.body.signature, primaryAddress)
+        ) {
 
             const account = await getByPrimaryAddress(primaryAddress)
             console.log("🚀 ~ file: auth.js ~ line 43 ~ account", account)
