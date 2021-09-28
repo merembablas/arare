@@ -32,7 +32,7 @@ export default {
         '~/plugins/persistedState.client.js',
         '~/plugins/formatter.client.js',
         '~/plugins/nuchain.client.js',
-        '~/plugins/arare.server.js',
+        // '~/plugins/arare.server.js',
         '~/plugins/arare.client.js'
     ],
 
