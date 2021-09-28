@@ -1,13 +1,13 @@
 
 
-const { Router } = require('express')
-const validator = require('express-validator')
 // const Account = require('./models/account');
-import { Account, getById as getAccountById } from './models/account'
-const NftItem = require('./models/Item');
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
+import { Account } from './models/account'
+const { Router } = require('express')
+const validator = require('express-validator')
+const NftItem = require('./models/Item');
 
 const router = Router()
 
@@ -80,7 +80,7 @@ const getItem = [
 const popular = [
     validator.param('offset', 'Invalid offset').optional().isNumeric(),
     validator.param('limit', 'Invalid limit').optional().isNumeric(),
-    async (req, res) => {
+    (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.mapped() })

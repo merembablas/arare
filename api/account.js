@@ -1,14 +1,14 @@
 
 
+// const Account = require('./models/Account');
+import { Types } from 'mongoose'
+import ItemMapper from '../lib/ItemMapper'
+import { accountToApiType } from '../lib/AccountUtil'
+import { Account, getById as getAccountById, getByPrimaryAddress } from './models/account'
+
 const { Router } = require('express')
 const validator = require('express-validator')
-// const Account = require('./models/Account');
-import { Account, getById as getAccountById, getByPrimaryAddress } from './models/account'
 const NftItem = require('./models/Item');
-import ItemMapper from '../lib/ItemMapper'
-
-import { accountToApiType } from '../lib/AccountUtil'
-import { Types } from 'mongoose'
 
 const router = Router()
 
@@ -77,8 +77,11 @@ const items = [
         }
 
         Account.findById(req.params.accountId, (err, acc) => {
+            if (err) {
+                return res.status(500).json({ error: "Cannot connect to database" })
+            }
             if (!acc) {
-                return res.status(404).json({ errors: "Not found" })
+                return res.status(404).json({ error: "Not found" })
             }
             // let ownerAddress = accountToApiType(acc).prefixedAddress
             // console.log("🚀 ~ file: account.js ~ line 95 ~ Account.findOne ~ ownerAddress", ownerAddress)
