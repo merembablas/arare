@@ -7,6 +7,7 @@ import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
 import { Account } from './models/account'
 import { isAuthenticated } from './auth_checker'
 import { getUtcSeconds } from '../lib/TimeUtil'
+import { sanitizeDoc } from '../lib/sanitizer'
 
 const { Router } = require('express')
 const validator = require('express-validator')
@@ -145,6 +146,7 @@ const popular = [
 ]
 
 const histories = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
     validator.query('offset', 'Invalid offset').default('0').isInt(),
     validator.query('limit', 'Invalid limit').default('10').isInt(),
     (req, res) => {
@@ -153,20 +155,19 @@ const histories = [
             return res.status(400).json({ errors: errors.mapped() })
         }
 
-        ItemHistory.find({}, async (err, items) => {
-            if (err) {
-                return res.status(500).json({ errors: "Cannot get items" })
-            }
-            const result = await Promise.all(items.map(async (item) => {
-                // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
-                const creator = await Account.findById(item.creatorId).exec()
-                return ItemMapper(item, accountToApiType(creator))
-            }))
-            return res.json({
-                error: null,
-                result
+        const objectId = req.params.id
+
+        ItemHistory.find({ objectId })
+            .sort({ timestamp: -1 })
+            .exec(async (err, items) => {
+                if (err) {
+                    return res.status(500).json({ errors: "Cannot get item history" })
+                }
+                return res.json({
+                    error: null,
+                    result: items.map(sanitizeDoc)
+                })
             })
-        })
     }
 ]
 

@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center space-x-2">
+    <div v-if="itemValue && itemValue > 0" class="flex items-center space-x-2">
       <svg
         width="16"
         height="16"
@@ -76,7 +76,9 @@
           fill="white"
         />
       </svg>
-      <div class="text-sm" style="color: #777d90">30 ARA</div>
+      <div class="text-sm" style="color: #777d90">
+        {{ itemValue }}
+      </div>
     </div>
   </div>
 </template>
@@ -87,7 +89,8 @@ export default {
     ping: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
     time: { type: String, required: true },
-    baseColor: { type: String, default: '#0D67E6' }
+    baseColor: { type: String, default: '#0D67E6' },
+    itemValue: { type: String, default: null }
   }
 }
 </script>
