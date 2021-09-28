@@ -56,7 +56,9 @@
       <div class="text-sm">
         <div>
           <slot></slot>
-          <div class="pt-2 text-gray-400">{{ time }}</div>
+          <div class="pt-2 text-gray-400" :title="$moment(time)">
+            {{ $moment(time).fromNow() }}
+          </div>
         </div>
       </div>
     </div>

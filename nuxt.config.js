@@ -51,7 +51,8 @@ export default {
         // https://go.nuxtjs.dev/eslint
         ['@nuxtjs/eslint-module', { fix: true }],
         // https://go.nuxtjs.dev/tailwindcss
-        '@nuxtjs/tailwindcss'
+        '@nuxtjs/tailwindcss',
+        '@nuxtjs/moment'
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
@@ -76,6 +77,10 @@ export default {
         manifest: {
             lang: 'en'
         }
+    },
+
+    moment: {
+        locales: ['id']
     },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
