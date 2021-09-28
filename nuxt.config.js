@@ -16,6 +16,7 @@ export default {
     },
 
     env: {
+        baseUrl: process.env.BASE_URL || 'http://localhost:3000',
         nuchainEndpoint: process.env.NUCHAIN_ENDPOINT,
         baseUploadUrl: process.env.BASE_UPLOAD_URL,
         uploadDir: process.env.UPLOAD_DIR,

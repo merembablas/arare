@@ -3,7 +3,7 @@
 
 // const itemStore = { ...mapMutations("items", ["setMyItems"]) }
 
-const baseEndpoint = '/api'
+const baseEndpoint = `${process.env.baseUrl}/api`
 
 export default ({ $axios, store }, inject) => {
     const methods = {

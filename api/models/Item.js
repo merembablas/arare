@@ -10,7 +10,13 @@ const Item = new Schema({
     objectType: { type: String, required: true },
     fileExtension: { type: String }, // optional
     ownerAddress: { type: String, required: true }, // crypto address
-    creatorId: { type: String, required: true }
+    creatorId: { type: String, required: true },
+    mint: { type: Object, default: null }, // mint information, like when the item is mint, will be set to null if not mint yet
+    likes: { type: Number, required: true, default: 0 },
+    value: { type: Number, required: true, default: 0 },
+    verified: { type: Boolean, required: true, default: false },
+    serialNumber: { type: Number, required: true, default: 1 },
+    totalSupply: { type: Number, required: true, default: 1 }
 });
 
 const NftItem = mongoose.models.Item || mongoose.model('Item', Item)

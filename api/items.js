@@ -8,16 +8,19 @@ import { Account } from './models/account'
 const { Router } = require('express')
 const validator = require('express-validator')
 const NftItem = require('./models/Item');
+const ItemHistory = require('./models/ItemHistory');
 
 const router = Router()
 
 const mint = [
     validator.body('name', 'Please enter name').isLength({ min: 1 }),
     validator.body('description', 'Please enter description').isLength({ min: 1 }),
-    validator.body('royalties', 'Please enter royalties').isLength({ min: 1 }),
+    validator.body('royalties', 'Please enter royalties').isDecimal({ min: 0, max: 90 }),
     validator.body('count', 'Please enter count').isLength({ min: 1 }),
     validator.body('hash', 'No hash').isLength({ min: 1 }),
-    (req, res) => {
+    validator.body('serialNumber', 'Invalid serial number').default('1').isInt({ min: 1, max: 100 }),
+    validator.body('totalSupply', 'Invalid total supply').default('1').isInt({ min: 1, max: 100 }),
+    async (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.mapped() })
@@ -33,20 +36,50 @@ const mint = [
             fileExtension: req.body.fileExtension,
             ownerAddress: req.body.ownerAddress,
             creatorId: req.body.creatorId,
+            mint: null,
+            likes: 0,
+            value: 0,
+            verified: false,
+            serialNumber: req.body.serialNumber,
+            totalSupply: req.body.totalSupply,
         })
 
-        item.save((err, itemResult) => {
-            console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ err", err)
-            console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ itemResult", itemResult)
-            // if (err) {
-            //     return res.status(500).json({ error: err, message: "Cannot save item into db" })
-            // }
+        try {
+
+            let createdItem = await item.save()
+            console.log("🚀 ~ file: items.js ~ line 48 ~ createdItem", createdItem)
+            //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ err", err)
+            //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ itemResult", itemResult)
+
+            //     return res.json({
+            //         error: null,
+            //         id: itemResult._id,
+            //         hash: itemResult.hash,
+            //     })
+            // })
+
+            // @TODO: pastikan mint dulu ke blockchain baru
+            //        tambahkan history
+            const itemHistory = new ItemHistory({
+                activity: 'mint',
+                objectId: `${createdItem._id}`,
+                initiatorId: req.body.creatorId,
+                initiatorName: req.body.creatorName,
+                value: 0,
+                timestamp: new Date().getTime(),
+                meta: {}
+            })
+
+            let _ = await itemHistory.save()
+
             return res.json({
                 error: null,
-                id: itemResult._id,
-                hash: itemResult.hash,
+                result: createdItem
             })
-        })
+        } catch (err) {
+            console.log("🚀 ~ file: items.js ~ line 79 ~ err", err)
+            return res.status(500).json({ error: "Cannot save data" })
+        }
     }
 ]
 
@@ -103,12 +136,39 @@ const popular = [
     }
 ]
 
+const histories = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+
+        ItemHistory.find({}, async (err, items) => {
+            if (err) {
+                return res.status(500).json({ errors: "Cannot get items" })
+            }
+            const result = await Promise.all(items.map(async (item) => {
+                console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                const creator = await Account.findById(item.creatorId).exec()
+                return ItemMapper(item, accountToApiType(creator))
+            }))
+            return res.json({
+                error: null,
+                result
+            })
+        })
+    }
+]
+
 // Mint new item
 router.post('/item/mint', mint)
 
 router.get('/item/popular', popular)
 
 router.get('/items/:id', getItem)
+router.get('/items/:id/histories', histories)
 
 module.exports = router
 

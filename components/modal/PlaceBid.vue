@@ -20,8 +20,8 @@
               by
               <ClickableName
                 class="text-sm"
-                name="Galam Zulkifli"
-                link-to="/creator/galam"
+                :name="item.creator.name"
+                :link-to="`/user/${item.creator.id}`"
               />
             </p>
           </div>
