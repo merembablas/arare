@@ -1,6 +1,6 @@
 <template>
   <div class="p-10 w-2/3">
-    <Button
+    <!-- <Button
       text="Add"
       :icon-mode="true"
       class="w-24 absolute"
@@ -22,7 +22,7 @@
           />
         </svg>
       </template>
-    </Button>
+    </Button> -->
     <h2>Items: 300</h2>
     <DashboardItemsTable />
   </div>

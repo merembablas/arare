@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <TopCreators :creators="creators" />
+    <TopCreators />
 
     <PopularItems />
 
@@ -32,9 +32,7 @@
 <script>
 export default {
   data() {
-    return {
-      creators: this.$dummy.generateUsers(5)
-    }
+    return {}
   }
 }
 </script>

@@ -36,6 +36,9 @@ export default ({ $axios, store }, inject) => {
         },
         fetchPopularItems() {
             return $axios.get(`${baseEndpoint}/item/popular`)
+        },
+        fetchPopularCreators(offset, limit) {
+            return $axios.get(`${baseEndpoint}/creator/popular?offset=${offset}&limit=${limit}`)
         }
     }
     inject('arare', methods)

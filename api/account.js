@@ -99,6 +99,25 @@ const items = [
     }
 ]
 
+const popular = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+
+        // @TODO: add filtering
+        Account.find({}, (err, accounts) => {
+            if (err) {
+                return res.status(500).json({ error: err })
+            }
+            return res.json({ error: null, result: accounts.map(accountToApiType) })
+        })
+    }
+]
+
 // Register account
 router.post('/account/register', register)
 
@@ -107,6 +126,8 @@ router.get('/accounts/:id', accountInfo)
 
 // Get user's items
 router.get('/accounts/:accountId/items', items)
+
+router.get('/creator/popular', popular)
 
 module.exports = router
 
