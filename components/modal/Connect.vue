@@ -115,6 +115,10 @@ export default {
       this.$emit('input', this.visible)
     },
     async connectMetamask() {
+      if (typeof window.ethereum === 'undefined') {
+        alert('Metamask not detected. Please install Metamask first')
+        return
+      }
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts'
       })
@@ -137,6 +141,12 @@ export default {
         return
       }
       this.accounts = await this.$nuchainJs.web3Accounts()
+      if (this.accounts.length === 0) {
+        alert(
+          'You have no nuchain accounts, please use Nuchain App extension to connect'
+        )
+        return
+      }
       // this.addresses = accounts.map((acc) => acc.address)
       this.page = 2
     },
