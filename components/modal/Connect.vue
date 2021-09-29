@@ -78,6 +78,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+const Web3 = require('web3')
 export default {
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
@@ -118,8 +119,13 @@ export default {
         method: 'eth_requestAccounts'
       })
       if (accounts && accounts[0]) {
-        this.setCurrentEthAccount(accounts[0])
-        this.close()
+        this.authenticateMetamask(accounts[0], ({ error }) => {
+          if (error) {
+            return alert('Cannot authenticate Metamask')
+          }
+          this.setCurrentEthAccount(accounts[0])
+          this.close()
+        })
       } else {
         alert('Cannot connect :(')
       }
@@ -152,14 +158,35 @@ export default {
         alert('Cannot connect :(')
       }
     },
-    authenticate(account, cb) {
-      // range to 30 seconds
+    getOTPCode() {
       const duration = Math.floor(new Date().getTime() / 1000 / 30)
       console.log(
         '🚀 ~ file: Connect.vue ~ line 152 ~ authenticate ~ otp',
         duration
       )
-      const message = `ch:${duration}`
+      return `ch:${duration}`
+    },
+    authenticateMetamask(account, cb) {
+      const message = this.getOTPCode()
+      const web3 = new Web3(window.ethereum)
+      const hash = web3.utils.sha3(message)
+      web3.eth.personal.sign(hash, account).then((signature) => {
+        this.$arare
+          .authenticateMetamask(account, signature)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return alert('Cannot authenticate eth account')
+            }
+            const token = result
+            this.setJwtToken(token)
+            const rv = { error, token }
+            cb(rv)
+          })
+      })
+    },
+    authenticate(account, cb) {
+      // range to 30 seconds
+      const message = this.getOTPCode()
       this.$nuchain.signer.sign(account, message).then((signature) => {
         // get jwt token from server by sending our signature
         this.$arare

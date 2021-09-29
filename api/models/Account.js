@@ -8,7 +8,7 @@ const AccountModel = new Schema({
     pic: { type: String }, // optional
     primaryAddress: { type: String, required: true, index: { unique: true } },
     ethAddress: { type: String }, // crypto address
-    nuchainAddress: { type: String, required: true }, // crypto address
+    nuchainAddress: { type: String }, // crypto address
     isCreator: { type: Boolean, required: true, default: false }
 });
 

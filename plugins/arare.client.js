@@ -43,6 +43,9 @@ export default ({ $axios, store }, inject) => {
         authenticate(accountAddress, signature) {
             return $axios.post(`${baseEndpoint}/auth/authenticate`, { accountAddress, signature })
         },
+        authenticateMetamask(accountAddress, signature) {
+            return $axios.post(`${baseEndpoint}/auth/authenticate-metamask`, { accountAddress, signature })
+        },
         authRefreshToken() {
             return $axios.post('/api/auth/refresh-token')
         }
