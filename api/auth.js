@@ -1,6 +1,6 @@
 
+// import { accountToApiType } from '../lib/AccountUtil'
 import { getByPrimaryAddress } from './models/Account'
-import { accountToApiType } from '../lib/AccountUtil'
 import { isAuthenticated } from './auth_checker'
 const jwt = require('jsonwebtoken');
 

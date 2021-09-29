@@ -1,5 +1,6 @@
 const express = require('express')
-const _ = require('./db')
+
+require('./db')
 
 const app = express()
 

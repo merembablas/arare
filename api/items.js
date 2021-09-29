@@ -2,10 +2,10 @@
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
-import { Account } from './models/Account'
-import { isAuthenticated } from './auth_checker'
 import { getUtcSeconds } from '../lib/TimeUtil'
 import { sanitizeDoc } from '../lib/sanitizer'
+import { Account } from './models/Account'
+import { isAuthenticated } from './auth_checker'
 
 const { Router } = require('express')
 const validator = require('express-validator')
@@ -53,7 +53,7 @@ const mint = [
 
         try {
 
-            let createdItem = await item.save()
+            const createdItem = await item.save()
             console.log("🚀 ~ file: items.js ~ line 48 ~ createdItem", createdItem)
             //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ err", err)
             //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ itemResult", itemResult)
@@ -77,7 +77,7 @@ const mint = [
                 meta: {}
             })
 
-            let _ = await itemHistory.save()
+            await itemHistory.save()
 
             return res.json({
                 error: null,
@@ -157,7 +157,7 @@ const histories = [
 
         ItemHistory.find({ objectId })
             .sort({ timestamp: -1 })
-            .exec(async (err, items) => {
+            .exec((err, items) => {
                 if (err) {
                     return res.status(500).json({ errors: "Cannot get item history" })
                 }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const OwnershipHistory = new Schema({
+const OwnershipHistoryModel = new Schema({
     initiatorId: { type: String, required: true },
     initiatorName: { type: String, required: true },
     timestamp: { type: Number, required: true },

@@ -59,7 +59,7 @@ const signer = {
     async sign(account, message) {
         const injector = await web3FromSource(account.meta.source)
         const signRaw = injector?.signer?.signRaw
-        if (!!signRaw) {
+        if (signRaw) {
             const { signature } = await signRaw({
                 address: account.address,
                 data: stringToHex(message),

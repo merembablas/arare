@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Comment = new Schema({
+const CommentModel = new Schema({
     objectId: { type: String, required: true },
     initiatorId: { type: String, required: true },
     initiatorName: { type: String, required: true },
