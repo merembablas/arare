@@ -11,7 +11,7 @@
       class="flex flex-col h-screen items-center pt-10 justify-top"
     >
       <client-only>
-        <h1>Loading...</h1>
+        <LoadingBig />
       </client-only>
     </div>
 

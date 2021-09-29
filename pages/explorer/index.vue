@@ -2,16 +2,20 @@
   <div class="p-5 relative w-full md:w-2/3">
     <!-- FEATURED -->
     <div class="flex flex-col">
-      <div class="p-5 rounded-xl w-full h-64 bg-blue-100">
+      <!-- <div class="p-5 rounded-xl w-full h-64 bg-blue-100">
         <h2>Featured</h2>
       </div>
 
       <div class="p-5 rounded-xl w-full h-64 bg-yellow-100 mt-5">
         <h2>Hot</h2>
-      </div>
+      </div> -->
 
-      <div class="p-5 rounded-xl w-full h-64 bg-green-100 mt-5">
+      <div class="p-5 rounded-xl w-full bg-green-100 mt-5">
         <h2>Latest</h2>
+        <LoadingBig v-if="!loaded" />
+        <div v-else class="justify-start flex flex-wrap min-w-full">
+          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+        </div>
       </div>
     </div>
   </div>
@@ -24,25 +28,24 @@ export default {
   layout: 'explorer',
   data() {
     return {
+      loaded: false,
       balance: '-',
-      creators: this.$dummy.generateUsers(5)
+      latestItems: []
     }
   },
-  // computed: {
-  // account() {
-  //   return this.$store.state.nuchain.currentAccount
-  // }
-  // },
-  watch: {
-    '$store.state.nuchain.currentAccount'(account) {
-      this.fetchBalance()
-    },
-    '$store.state.eth.currentAccount'(account) {
-      this.fetchBalance()
-    }
-  },
-  async mounted() {
-    await this.fetchBalance()
+  fetchOnServer: false,
+  fetchKey: 'dashboardIndex',
+  async fetch() {
+    this.items = await this.$arare
+      .fetchPopularItems()
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          alert(error)
+          return
+        }
+        return result
+      })
+    this.loaded = true
   }
 }
 </script>
