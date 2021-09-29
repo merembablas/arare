@@ -37,6 +37,7 @@ export default {
         return this.$store.state.nuchain.hasBalance
       }
       if (this.isMetamask) {
+        // @TODO: add balance check here
         return true
       }
       return false

@@ -80,10 +80,19 @@ const authenticate = [
     }
 ]
 
-
+/**
+ * Verifikasi eth compatible digital signature
+ * yang biasanya diinisiasi oleh Metamask.
+ * @param {Number} otp kode otp
+ * @param {String} signature digital signature in hex
+ * @param {String} address eth compatible address
+ * @returns Boolean, true apabila berhasil diverifikasi
+ */
 function verifyMetamaskSignature(otp, signature, address) {
     // keccak == sha3
     const msg = ethUtil.keccak(Buffer.from(`ch:${otp}`))
+    const msg2 = ethUtil.keccak(Buffer.from(`ch:${(otp - 1)}`))
+    const msg3 = ethUtil.keccak(Buffer.from(`ch:${(otp + 1)}`))
 
     const { v, r, s } = ethUtil.fromRpcSig(signature)
 
@@ -95,11 +104,22 @@ function verifyMetamaskSignature(otp, signature, address) {
     const prefixedMsg = ethUtil.keccak(
         Buffer.concat([prefix, Buffer.from(String(msg.length)), msg])
     );
+    const prefixedMsg2 = ethUtil.keccak(
+        Buffer.concat([prefix, Buffer.from(String(msg2.length)), msg2])
+    );
+    const prefixedMsg3 = ethUtil.keccak(
+        Buffer.concat([prefix, Buffer.from(String(msg3.length)), msg3])
+    );
 
     const pub = ethUtil.ecrecover(prefixedMsg, v, r, s)
-    const signingAddress = ethUtil.bufferToHex(ethUtil.pubToAddress(pub))
+    const pub2 = ethUtil.ecrecover(prefixedMsg2, v, r, s)
+    const pub3 = ethUtil.ecrecover(prefixedMsg3, v, r, s)
 
-    return signingAddress === address
+    const signingAddress = ethUtil.bufferToHex(ethUtil.pubToAddress(pub))
+    const signingAddress2 = ethUtil.bufferToHex(ethUtil.pubToAddress(pub2))
+    const signingAddress3 = ethUtil.bufferToHex(ethUtil.pubToAddress(pub3))
+
+    return signingAddress === address || signingAddress2 === address || signingAddress3 === address
 }
 
 const authenticateMetamask = [
