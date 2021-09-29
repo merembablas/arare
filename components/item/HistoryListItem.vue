@@ -90,9 +90,9 @@ export default {
   props: {
     ping: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
-    time: { type: String, required: true },
+    time: { type: Number, required: true },
     baseColor: { type: String, default: '#0D67E6' },
-    itemValue: { type: String, default: null }
+    itemValue: { type: Number, default: null }
   }
 }
 </script>

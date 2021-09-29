@@ -10,6 +10,7 @@ const validator = require('express-validator')
 const { decodeAddress, signatureVerify } = require('@polkadot/util-crypto');
 const { u8aToHex } = require('@polkadot/util');
 
+const ethUtil = require('ethereumjs-util')
 const config = require('./config')
 
 const router = Router()
@@ -79,13 +80,10 @@ const authenticate = [
     }
 ]
 
-const ethUtil = require('ethereumjs-util')
 
-async function verifyMetamaskSignature(otp, signature, address) {
+function verifyMetamaskSignature(otp, signature, address) {
     // keccak == sha3
     const msg = ethUtil.keccak(Buffer.from(`ch:${otp}`))
-
-    let st = signature.substring(2)
 
     const { v, r, s } = ethUtil.fromRpcSig(signature)
 
@@ -119,7 +117,7 @@ const authenticateMetamask = [
         const primaryAddress = req.body.accountAddress
         console.log("🚀 ~ file: auth.js ~ line 36 ~ primaryAddress", primaryAddress)
 
-        if (await verifyMetamaskSignature(otp, req.body.signature, primaryAddress)) {
+        if (verifyMetamaskSignature(otp, req.body.signature, primaryAddress)) {
 
             const account = await getByPrimaryAddress(primaryAddress)
             console.log("🚀 ~ file: auth.js ~ line 43 ~ account", account)

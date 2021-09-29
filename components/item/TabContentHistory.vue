@@ -1,5 +1,6 @@
 <template>
   <div class="history flex flex-col pt-10">
+    <LoadingSmall v-if="!loaded" />
     <!-- <ItemHistoryListItem :ping="true" :active="true" time="28 April 2021">
       <div class="flex">
         <span>Bought by</span>
@@ -61,6 +62,7 @@
 export default {
   props: { item: { type: Object, required: true } },
   data: () => ({
+    loaded: false,
     histories: []
   }),
   mounted() {
@@ -71,7 +73,12 @@ export default {
           return
         }
         this.histories = result
+        console.log(
+          '🚀 ~ file: TabContentHistory.vue ~ line 74 ~ .then ~ result',
+          result
+        )
       })
+      .finally(() => (this.loaded = true))
   }
 }
 </script>
