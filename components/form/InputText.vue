@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 flex flex-col items-start justify-start w-full">
+  <div class="flex flex-col items-start justify-start w-full">
     <div>{{ name }}:</div>
 
     <input
@@ -125,6 +125,9 @@ export default {
       } else {
         return true
       }
+    },
+    clear() {
+      this.value = ''
     }
   }
 }

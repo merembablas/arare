@@ -2,9 +2,10 @@
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
-import { getUtcSeconds } from '../lib/TimeUtil'
+import { getUtcSeconds, getUtcNow } from '../lib/TimeUtil'
 import { sanitizeDoc } from '../lib/sanitizer'
-import { Account } from './models/Account'
+import { Account, getById as getAccountById } from './models/Account'
+import { Comment } from './models/Comment'
 import { isAuthenticated } from './auth_checker'
 
 const { Router } = require('express')
@@ -169,6 +170,69 @@ const histories = [
     }
 ]
 
+const itemToApiType = async (item, creatorId) => {
+    let doc = sanitizeDoc(item)
+    doc.creator = accountToApiType(await getAccountById(creatorId))
+    return doc
+}
+
+
+const comments = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+
+        const objectId = req.params.id
+
+        Comment.find({ objectId })
+            .sort({ timestamp: -1 })
+            .limit(5)
+            .exec(async (err, items) => {
+                if (err) {
+                    console.log("🚀 ~ file: items.js ~ line 188 ~ .exec ~ err", err)
+                    return res.json({ error: "Cannot get item's comment" })
+                }
+                return res.json({
+                    error: null,
+                    result: await Promise.all(items.map(item => itemToApiType(item, item.initiatorId)))
+                })
+            })
+    }
+]
+
+const addComments = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
+    validator.body('message', 'Invalid message').isLength({ min: 3, max: 160 }),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped().message.msg })
+        }
+
+        let comment = new Comment({
+            objectId: req.params.id,
+            initiatorId: req.currentUser.id,
+            initiatorName: req.currentUser.name,
+            timestamp: getUtcNow(),
+            message: req.body.message,
+            meta: {}
+        })
+
+        comment.save(async (err, result) => {
+            if (err) {
+                console.log("🚀 ~ file: items.js ~ line 219 ~ comment.save ~ err", err)
+                return res.json({ error: "Cannot write comment" })
+            }
+            return res.json({ error: null, result: await itemToApiType(result, req.currentUser.id) })
+        })
+    }
+]
+
 // Mint new item
 router.post('/item/mint', isAuthenticated, mint)
 
@@ -176,6 +240,8 @@ router.get('/item/popular', popular)
 
 router.get('/items/:id', getItem)
 router.get('/items/:id/histories', histories)
+router.get('/items/:id/comments', comments)
+router.post('/items/:id/comments', isAuthenticated, addComments)
 
 module.exports = router
 

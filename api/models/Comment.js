@@ -6,10 +6,10 @@ const CommentModel = new Schema({
     initiatorId: { type: String, required: true },
     initiatorName: { type: String, required: true },
     timestamp: { type: Number, required: true },
-    message: { type: Number, required: true },
+    message: { type: String, required: true },
     meta: { type: Object, default: null }
 });
 
 const Comment = mongoose.models.Comment || mongoose.model('Comment', CommentModel)
 
-module.exports = Comment;
+export { Comment }

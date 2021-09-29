@@ -17,6 +17,12 @@ export default {
     this.setDisabled(this.disabled)
   },
   methods: {
+    clear() {
+      for (let i = 0; i < this.$children.length; i++) {
+        const item = this.$children[i]
+        item.clear()
+      }
+    },
     toJSON() {
       const encoded = {}
       for (let i = 0; i < this.$children.length; i++) {
