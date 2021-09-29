@@ -1,6 +1,6 @@
 <template>
   <div class="p-10 w-2/3 h-full">
-    <div class="grid grid-cols-3 gap-4 h-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
       <DashboardStatItem name="Balance" :value="balance" />
       <DashboardStatItem name="Collections" value="5" />
       <DashboardStatItem name="Items" value="38999" />
