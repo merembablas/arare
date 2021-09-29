@@ -128,6 +128,7 @@ export default {
             return alert('Cannot authenticate Metamask')
           }
           this.setCurrentEthAccount(accounts[0])
+          this.fetchAccountInfo(accounts[0])
           this.close()
         })
       } else {
