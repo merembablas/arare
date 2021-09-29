@@ -46,7 +46,7 @@
           d="M15 19l-7-7 7-7"
         />
       </svg>
-      <small class="text-gray-400">{{ $moment(time * 1000).fromNow() }}</small>
+      <small class="text-gray-400">{{ $moment(time).fromNow() }}</small>
       <div class="message">
         <p>
           {{ message }}
