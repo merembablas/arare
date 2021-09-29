@@ -171,7 +171,7 @@ const histories = [
 ]
 
 const itemToApiType = async (item, creatorId) => {
-    let doc = sanitizeDoc(item)
+    const doc = sanitizeDoc(item)
     doc.creator = accountToApiType(await getAccountById(creatorId))
     return doc
 }
@@ -214,7 +214,7 @@ const addComments = [
             return res.json({ error: errors.mapped().message.msg })
         }
 
-        let comment = new Comment({
+        const comment = new Comment({
             objectId: req.params.id,
             initiatorId: req.currentUser.id,
             initiatorName: req.currentUser.name,
