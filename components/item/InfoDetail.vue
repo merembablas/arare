@@ -34,11 +34,7 @@
       </ItemFieldInfo>
 
       <div class="mt-10">
-        <Button
-          text="Place Bid"
-          :icon-mode="true"
-          @click="placeBidDialogVisible = !placeBidDialogVisible"
-        >
+        <Button text="Place Bid" :icon-mode="true" @click="btnPlaceBidClicked">
           <template #icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -87,6 +83,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: { item: { type: Object, required: true } },
   data() {
@@ -97,6 +94,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('user', ['getCurrentIdentity']),
     onBidPlaced(bid) {
       if (this.currentTab !== 'Bids') {
         this.currentTab = 'Bids'
@@ -104,6 +102,16 @@ export default {
         setTimeout(() => this.$refs.bidBox.add(bid), 500)
       }
       this.$refs.itemValue.theValue = `${bid.value} ARA`
+    },
+    btnPlaceBidClicked() {
+      if (!this.getCurrentIdentity()) {
+        alert(
+          'Please set the identity in dashboard > profile first for bidding'
+        )
+        this.$router.push('/dashboard/profile')
+        return
+      }
+      this.placeBidDialogVisible = !this.placeBidDialogVisible
     }
   }
 }

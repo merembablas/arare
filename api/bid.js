@@ -4,6 +4,8 @@ import { sanitizeDoc } from '../lib/sanitizer'
 import { isAuthenticated } from './auth_checker'
 import { NftItem, getById as getNftItemById } from './models/Item';
 
+const db = require('./db')
+
 const { Router } = require('express')
 const validator = require('express-validator')
 const Bid = require('./models/Bid');
@@ -58,30 +60,43 @@ const bidItem = [
             }
         }
 
+        const session = await db.startSession()
 
-        const bid = new Bid({
-            itemId: req.body.itemId,
-            initiatorId: req.currentUser.id,
-            initiatorName: req.currentUser.name,
-            timestamp: getUtcNow(),
-            value: req.body.value,
-            approved: false,
-            tokenType: req.body.tokenType,
-            meta: {}
-        })
+        await session.withTransaction(async () => {
 
-        bid.save(async (err, result) => {
-            console.log("🚀 ~ file: bid.js ~ line 45 ~ bid.save ~ result", result)
-            if (err) {
-                return res.json({ error: "Cannot bid" })
-            }
+            const bid = new Bid({
+                itemId: req.body.itemId,
+                initiatorId: req.currentUser.id,
+                initiatorName: req.currentUser.name,
+                timestamp: getUtcNow(),
+                value: req.body.value,
+                approved: false,
+                tokenType: req.body.tokenType,
+                meta: {}
+            })
+
+            const newBid = await bid.save({ session })
 
             // update item value
             // item.value = result.value
-            await NftItem.updateOne({ itemId: item.id }, { value: result.value })
+            await NftItem.updateOne({ _id: item.id }, { value: newBid.value }, { session })
 
-            return res.json({ error: null, result: bidToApiType(result) })
+            return res.json({ error: null, result: bidToApiType(newBid) })
+
+            // bid.save(async (err, result) => {
+            //     console.log("🚀 ~ file: bid.js ~ line 45 ~ bid.save ~ result", result)
+            //     if (err) {
+            //         return res.json({ error: "Cannot bid" })
+            //     }
+
+            //     // update item value
+            //     // item.value = result.value
+            //     await NftItem.updateOne({ _id: item.id }, { value: result.value })
+
+            //     return res.json({ error: null, result: bidToApiType(result) })
+            // })
         })
+
     }
 ]
 

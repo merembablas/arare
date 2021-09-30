@@ -104,7 +104,6 @@ const getItem = [
             // console.log("🚀 ~ file: items.js ~ line 55 ~ NftItem.findOne ~ item", item)
             if (err) {
                 console.log("🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err", err)
-                alert("Cannot fetch data")
                 return res.status(500).json({ error: err })
             }
             if (!item) {
