@@ -67,7 +67,9 @@
       :item="item"
     />
     <div v-show="currentTab == 'Ownership'" class="p-5">Ownership</div>
-    <div v-show="currentTab == 'Bids'" class="p-5">Bids</div>
+    <div v-show="currentTab == 'Bids'" class="p-5">
+      <LazyBidBox v-if="currentTab == 'Bids'" :item="item" />
+    </div>
     <div v-show="currentTab == 'Comments'" class="p-5">
       <LazyCommentBox v-if="currentTab == 'Comments'" :item="item" />
     </div>
