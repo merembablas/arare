@@ -26,7 +26,7 @@
 
         <SearchBox class="ml-2" />
 
-        <div class="flex space-x-3 justify-end pl-2 md:space-x-16 items-center">
+        <div class="flex space-x-2 justify-end pl-2 items-center">
           <!-- <NotifIcon :count="0" /> -->
           <ExploreButton />
           <client-only>
