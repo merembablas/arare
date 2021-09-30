@@ -1,48 +1,65 @@
 @font-face {
-  font-family: 'RobotoSlab';
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-  src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
+    font-family : 'RobotoSlab';
+    font-weight : normal;
+    font-style  : normal;
+    font-display: swap;
+    src         : url('~assets/fonts/RobotoSlab.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'RobotoSlab bold';
-  font-weight: 500;
-  font-display: swap;
-  src: url('~assets/fonts/RobotoSlab.ttf') format('truetype');
+    font-family : 'RobotoSlab bold';
+    font-weight : 500;
+    font-display: swap;
+    src         : url('~assets/fonts/RobotoSlab.ttf') format('truetype');
 }
 
 // @import 'variables.less';
 // @import 'utils.less';
 
 h1 {
-  font-size: 2em;
-  line-height: 1em;
+    font-size  : 2em;
+    line-height: 1em;
 }
 
 p {
-  color: @text-color-2;
+    color: @text-color-2;
 }
 
 .link-color {
-  color: @link-color;
+    color: @link-color;
 }
 
 body {
-  font-family: 'RobotoSlab', 'Verdana', 'Tahoma', 'Courier';
+    font-family: 'RobotoSlab', 'Verdana', 'Tahoma', 'Courier';
 }
 
 .text-color-2 {
-  color: @text-color-2;
+    color: @text-color-2;
 }
 
 .brand-color-blue {
-  color: @brand-color-blue;
+    color: @brand-color-blue;
 }
 
 .border {
-  height: 2px;
-  background-color: #cacaca;
-  margin-top: 2px;
+    height          : 2px;
+    background-color: #cacaca;
+    margin-top      : 2px;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color  : @text-color-3  !important;
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: red;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: red;
 }

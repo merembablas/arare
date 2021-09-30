@@ -54,26 +54,43 @@
       />
       <div class="p-2 border-r-2 border-t-2 border-b-2 rounded-r-xl">%</div>
     </div>
-
-    <input
-      v-if="type == 'numeric' && !multiLine"
-      ref="inputRef"
-      v-model="value"
-      type="text"
-      :class="`
-        p-2
+    <div class="flex flex-row">
+      <input
+        v-if="type == 'numeric' && !multiLine"
+        ref="inputRef"
+        v-model="value"
+        type="text"
+        :class="`
+        pl-5
+        pt-2
+        pb-2
         block
-        border-2 border-solid border-gray-300
+        border-l border-t border-b border-solid border-gray-400
         outline-none
         focus:outline-none
-        rounded-xl
-        w-full
+        rounded-l
         ${inSaving ? 'bg-gray-300' : ''}
         `"
-      :disabled="inSaving"
-      :placeholder="placeholder"
-      @keypress="onlyNumeric"
-    />
+        :disabled="inSaving"
+        :placeholder="placeholder"
+        @keypress="onlyNumeric"
+      />
+
+      <select
+        ref="selectRef"
+        v-model="selectValue"
+        class="
+          border-r border-t border-b border-solid border-gray-400
+          rounded-r
+          outline-none
+          focus:outline-none
+        "
+      >
+        <option v-for="item in selectItems" :key="item">
+          {{ item }}
+        </option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -88,12 +105,14 @@ export default {
     multiLine: { type: Boolean, default: false },
     autoFocus: { type: Boolean, default: false },
     type: { type: String, default: 'text' },
-    useKey: { type: String, default: null }
+    useKey: { type: String, default: null },
+    selectItems: { type: Array, default: () => ['-'] }
   },
   data() {
     return {
       inSaving: false,
-      value: ''
+      value: '',
+      selectValue: this.selectItems[0]
     }
   },
   mounted() {
@@ -107,9 +126,9 @@ export default {
     },
     getValue() {
       if (this.type === 'numeric' || this.type === 'percentage') {
-        return parseFloat(this.value)
+        return `${parseFloat(this.value)} ${this.selectValue}`
       }
-      return this.value
+      return `${this.value} ${this.selectValue}`
     },
     setDisabled(state) {
       this.inSaving = state
