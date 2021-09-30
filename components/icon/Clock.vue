@@ -1,7 +1,7 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="h-6 w-6"
+    :class="`h-${size} w-${size}`"
     fill="none"
     viewBox="0 0 24 24"
     :stroke="color"
@@ -17,6 +17,9 @@
 
 <script>
 export default {
-  props: { color: { type: String, default: 'black' } }
+  props: {
+    color: { type: String, default: 'currentColor' },
+    size: { type: String, default: '6' }
+  }
 }
 </script>

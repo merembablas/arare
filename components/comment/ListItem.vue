@@ -24,7 +24,7 @@
         {{ creatorName }}
       </div>
     </div>
-    <div class="message-body flex flex-col p-5 relative w-full">
+    <div class="message-body flex flex-col p-3 rounded relative w-full">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 text-gray-400 absolute"
@@ -46,11 +46,14 @@
           d="M15 19l-7-7 7-7"
         />
       </svg>
-      <small class="text-gray-400">{{ $moment(time).fromNow() }}</small>
       <div class="message">
         <p>
           {{ message }}
         </p>
+      </div>
+      <div class="flex justify-start items-center space-x-1 text-gray-300">
+        <IconClock size="3" />
+        <small>{{ $moment(time).fromNow() }}</small>
       </div>
     </div>
   </div>
