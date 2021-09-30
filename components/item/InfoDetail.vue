@@ -103,7 +103,7 @@ export default {
       } else {
         setTimeout(() => this.$refs.bidBox.add(bid), 500)
       }
-      this.$refs.itemValue.theValue = bid.value
+      this.$refs.itemValue.theValue = `${bid.value} ARA`
     }
   }
 }
