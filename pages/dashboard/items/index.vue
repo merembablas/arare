@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10 w-2/3">
+  <div class="p-2 md:p-10 w-full md:w-2/3">
     <!-- <Button
       text="Add"
       :icon-mode="true"

@@ -5,9 +5,9 @@
       <thead>
         <tr>
           <th>Item</th>
-          <th>Popularity</th>
+          <th class="hidden md:block">Popularity</th>
           <th>Value</th>
-          <th>View</th>
+          <th class="hidden md:block">View</th>
         </tr>
       </thead>
       <tbody>
@@ -18,21 +18,25 @@
         >
           <td>
             <div class="flex items-center">
-              <img
-                style="width: 64px; height: 64px"
-                :src="`${baseUploadUrl}/${item.hash}${item.fileExtension}`"
-                alt="dummy"
-              />
-              <div class="ml-5">
+              <NuxtLink :to="`/items/${item.hash}`">
+                <img
+                  style="width: 64px; height: 64px"
+                  class="cursor-pointer"
+                  :src="`${baseUploadUrl}/${item.hash}${item.fileExtension}`"
+                  alt="dummy"
+                />
+              </NuxtLink>
+              <div class="ml-5 flex flex-col">
                 <NuxtLink :to="`/items/${item.hash}`">{{ item.name }}</NuxtLink>
+                <PopularityMeter class="md:hidden block" :star="3" :size="4" />
               </div>
             </div>
           </td>
-          <td>
+          <td class="hidden md:block">
             <PopularityMeter :star="3" />
           </td>
           <td>130 ARA</td>
-          <td class="flex">
+          <td class="hidden md:flex">
             <div>127</div>
             <IconEye class="ml-2" />
           </td>
