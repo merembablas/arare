@@ -3,10 +3,11 @@ import { Types } from 'mongoose'
 import ItemMapper from '../lib/ItemMapper'
 import { accountToApiType } from '../lib/AccountUtil'
 import { Account, getById as getAccountById, getByPrimaryAddress } from './models/Account'
+// const NftItem = require('./models/Item');
+import { NftItem } from './models/Item';
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const NftItem = require('./models/Item');
 
 const router = Router()
 

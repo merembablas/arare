@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="text-sm text-gray-500">Highest Bid:</div>
-        <div>30 ARA</div>
+        <div>{{ item.value }} ARA</div>
         <div class="text-sm text-gray-500">(Rp. 9.000.000,-)</div>
         <div
           class="mt-5 flex flex-col items-center justify-center content-center"
@@ -146,7 +146,7 @@ export default {
           alert(error)
           return
         }
-
+        this.$emit('bidPlaced', result)
         this.close()
       })
     }

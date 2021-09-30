@@ -21,4 +21,19 @@ const Item = new Schema({
 
 const NftItem = mongoose.models.Item || mongoose.model('Item', Item)
 
-module.exports = NftItem;
+
+// get account by it id
+function getById(objectId) {
+    return new Promise((resolve, reject) => {
+        return NftItem.findOne({ _id: objectId }, (err, item) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            return resolve(item)
+        })
+    })
+}
+
+
+export { NftItem, getById }

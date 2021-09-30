@@ -12,6 +12,12 @@
       </div>
 
       <ItemFieldInfo
+        ref="itemValue"
+        a-key="Value"
+        :value="`${itemValue} ARA`"
+      />
+
+      <ItemFieldInfo
         a-key="Owner"
         :value="item.creator.name"
         value-type="user"
@@ -52,7 +58,11 @@
         </Button>
       </div>
 
-      <ModalPlaceBid v-model="placeBidDialogVisible" :item="item" />
+      <ModalPlaceBid
+        v-model="placeBidDialogVisible"
+        :item="item"
+        @bidPlaced="onBidPlaced"
+      />
     </div>
 
     <!-- TABS -->
@@ -68,7 +78,7 @@
     />
     <div v-show="currentTab == 'Ownership'" class="p-5">Ownership</div>
     <div v-show="currentTab == 'Bids'" class="p-5">
-      <LazyBidBox v-if="currentTab == 'Bids'" :item="item" />
+      <LazyBidBox v-if="currentTab == 'Bids'" ref="bidBox" :item="item" />
     </div>
     <div v-show="currentTab == 'Comments'" class="p-5">
       <LazyCommentBox v-if="currentTab == 'Comments'" :item="item" />
@@ -82,7 +92,18 @@ export default {
   data() {
     return {
       placeBidDialogVisible: false,
-      currentTab: 'History'
+      currentTab: 'History',
+      itemValue: this.item.value
+    }
+  },
+  methods: {
+    onBidPlaced(bid) {
+      if (this.currentTab !== 'Bids') {
+        this.currentTab = 'Bids'
+      } else {
+        setTimeout(() => this.$refs.bidBox.add(bid), 500)
+      }
+      this.$refs.itemValue.theValue = bid.value
     }
   }
 }

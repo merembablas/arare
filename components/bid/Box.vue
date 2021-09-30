@@ -22,26 +22,32 @@ export default {
     bids: []
   }),
   mounted() {
-    this.$axios
-      .get(`/api/items/${this.item.id}/bids`)
-      .then(({ data: { error, result } }) => {
-        if (error) {
-          console.log(
-            '🚀 ~ file: Box.vue ~ line 34 ~ this.$axios.get ~ error',
-            error
-          )
-
-          return
-        }
-        this.bids = result
-      })
-      .finally(() => {
-        this.loaded = true
-      })
+    this.fetch()
   },
   methods: {
+    fetch() {
+      this.$axios
+        .get(`/api/items/${this.item.id}/bids`)
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            console.log(
+              '🚀 ~ file: Box.vue ~ line 34 ~ this.$axios.get ~ error',
+              error
+            )
+
+            return
+          }
+          this.bids = result
+        })
+        .finally(() => {
+          this.loaded = true
+        })
+    },
     onNewBid(bid) {
-      this.bids.push(bid)
+      this.add(bid)
+    },
+    add(bid) {
+      this.bids.unshift(bid)
     }
   }
 }

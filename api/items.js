@@ -7,10 +7,11 @@ import { sanitizeDoc } from '../lib/sanitizer'
 import { Account, getById as getAccountById } from './models/Account'
 import { Comment } from './models/Comment'
 import { isAuthenticated } from './auth_checker'
+// const NftItem = require('./models/Item');
+import { NftItem } from './models/Item';
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const NftItem = require('./models/Item');
 const ItemHistory = require('./models/ItemHistory');
 
 const router = Router()
