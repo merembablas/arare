@@ -16,7 +16,8 @@ const Item = new Schema({
     value: { type: Number, required: true, default: 0 },
     verified: { type: Boolean, required: true, default: false },
     serialNumber: { type: Number, required: true, default: 1 },
-    totalSupply: { type: Number, required: true, default: 1 }
+    totalSupply: { type: Number, required: true, default: 1 },
+    likers: { type: Array, required: true, default: [] }
 });
 
 const NftItem = mongoose.models.Item || mongoose.model('Item', Item)

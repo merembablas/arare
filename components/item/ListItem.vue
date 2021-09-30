@@ -38,7 +38,7 @@
 
         <PopularityMeter class="pt-2 pb-2" :star="3" :total="5" size="4" />
       </div>
-      <div class="font-semibold">30 ARA</div>
+      <div class="font-semibold">{{ item.value }} ARA</div>
     </div>
   </div>
 </template>

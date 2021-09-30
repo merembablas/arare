@@ -233,6 +233,30 @@ const addComments = [
     }
 ]
 
+const addLikes = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped().message.msg })
+        }
+
+        const userId = req.currentUser.id
+        const userName = req.currentUser.name
+
+
+        NftItem.findByIdAndUpdate(req.params.id,
+            { $inc: { likes: 1 }, $push: { likers: { userName, userId } } },
+            (err, result) => {
+                if (err) {
+                    console.log("🚀 ~ file: items.js ~ line 246 ~ NftItem.findByIdAndUpdate ~ err", err)
+                    return res.json({ error: "Cannot add like" })
+                }
+                return res.json({ error: null, result: 1 })
+            })
+    }
+]
+
 // Mint new item
 router.post('/item/mint', isAuthenticated, mint)
 
@@ -242,6 +266,7 @@ router.get('/items/:id', getItem)
 router.get('/items/:id/histories', histories)
 router.get('/items/:id/comments', comments)
 router.post('/items/:id/comments', isAuthenticated, addComments)
+router.post('/items/:id/likes', isAuthenticated, addLikes)
 
 module.exports = router
 
