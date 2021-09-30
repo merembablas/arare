@@ -28,11 +28,7 @@
 
         <div class="flex space-x-3 justify-end pl-2 md:space-x-16 items-center">
           <!-- <NotifIcon :count="0" /> -->
-          <NuxtLink
-            class="p-2 text-brand-blue hover:bg-blue-100 rounded-xl"
-            to="/explorer"
-            >EXPLORE</NuxtLink
-          >
+          <ExploreButton />
           <client-only>
             <CreateButton v-if="connected" @click="showAssetCreator" />
           </client-only>

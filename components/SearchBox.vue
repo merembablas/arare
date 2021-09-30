@@ -73,7 +73,7 @@ export default {
       if (state) {
         setTimeout(() => {
           this.$refs.inputBox.focus()
-        }, 300)
+        }, 400)
       }
     }
   }
