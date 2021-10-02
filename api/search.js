@@ -1,18 +1,12 @@
 
 import ItemMapper from '../lib/ItemMapper'
 
-import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
-import { getUtcSeconds, getUtcNow } from '../lib/TimeUtil'
-import { sanitizeDoc } from '../lib/sanitizer'
-import { Account, getById as getAccountById } from './models/Account'
-import { Comment } from './models/Comment'
-import { isAuthenticated } from './auth_checker'
-// const NftItem = require('./models/Item');
+import { accountToApiType } from '../lib/AccountUtil'
+import { Account } from './models/Account'
 import { NftItem } from './models/Item';
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const ItemHistory = require('./models/ItemHistory');
 
 const router = Router()
 
@@ -30,7 +24,7 @@ const searchItems = [
         NftItem.find({ name: { $regex: query, $options: 'i' } }, async (err, items) => {
             if (err) {
                 console.log("🚀 ~ file: search.js ~ line 31 ~ NftItem.find ~ err", err)
-                return res.status(500).json({ errors: "Cannot search items" })
+                return res.json({ error: "Cannot search items" })
             }
             const result = await Promise.all(items.map(async (item) => {
                 // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
