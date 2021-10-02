@@ -4,10 +4,10 @@ import { sanitizeDoc } from '../lib/sanitizer'
 import { isAuthenticated } from './auth_checker'
 import { NftItem, getById as getNftItemById } from './models/Item';
 
-const db = require('./db')
 
 const { Router } = require('express')
 const validator = require('express-validator')
+const db = require('./db')
 const Bid = require('./models/Bid');
 
 const router = Router()
