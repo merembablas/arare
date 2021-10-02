@@ -24,6 +24,7 @@
       </div>
       <input
         ref="inputBox"
+        v-model="query"
         :class="`
         pl-8
         pt-1
@@ -37,12 +38,14 @@
         :placeholder="placeholder"
         @focus="onFocus"
         @blur="onBlur"
+        @keypress="onKeypress"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   props: {
     placeholder: {
@@ -55,13 +58,16 @@ export default {
     return {
       glassColor: '#cacaca',
       inFocus: false,
-      inputBoxMobileVisible: false
+      inputBoxMobileVisible: false,
+      query: ''
     }
   },
   methods: {
+    ...mapMutations('search', ['setSearchResult']),
     onFocus() {
       this.glassColor = '#0D67E5'
       this.inFocus = true
+      this.$refs.inputBox.setSelectionRange(0, this.query.length)
     },
     onBlur() {
       this.glassColor = '#cacaca'
@@ -74,6 +80,30 @@ export default {
         setTimeout(() => {
           this.$refs.inputBox.focus()
         }, 400)
+      }
+    },
+    onKeypress(event) {
+      if (event.keyCode === 13) {
+        if (this.$route.path.startsWith('/search')) {
+          const query = this.query
+          console.log(
+            '🚀 ~ file: SearchBox.vue ~ line 88 ~ onKeypress ~ query',
+            query
+          )
+          if (query.length > 0) {
+            this.$axios
+              .get(`/api/search/items?q=${query}`)
+              .then(({ data: { error, result } }) => {
+                if (error) {
+                  alert(error)
+                  return
+                }
+                this.setSearchResult(result)
+              })
+          }
+        } else {
+          this.$router.push(`/search?q=${this.query}`)
+        }
       }
     }
   }
