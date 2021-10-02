@@ -23,12 +23,12 @@
         value-type="user"
         :link-to="`/user/${item.creator.id}`"
       />
-      <ItemFieldInfo
+      <!-- <ItemFieldInfo
         a-key="Asset location"
         value="Artamedia Gallery Yogyakarta"
         value-type="location"
         :link-to="`/gallery/${item.creator.id}`"
-      />
+      /> -->
       <ItemFieldInfo a-key="Popularity">
         <PopularityMeter :star="3" :total="5" />
       </ItemFieldInfo>
