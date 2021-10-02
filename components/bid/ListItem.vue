@@ -6,7 +6,7 @@
       <div>{{ tokenType }}</div>
     </div>
 
-    <div class="flex space-x-2 pl-7 text-gray-300">
+    <div class="flex space-x-2 pl-7 text-gray-300 items-center">
       <small
         >by
         <NuxtLink class="link-color" :to="`/user/${creatorId}`">{{
@@ -15,7 +15,7 @@
       >
       <div>-</div>
       <div class="flex justify-start items-center space-x-1 text-gray-300">
-        <IconClock size="3" />
+        <IconClock size="15px" />
         <small>{{ $moment(time).fromNow() }}</small>
       </div>
     </div>
