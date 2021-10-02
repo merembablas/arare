@@ -80,7 +80,7 @@ export default {
 
 <style lang="less">
 h2 {
-  color: @brand-color-blue;
+  color: @text-color-2;
   font-size: 1.2em;
 }
 </style>

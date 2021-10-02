@@ -1,19 +1,56 @@
 <template>
   <div class="p-5 relative w-full md:w-2/3">
-    <!-- FEATURED -->
     <div class="flex flex-col">
-      <!-- <div class="p-5 rounded-xl w-full h-64 bg-blue-100">
-        <h2>Featured</h2>
+      <div class="rounded-xl w-full">
+        <h2>Popular</h2>
+        <LoadingBig v-if="!loaded" />
+        <div
+          v-else
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll
+            h-64
+          "
+        >
+          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+        </div>
       </div>
 
-      <div class="p-5 rounded-xl w-full h-64 bg-yellow-100 mt-5">
-        <h2>Hot</h2>
-      </div> -->
+      <div class="rounded-xl w-full mt-10">
+        <h2>Most Valuable</h2>
+        <LoadingBig v-if="!loaded" />
+        <div
+          v-else
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll
+            h-64
+          "
+        >
+          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+        </div>
+      </div>
 
-      <div class="p-5 rounded-xl w-full bg-green-100 mt-5">
+      <div class="rounded-xl w-full mt-10">
         <h2>Latest</h2>
         <LoadingBig v-if="!loaded" />
-        <div v-else class="justify-start flex flex-wrap min-w-full">
+        <div
+          v-else
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll
+            h-64
+          "
+        >
           <ItemListItem v-for="i in items" :key="i.id" :item="i" />
         </div>
       </div>
