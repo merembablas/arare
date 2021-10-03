@@ -53,22 +53,22 @@ const update = [
             return res.json({ error: errors.mapped() })
         }
 
-        let updateQuery = {}
+        const updateQuery = {}
 
         if (req.body.name) {
-            updateQuery['$set'] = { name: req.body.name }
+            updateQuery.$set = { name: req.body.name }
         }
         if (req.body.bio) {
-            updateQuery['$set'] = { bio: req.body.bio }
+            updateQuery.$set = { bio: req.body.bio }
         }
         if (req.body.email) {
-            updateQuery['$set'] = { email: req.body.email }
+            updateQuery.$set = { email: req.body.email }
         }
         if (req.body.instagram) {
-            updateQuery['$set'] = { instagram: req.body.instagram }
+            updateQuery.$set = { instagram: req.body.instagram }
         }
         if (req.body.twitter) {
-            updateQuery['$set'] = { twitter: req.body.twitter }
+            updateQuery.$set = { twitter: req.body.twitter }
         }
 
         Account.findByIdAndUpdate(req.currentUser.id, updateQuery, (err, result) => {

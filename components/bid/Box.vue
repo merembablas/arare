@@ -1,16 +1,19 @@
 <template>
   <div class="flex flex-col space-y-5">
     <LoadingSmall v-if="!loaded" />
-    <BidListItem
-      v-for="bid in bids"
-      :id="bid.id"
-      :key="bid.id"
-      :creator-id="bid.initiatorId"
-      :creator-name="bid.initiatorName"
-      :time="bid.timestamp"
-      :value="bid.value"
-      :token-type="bid.tokenType"
-    />
+    <div v-if="bids.length > 0">
+      <BidListItem
+        v-for="bid in bids"
+        :id="bid.id"
+        :key="bid.id"
+        :creator-id="bid.initiatorId"
+        :creator-name="bid.initiatorName"
+        :time="bid.timestamp"
+        :value="bid.value"
+        :token-type="bid.tokenType"
+      />
+    </div>
+    <div v-else>No data</div>
   </div>
 </template>
 

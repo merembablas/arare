@@ -1,35 +1,41 @@
 <template>
-  <div class="p-5 relative w-2/3">
-    <h1>HOT NTFs!</h1>
+  <div class="p-2 md:p-5 relative w-full md:w-2/3">
+    <h1>Popular NFTs!</h1>
+
+    <div>
+      <LoadingBig v-if="!loaded" />
+      <div v-else class="justify-start flex flex-wrap min-w-full">
+        <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import AccountMethods from '~/components/AccountMethods'
 export default {
-  extends: AccountMethods,
   layout: 'explorer',
   data() {
     return {
-      balance: '-',
-      creators: this.$dummy.generateUsers(5)
-    }
-  },
-  // computed: {
-  // account() {
-  //   return this.$store.state.nuchain.currentAccount
-  // }
-  // },
-  watch: {
-    '$store.state.nuchain.currentAccount'(account) {
-      this.fetchBalance()
-    },
-    '$store.state.eth.currentAccount'(account) {
-      this.fetchBalance()
+      loaded: false,
+      items: []
     }
   },
   async mounted() {
-    await this.fetchBalance()
+    await this.fetchPopularItems()
+  },
+  methods: {
+    async fetchPopularItems() {
+      this.items = await this.$arare
+        .fetchPopularItems()
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          return result
+        })
+      this.loaded = true
+    }
   }
 }
 </script>

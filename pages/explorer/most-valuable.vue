@@ -1,6 +1,6 @@
 <template>
   <div class="p-2 md:p-5 relative w-full md:w-2/3">
-    <h1>Latest NFTs!</h1>
+    <h1>Most Valuable NFTs!</h1>
 
     <div class="mt-5">
       <LoadingBig v-if="!loaded" />
@@ -21,12 +21,12 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchLatestItems()
+    await this.fetchMostValuedItems()
   },
   methods: {
-    async fetchLatestItems() {
+    async fetchMostValuedItems() {
       this.items = await this.$arare
-        .fetchLatestItems()
+        .fetchMostValuedItems()
         .then(({ data: { error, result } }) => {
           if (error) {
             alert(error)

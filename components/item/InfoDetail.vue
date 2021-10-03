@@ -72,7 +72,7 @@
       v-show="currentTab == 'History'"
       :item="item"
     />
-    <div v-show="currentTab == 'Ownership'" class="p-5">Ownership</div>
+    <div v-show="currentTab == 'Ownership'" class="p-5">No data</div>
     <div v-show="currentTab == 'Bids'" class="p-5">
       <LazyBidBox v-if="currentTab == 'Bids'" ref="bidBox" :item="item" />
     </div>

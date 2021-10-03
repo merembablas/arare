@@ -46,7 +46,6 @@ export default {
     },
     upload() {
       const formData = new FormData()
-      //   console.log(this.$refs.imageUpload.file)
       formData.append('picture', this.$refs.imageUpload.files[0])
       this.$axios
         .post('/uploader/upload_picture', formData, {
@@ -60,7 +59,7 @@ export default {
           } else {
             this.$emit('on-success', { url, hash, fileExtension })
           }
-        })
+        }).catch(error => {alert(error)})
     }
   }
 }

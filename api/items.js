@@ -264,7 +264,9 @@ const popular = [
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.mapped() })
         }
-        NftItem.find({}).sort({ likes: -1 })
+        NftItem.find({})
+            .sort({ likes: -1 })
+            .limit(10)
             .exec(async (err, items) => {
                 if (err) {
                     return res.status(500).json({ errors: "Cannot get items" })
