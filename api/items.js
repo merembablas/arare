@@ -46,11 +46,13 @@ const mint = [
                 block: '1333333',
                 timestamp: getUtcSeconds()
             },
+            timestamp: getUtcNow(),
             likes: 0,
             value: 0,
             verified: false,
             serialNumber: req.body.serialNumber,
             totalSupply: req.body.totalSupply,
+            computedValue: 0
         })
 
         try {
@@ -113,32 +115,6 @@ const getItem = [
             Account.findOne(toAddressFilter(item.ownerAddress), (err, creator) => {
                 if (err) return res.status(404).json({ error: 'Item has no owner' })
                 return res.json(ItemMapper(item, accountToApiType(creator)))
-            })
-        })
-    }
-]
-
-const popular = [
-    validator.query('offset', 'Invalid offset').default('0').isInt(),
-    validator.query('limit', 'Invalid limit').default('10').isInt(),
-    (req, res) => {
-        const errors = validator.validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.mapped() })
-        }
-        // @TODO: add filtering
-        NftItem.find({}, async (err, items) => {
-            if (err) {
-                return res.status(500).json({ errors: "Cannot get items" })
-            }
-            const result = await Promise.all(items.map(async (item) => {
-                // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
-                const creator = await Account.findById(item.creatorId).exec()
-                return ItemMapper(item, accountToApiType(creator))
-            }))
-            return res.json({
-                error: null,
-                result
             })
         })
     }
@@ -257,10 +233,92 @@ const addLikes = [
     }
 ]
 
+
+const popular = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.mapped() })
+        }
+        NftItem.find({}).sort({ likes: -1 })
+            .exec(async (err, items) => {
+                if (err) {
+                    return res.status(500).json({ errors: "Cannot get items" })
+                }
+                const result = await Promise.all(items.map(async (item) => {
+                    // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                    const creator = await Account.findById(item.creatorId).exec()
+                    return ItemMapper(item, accountToApiType(creator))
+                }))
+                return res.json({
+                    error: null,
+                    result
+                })
+            })
+    }
+]
+
+const valuedItems = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped() })
+        }
+
+        NftItem.find({}).sort({ value: -1 })
+            .exec(async (err, items) => {
+                if (err) {
+                    return res.json({ error: "Cannot get valued items" })
+                }
+                const result = await Promise.all(items.map(async (item) => {
+                    const creator = await Account.findById(item.creatorId).exec()
+                    return ItemMapper(item, accountToApiType(creator))
+                }))
+                return res.json({
+                    error: null,
+                    result
+                })
+            })
+    }
+]
+
+const latestItems = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped() })
+        }
+
+        NftItem.find({}).sort({ timestamp: -1 })
+            .exec(async (err, items) => {
+                if (err) {
+                    return res.json({ error: "Cannot get valued items" })
+                }
+                const result = await Promise.all(items.map(async (item) => {
+                    const creator = await Account.findById(item.creatorId).exec()
+                    return ItemMapper(item, accountToApiType(creator))
+                }))
+                return res.json({
+                    error: null,
+                    result
+                })
+            })
+    }
+]
+
+
 // Mint new item
 router.post('/item/mint', isAuthenticated, mint)
 
 router.get('/item/popular', popular)
+router.get('/item/valued', valuedItems)
+router.get('/item/latest', latestItems)
 
 router.get('/items/:id', getItem)
 router.get('/items/:id/histories', histories)

@@ -15,7 +15,7 @@
             h-64
           "
         >
-          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+          <ItemListItem v-for="i in popularItems" :key="i.id" :item="i" />
         </div>
       </div>
 
@@ -33,7 +33,7 @@
             h-64
           "
         >
-          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+          <ItemListItem v-for="i in mostValuedItems" :key="i.id" :item="i" />
         </div>
       </div>
 
@@ -51,7 +51,7 @@
             h-64
           "
         >
-          <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+          <ItemListItem v-for="i in latestItems" :key="i.id" :item="i" />
         </div>
       </div>
     </div>
@@ -67,22 +67,55 @@ export default {
     return {
       loaded: false,
       balance: '-',
+      popularItems: [],
+      mostValuedItems: [],
       latestItems: []
     }
   },
   fetchOnServer: false,
   fetchKey: 'dashboardIndex',
   async fetch() {
-    this.items = await this.$arare
-      .fetchPopularItems()
-      .then(({ data: { error, result } }) => {
-        if (error) {
-          alert(error)
-          return
-        }
-        return result
-      })
-    this.loaded = true
+    await this.fetchPopularItems()
+    await this.fetchMostValuedItems()
+    await this.fetchLatestItems()
+  },
+  methods: {
+    async fetchPopularItems() {
+      this.popularItems = await this.$arare
+        .fetchPopularItems()
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          return result
+        })
+      this.loaded = true
+    },
+    async fetchMostValuedItems() {
+      this.mostValuedItems = await this.$arare
+        .fetchMostValuedItems()
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          return result
+        })
+      this.loaded = true
+    },
+    async fetchLatestItems() {
+      this.latestItems = await this.$arare
+        .fetchLatestItems()
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          return result
+        })
+      this.loaded = true
+    }
   }
 }
 </script>
