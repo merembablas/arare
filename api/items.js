@@ -233,6 +233,28 @@ const addLikes = [
     }
 ]
 
+const removeLikes = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped().message.msg })
+        }
+
+        const userId = req.currentUser.id
+        const userName = req.currentUser.name
+
+        NftItem.findByIdAndUpdate(req.params.id,
+            { $inc: { likes: -1 }, $pull: { likers: { userName, userId } } },
+            (err, _) => {
+                if (err) {
+                    return res.json({ error: "Cannot add like" })
+                }
+                return res.json({ error: null, result: 1 })
+            })
+    }
+]
+
 
 const popular = [
     validator.query('offset', 'Invalid offset').default('0').isInt(),
@@ -325,6 +347,7 @@ router.get('/items/:id/histories', histories)
 router.get('/items/:id/comments', comments)
 router.post('/items/:id/comments', isAuthenticated, addComments)
 router.post('/items/:id/likes', isAuthenticated, addLikes)
+router.delete('/items/:id/likes', isAuthenticated, removeLikes)
 
 module.exports = router
 

@@ -74,7 +74,9 @@ export default {
   data() {
     return {
       itemLikes: this.item.likes,
-      isLiked: false
+      likers: this.item.likers,
+      isLiked: false,
+      inProcess: false
     }
   },
   mounted() {
@@ -86,15 +88,37 @@ export default {
       this.$router.push(`/user/${this.item.creator.id}`)
     },
     like() {
-      this.$axios
-        .post(`/api/items/${this.item.id}/likes`)
-        .then(({ data: { error, result } }) => {
-          if (error) {
-            return
-          }
-          this.itemLikes = this.itemLikes + 1
-          this.isLiked = true
-        })
+      if (this.inProcess) {
+        return
+      }
+      this.inProcess = true
+      if (!this.isLiked) {
+        this.$axios
+          .post(`/api/items/${this.item.id}/likes`)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return
+            }
+            this.itemLikes = this.itemLikes + 1
+            this.isLiked = true
+          })
+          .finally(() => {
+            this.inProcess = false
+          })
+      } else {
+        this.$axios
+          .delete(`/api/items/${this.item.id}/likes`)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return
+            }
+            this.itemLikes = this.itemLikes - 1
+            this.isLiked = false
+          })
+          .finally(() => {
+            this.inProcess = false
+          })
+      }
     },
     isLikedLoad() {
       const currentUser = this.getCurrentIdentity()
@@ -103,8 +127,7 @@ export default {
         currentUser
       )
       return (
-        currentUser &&
-        this.item.likers.map((a) => a.userId).includes(currentUser.id)
+        currentUser && this.likers.map((a) => a.userId).includes(currentUser.id)
       )
     }
   }
