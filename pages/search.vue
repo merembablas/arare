@@ -40,6 +40,9 @@ export default {
     this.loaded = true
   },
   watch: {
+    '$store.state.search.currentQuery'(query) {
+      this.query = query
+    },
     '$store.state.search.searchResult'(items) {
       this.items = items
     }

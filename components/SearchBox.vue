@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('search', ['setSearchResult']),
+    ...mapMutations('search', ['setSearchResult', 'setCurrentQuery']),
     onFocus() {
       this.glassColor = '#0D67E5'
       this.inFocus = true
@@ -90,6 +90,7 @@ export default {
             '🚀 ~ file: SearchBox.vue ~ line 88 ~ onKeypress ~ query',
             query
           )
+          this.setCurrentQuery(query)
           if (query.length > 0) {
             this.$axios
               .get(`/api/search/items?q=${query}`)
