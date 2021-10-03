@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10 relative w-2/3">
+  <div class="p-2 md:p-10 relative w-full md:w-2/3">
     <Button
       text="Add"
       :icon-mode="true"
@@ -25,7 +25,7 @@
     </Button>
     <h2>3 Collections</h2>
 
-    <div class="flex flex-wrap mt-10">
+    <div class="flex flex-wrap mt-2 md:mt-10">
       <GalleryItem />
       <GalleryItem />
       <GalleryItem />

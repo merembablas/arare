@@ -1,13 +1,19 @@
 <template>
-  <div class="p-10">
-    <div class="flex">
+  <div class="p-2 md:p-10">
+    <div class="flex flex-col md:flex-row">
       <div v-if="identity" class="flex flex-col">
         <img :src="identity.pic" alt="dummy" class="w-64 h-64 rounded-xl" />
-        <Button text="Change Photo" class="mt-5" />
+        <Button text="Change Photo" class="mt-5 w-full" />
+        <div class="flex text-center justify-center mt-5">
+          <NuxtLink class="link-color" :to="`/user/${identity.id}`">
+            view profile page
+          </NuxtLink>
+        </div>
       </div>
 
       <div v-if="identity" class="flex flex-col ml-5 relative">
         <Button
+          v-if="false"
           text="Edit"
           :icon-mode="true"
           class="w-24 absolute"
@@ -49,7 +55,7 @@
           :on-changed="updateEmail"
         />
         <ItemFieldInfo a-key="Address">
-          <NuchainAddress :address="accountAddress" :truncate="false" />
+          <NuchainAddress :address="accountAddress" :truncate="true" />
         </ItemFieldInfo>
 
         <FormCheckBox
@@ -123,28 +129,33 @@ export default {
         '🚀 ~ file: index.vue ~ line 69 ~ updateName ~ newName',
         newName
       )
-      this.setIdentityAttr({ key: 'full_name', value: newName })
-      await new Promise((resolve, reject) => {
-        setTimeout(() => resolve(true), 1500)
-      })
+      await this.updateAccount({ name: newName })
+      this.setIdentityAttr({ key: 'name', value: newName })
+      //   await new Promise((resolve, reject) => {
+      //     setTimeout(() => resolve(true), 1500)
+      //   })
     },
     async updateBio(newBio) {
+      await this.updateAccount({ bio: newBio })
       this.setIdentityAttr({ key: 'bio', value: newBio })
-      await new Promise((resolve, reject) => {
-        setTimeout(() => resolve(true), 1500)
-      })
     },
-    updateTwitter(newTwitter) {
+    async updateTwitter(newTwitter) {
+      await this.updateAccount({ twitter: newTwitter })
       this.setIdentityAttr({ key: 'twitter', value: newTwitter })
     },
-    updateInstagram(newInstagram) {
+    async updateInstagram(newInstagram) {
+      await this.updateAccount({ instagram: newInstagram })
       this.setIdentityAttr({ key: 'instagram', value: newInstagram })
     },
-    updateEmail(newEmail) {
+    async updateEmail(newEmail) {
+      await this.updateAccount({ email: newEmail })
       this.setIdentityAttr({ key: 'email', value: newEmail })
     },
     clearData() {
       this.setIdentity(null)
+    },
+    async updateAccount(updateQuery) {
+      return await this.$axios.post('/api/account/update', updateQuery)
     }
   }
 }

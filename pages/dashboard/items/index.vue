@@ -23,16 +23,36 @@
         </svg>
       </template>
     </Button> -->
-    <h2>Items: 300</h2>
+    <h2>Items: {{ ownedItemCount }}</h2>
     <DashboardItemsTable />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   layout: 'dashboard',
   data() {
-    return {}
+    return {
+      ownedItemCount: this.getMyItemCount()
+    }
+  },
+  mounted() {
+    this.fetchItemCount()
+  },
+  methods: {
+    ...mapGetters('items', ['getMyItemCount']),
+    fetchItemCount() {
+      this.$axios
+        .get('/api/stats/created-count')
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          this.ownedItemCount = result
+        })
+    }
   }
 }
 </script>

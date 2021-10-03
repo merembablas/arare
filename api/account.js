@@ -5,6 +5,7 @@ import { accountToApiType } from '../lib/AccountUtil'
 import { Account, getById as getAccountById, getByPrimaryAddress } from './models/Account'
 // const NftItem = require('./models/Item');
 import { NftItem } from './models/Item';
+import { isAuthenticated } from './auth_checker'
 
 const { Router } = require('express')
 const validator = require('express-validator')
@@ -36,6 +37,45 @@ const register = [
                 return res.status(500).json({ error: "Cannot register account" })
             }
             return res.json({ error: null, result: accountToApiType(result) })
+        })
+    }
+]
+
+const update = [
+    validator.body('name', 'Invalid name').optional().isLength({ min: 3, max: 100 }),
+    validator.body('bio', 'Invalid bio').optional().isLength({ min: 3, max: 500 }),
+    validator.body('twitter', 'Invalid twitter').optional().isLength({ min: 3, max: 500 }),
+    validator.body('email', 'Invalid email').optional().isLength({ min: 3, max: 500 }),
+    validator.body('instagram', 'Invalid instagram').optional().isLength({ min: 3, max: 500 }),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped() })
+        }
+
+        let updateQuery = {}
+
+        if (req.body.name) {
+            updateQuery['$set'] = { name: req.body.name }
+        }
+        if (req.body.bio) {
+            updateQuery['$set'] = { bio: req.body.bio }
+        }
+        if (req.body.email) {
+            updateQuery['$set'] = { email: req.body.email }
+        }
+        if (req.body.instagram) {
+            updateQuery['$set'] = { instagram: req.body.instagram }
+        }
+        if (req.body.twitter) {
+            updateQuery['$set'] = { twitter: req.body.twitter }
+        }
+
+        Account.findByIdAndUpdate(req.currentUser.id, updateQuery, (err, result) => {
+            if (err) {
+                return res.json({ error: "Cannot update account" })
+            }
+            return res.json({ error: null, result: 1 })
         })
     }
 ]
@@ -119,6 +159,8 @@ const popular = [
 
 // Register account
 router.post('/account/register', register)
+// Update account
+router.post('/account/update', isAuthenticated, update)
 
 // Get user info
 router.get('/accounts/:id', accountInfo)

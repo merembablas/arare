@@ -9,6 +9,9 @@ const AccountModel = new Schema({
     primaryAddress: { type: String, required: true, index: { unique: true } },
     ethAddress: { type: String }, // crypto address
     nuchainAddress: { type: String }, // crypto address
+    twitter: { type: String }, // crypto address
+    instagram: { type: String }, // crypto address
+    email: { type: String }, // crypto address
     isCreator: { type: Boolean, required: true, default: false }
 });
 
