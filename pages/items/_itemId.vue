@@ -131,25 +131,7 @@
 </template>
 
 <script>
-// import ItemMapper from '../../lib/ItemMapper'
 export default {
-  //   fetch() {
-  //     this.$axios
-  //       .get(`/api/items/${this.$route.params.itemId}`)
-  //       .then(({ data }) => {
-  //         console.log('🚀 ~ file: _itemId.vue ~ line 163 ~ .then ~ data', data)
-  //         this.item = data
-  //       })
-  //   },
-  //   activated() {
-  //     // Call fetch again if last fetch more than 30 sec ago
-  //     // if (this.$fetchState.timestamp <= Date.now() - 30000) {
-  //     //   this.$fetch()
-  //     // }
-  //   }
-  //   //   mounted() {
-  //   //     this.$fetch()
-  //   //   }
   async asyncData({ params, $axios }) {
     if (!params.itemId) return
     const item = await $axios
@@ -163,20 +145,6 @@ export default {
       showDescription: false
     }
   },
-  //   //   async asyncData({ params, $arareServer }) {
-  //   //     const item = ItemMapper(await $arareServer.getItem(params.itemId))
-  //   //     console.log('🚀 ~ file: _itemId.vue ~ line 140 ~ asyncData ~ item', item)
-  //   //     return {
-  //   //       item: { name: 'satu', pic: 'xxx' },
-  //   //       name: '',
-  //   //       showDescription: false
-  //   //     }
-  //   //   }
-  //   //   data: () => ({
-  //   //     item: null,
-  //   //     name: '',
-  //   //     showDescription: false
-  //   //   }),
   data() {
     return {
       item: null,

@@ -5,7 +5,7 @@
     <div class="flex field-info items-center">
       <div
         v-if="!valueType && !enableEdit && theValue"
-        class="w-96 flex items-center"
+        class="w-full flex items-center"
       >
         <div>{{ theValue }}</div>
         <div
