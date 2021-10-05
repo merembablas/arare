@@ -21,4 +21,5 @@
     ],
     "eslint.autoFixOnSave": true,
     "editor.formatOnSave": true,
+    "editor.tabSize": 4
 }
