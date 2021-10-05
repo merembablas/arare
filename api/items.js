@@ -1,4 +1,3 @@
-
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
@@ -8,29 +7,39 @@ import { Account, getById as getAccountById } from './models/Account'
 import { Comment } from './models/Comment'
 import { isAuthenticated } from './auth_checker'
 // const NftItem = require('./models/Item');
-import { NftItem } from './models/Item';
+import { NftItem } from './models/Item'
 
 const { Router } = require('express')
 const validator = require('express-validator')
-const ItemHistory = require('./models/ItemHistory');
+const ItemHistory = require('./models/ItemHistory')
 
 const router = Router()
 
 const mint = [
     validator.body('name', 'Please enter name').isLength({ min: 1 }),
-    validator.body('description', 'Please enter description').isLength({ min: 1 }),
-    validator.body('royalties', 'Please enter royalties').isDecimal({ min: 0, max: 90 }),
+    validator
+        .body('description', 'Please enter description')
+        .isLength({ min: 1 }),
+    validator
+        .body('royalties', 'Please enter royalties')
+        .isDecimal({ min: 0, max: 90 }),
     validator.body('count', 'Please enter count').isLength({ min: 1 }),
     validator.body('hash', 'No hash').isLength({ min: 1 }),
-    validator.body('serialNumber', 'Invalid serial number').default('1').isInt({ min: 1, max: 100 }),
-    validator.body('totalSupply', 'Invalid total supply').default('1').isInt({ min: 1, max: 100 }),
+    validator
+        .body('serialNumber', 'Invalid serial number')
+        .default('1')
+        .isInt({ min: 1, max: 100 }),
+    validator
+        .body('totalSupply', 'Invalid total supply')
+        .default('1')
+        .isInt({ min: 1, max: 100 }),
     async (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.mapped() })
         }
 
-        console.log("currentUser:", req.currentUser)
+        console.log('currentUser:', req.currentUser)
 
         const item = new NftItem({
             name: req.body.name,
@@ -52,13 +61,16 @@ const mint = [
             verified: false,
             serialNumber: req.body.serialNumber,
             totalSupply: req.body.totalSupply,
-            computedValue: 0
+            computedValue: 0,
+            network: 1
         })
 
         try {
-
             const createdItem = await item.save()
-            console.log("🚀 ~ file: items.js ~ line 48 ~ createdItem", createdItem)
+            console.log(
+                '🚀 ~ file: items.js ~ line 48 ~ createdItem',
+                createdItem
+            )
             //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ err", err)
             //     console.log("🚀 ~ file: items.js ~ line 30 ~ item.save ~ itemResult", itemResult)
 
@@ -88,14 +100,17 @@ const mint = [
                 result: createdItem
             })
         } catch (err) {
-            console.log("🚀 ~ file: items.js ~ line 79 ~ err", err)
-            return res.status(500).json({ error: "Cannot save data" })
+            console.log('🚀 ~ file: items.js ~ line 79 ~ err', err)
+            return res.status(500).json({ error: 'Cannot save data' })
         }
     }
 ]
 
 const getItem = [
-    validator.param('id', 'Invalid id').isAlphanumeric().isLength({ min: 1, max: 256 }),
+    validator
+        .param('id', 'Invalid id')
+        .isAlphanumeric()
+        .isLength({ min: 1, max: 256 }),
     (req, res) => {
         const errors = validator.validationResult(req)
         if (!errors.isEmpty()) {
@@ -105,17 +120,23 @@ const getItem = [
             // console.log("🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err", err)
             // console.log("🚀 ~ file: items.js ~ line 55 ~ NftItem.findOne ~ item", item)
             if (err) {
-                console.log("🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err", err)
-                return res.status(500).json({ error: err })
+                console.log(
+                    '🚀 ~ file: items.js ~ line 56 ~ NftItem.findOne ~ err',
+                    err
+                )
+                return res.json({ error: err })
             }
             if (!item) {
-                return res.status(404).json({ error: "Not found" })
+                return res.json({ error: 'Not found' })
             }
             // get creator
-            Account.findOne(toAddressFilter(item.ownerAddress), (err, creator) => {
-                if (err) return res.status(404).json({ error: 'Item has no owner' })
-                return res.json(ItemMapper(item, accountToApiType(creator)))
-            })
+            Account.findOne(
+                toAddressFilter(item.ownerAddress),
+                (err, creator) => {
+                    if (err) return res.json({ error: 'Item has no owner' })
+                    return res.json(ItemMapper(item, accountToApiType(creator)))
+                }
+            )
         })
     }
 ]
@@ -136,7 +157,9 @@ const histories = [
             .sort({ timestamp: -1 })
             .exec((err, items) => {
                 if (err) {
-                    return res.status(500).json({ errors: "Cannot get item history" })
+                    return res
+                        .status(500)
+                        .json({ errors: 'Cannot get item history' })
                 }
                 return res.json({
                     error: null,
@@ -151,7 +174,6 @@ const itemToApiType = async (item, creatorId) => {
     doc.creator = accountToApiType(await getAccountById(creatorId))
     return doc
 }
-
 
 const comments = [
     validator.param('id', 'Invalid id').isAlphanumeric(),
@@ -170,12 +192,19 @@ const comments = [
             .limit(5)
             .exec(async (err, items) => {
                 if (err) {
-                    console.log("🚀 ~ file: items.js ~ line 188 ~ .exec ~ err", err)
+                    console.log(
+                        '🚀 ~ file: items.js ~ line 188 ~ .exec ~ err',
+                        err
+                    )
                     return res.json({ error: "Cannot get item's comment" })
                 }
                 return res.json({
                     error: null,
-                    result: await Promise.all(items.map(item => itemToApiType(item, item.initiatorId)))
+                    result: await Promise.all(
+                        items.map((item) =>
+                            itemToApiType(item, item.initiatorId)
+                        )
+                    )
                 })
             })
     }
@@ -201,10 +230,16 @@ const addComments = [
 
         comment.save(async (err, result) => {
             if (err) {
-                console.log("🚀 ~ file: items.js ~ line 219 ~ comment.save ~ err", err)
-                return res.json({ error: "Cannot write comment" })
+                console.log(
+                    '🚀 ~ file: items.js ~ line 219 ~ comment.save ~ err',
+                    err
+                )
+                return res.json({ error: 'Cannot write comment' })
             }
-            return res.json({ error: null, result: await itemToApiType(result, req.currentUser.id) })
+            return res.json({
+                error: null,
+                result: await itemToApiType(result, req.currentUser.id)
+            })
         })
     }
 ]
@@ -220,16 +255,20 @@ const addLikes = [
         const userId = req.currentUser.id
         const userName = req.currentUser.name
 
-
-        NftItem.findByIdAndUpdate(req.params.id,
+        NftItem.findByIdAndUpdate(
+            req.params.id,
             { $inc: { likes: 1 }, $push: { likers: { userName, userId } } },
             (err, result) => {
                 if (err) {
-                    console.log("🚀 ~ file: items.js ~ line 246 ~ NftItem.findByIdAndUpdate ~ err", err)
-                    return res.json({ error: "Cannot add like" })
+                    console.log(
+                        '🚀 ~ file: items.js ~ line 246 ~ NftItem.findByIdAndUpdate ~ err',
+                        err
+                    )
+                    return res.json({ error: 'Cannot add like' })
                 }
                 return res.json({ error: null, result: 1 })
-            })
+            }
+        )
     }
 ]
 
@@ -244,17 +283,18 @@ const removeLikes = [
         const userId = req.currentUser.id
         const userName = req.currentUser.name
 
-        NftItem.findByIdAndUpdate(req.params.id,
+        NftItem.findByIdAndUpdate(
+            req.params.id,
             { $inc: { likes: -1 }, $pull: { likers: { userName, userId } } },
             (err, _) => {
                 if (err) {
-                    return res.json({ error: "Cannot add like" })
+                    return res.json({ error: 'Cannot add like' })
                 }
                 return res.json({ error: null, result: 1 })
-            })
+            }
+        )
     }
 ]
-
 
 const popular = [
     validator.query('offset', 'Invalid offset').default('0').isInt(),
@@ -269,13 +309,17 @@ const popular = [
             .limit(10)
             .exec(async (err, items) => {
                 if (err) {
-                    return res.status(500).json({ errors: "Cannot get items" })
+                    return res.status(500).json({ errors: 'Cannot get items' })
                 }
-                const result = await Promise.all(items.map(async (item) => {
-                    // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
-                    const creator = await Account.findById(item.creatorId).exec()
-                    return ItemMapper(item, accountToApiType(creator))
-                }))
+                const result = await Promise.all(
+                    items.map(async (item) => {
+                        // console.log("🚀 ~ file: items.js ~ line 96 ~ result:items.map ~ item", item)
+                        const creator = await Account.findById(
+                            item.creatorId
+                        ).exec()
+                        return ItemMapper(item, accountToApiType(creator))
+                    })
+                )
                 return res.json({
                     error: null,
                     result
@@ -293,15 +337,20 @@ const valuedItems = [
             return res.json({ error: errors.mapped() })
         }
 
-        NftItem.find({}).sort({ value: -1 })
+        NftItem.find({})
+            .sort({ value: -1 })
             .exec(async (err, items) => {
                 if (err) {
-                    return res.json({ error: "Cannot get valued items" })
+                    return res.json({ error: 'Cannot get valued items' })
                 }
-                const result = await Promise.all(items.map(async (item) => {
-                    const creator = await Account.findById(item.creatorId).exec()
-                    return ItemMapper(item, accountToApiType(creator))
-                }))
+                const result = await Promise.all(
+                    items.map(async (item) => {
+                        const creator = await Account.findById(
+                            item.creatorId
+                        ).exec()
+                        return ItemMapper(item, accountToApiType(creator))
+                    })
+                )
                 return res.json({
                     error: null,
                     result
@@ -319,15 +368,20 @@ const latestItems = [
             return res.json({ error: errors.mapped() })
         }
 
-        NftItem.find({}).sort({ timestamp: -1 })
+        NftItem.find({})
+            .sort({ timestamp: -1 })
             .exec(async (err, items) => {
                 if (err) {
-                    return res.json({ error: "Cannot get valued items" })
+                    return res.json({ error: 'Cannot get valued items' })
                 }
-                const result = await Promise.all(items.map(async (item) => {
-                    const creator = await Account.findById(item.creatorId).exec()
-                    return ItemMapper(item, accountToApiType(creator))
-                }))
+                const result = await Promise.all(
+                    items.map(async (item) => {
+                        const creator = await Account.findById(
+                            item.creatorId
+                        ).exec()
+                        return ItemMapper(item, accountToApiType(creator))
+                    })
+                )
                 return res.json({
                     error: null,
                     result
@@ -335,7 +389,6 @@ const latestItems = [
             })
     }
 ]
-
 
 // Mint new item
 router.post('/item/mint', isAuthenticated, mint)
@@ -352,5 +405,3 @@ router.post('/items/:id/likes', isAuthenticated, addLikes)
 router.delete('/items/:id/likes', isAuthenticated, removeLikes)
 
 module.exports = router
-
-

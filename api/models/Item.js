@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const Item = new Schema({
     name: { type: String, required: true },
@@ -21,11 +21,11 @@ const Item = new Schema({
     likers: { type: Array, required: true, default: [] },
     // computed value calculated relative to market value of related token
     // used internal only for sorting purposes
-    computedValue: { type: Number, required: true, default: 0 }
-});
+    computedValue: { type: Number, required: true, default: 0 },
+    network: { type: Number, required: true, default: 1 } // 1: Nuchain, 2: Ethereum, 3: Moonriver
+})
 
 const NftItem = mongoose.models.Item || mongoose.model('Item', Item)
-
 
 // get account by it id
 function getById(objectId) {
@@ -39,6 +39,5 @@ function getById(objectId) {
         })
     })
 }
-
 
 export { NftItem, getById }
