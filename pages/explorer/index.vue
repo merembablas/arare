@@ -11,7 +11,7 @@
             flex
             md:flex-row
             min-w-full
-            overflow-x-scroll
+            overflow-x-scroll overflow-y-hidden
             h-64
           "
         >
@@ -29,7 +29,7 @@
             flex
             md:flex-row
             min-w-full
-            overflow-x-scroll
+            overflow-x-scroll overflow-y-hidden
             h-64
           "
         >
@@ -47,7 +47,7 @@
             flex
             md:flex-row
             min-w-full
-            overflow-x-scroll
+            overflow-x-scroll overflow-y-hidden
             h-64
           "
         >

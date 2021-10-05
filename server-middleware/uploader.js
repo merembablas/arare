@@ -4,7 +4,6 @@ const fs = require('fs')
 const express = require('express')
 const multer = require('multer')
 
-
 const hasha = require('hasha')
 
 const app = express()
@@ -44,6 +43,9 @@ app.post('/upload_picture', (req, res) => {
         if (req.fileValidationError) {
             return res.send(req.fileValidationError)
         } else if (!req.file) {
+            if (err) {
+                console.log('[ERROR]', err)
+            }
             return res.send({ error: 'No picture uploaded' })
         } else if (err instanceof multer.MulterError) {
             return res.json({ error: err })
@@ -51,7 +53,7 @@ app.post('/upload_picture', (req, res) => {
             return res.json({ error: err })
         }
         const stream = fs.createReadStream(req.file.path)
-        console.log("🚀 ~ file: uploader.js ~ line 56 ~ req.file", req.file)
+        console.log('🚀 ~ file: uploader.js ~ line 56 ~ req.file', req.file)
 
         const hash = await hasha.fromStream(stream, { algorithm: 'sha256' })
         console.log('🚀 ~ file: uploader.js ~ line 65 ~ hash', hash)
@@ -64,12 +66,12 @@ app.post('/upload_picture', (req, res) => {
         const fileExtension = path.extname(req.file.path)
         const newBaseName = `${hash}${fileExtension}`
         const newName = `${process.env.UPLOAD_DIR}/${newBaseName}`
-        console.log("🚀 ~ file: uploader.js ~ line 62 ~ newName", newName)
+        console.log('🚀 ~ file: uploader.js ~ line 62 ~ newName', newName)
         fs.rename(req.file.path, newName, (err, existing) => {
             if (err) {
                 throw err
             }
-        });
+        })
         const url = `${process.env.BASE_UPLOAD_URL}/${newBaseName}`
 
         res.json({
