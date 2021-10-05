@@ -37,6 +37,7 @@ export default {
         return this.$store.state.nuchain.hasBalance
       }
       if (this.isMetamask) {
+        // @TODO: add balance check here
         return true
       }
       return false
@@ -79,7 +80,7 @@ export default {
 
 <style lang="less">
 h2 {
-  color: @brand-color-blue;
+  color: @text-color-2;
   font-size: 1.2em;
 }
 </style>

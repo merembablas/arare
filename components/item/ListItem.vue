@@ -22,7 +22,7 @@
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">
       <div>
-        <div class="h-6 w-40 truncate">{{ item.name }}</div>
+        <div class="h-6 w-40 truncate text-left">{{ item.name }}</div>
 
         <div class="flex items-center">
           <div
@@ -31,14 +31,14 @@
               background: url('${item.creator.pic}') no-repeat center; background-size: cover;
             `"
           ></div>
-          <div class="creator-name text-green-600 ml-2 truncate w-40">
+          <div class="creator-name text-green-600 ml-2 truncate w-40 text-left">
             {{ item.creator.name }}
           </div>
         </div>
 
         <PopularityMeter class="pt-2 pb-2" :star="3" :total="5" size="4" />
       </div>
-      <div class="font-semibold">30 ARA</div>
+      <div class="font-semibold">{{ item.value }} ARA</div>
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$router.push(`/item/${this.item.id}`)
+      this.$router.push(`/items/${this.item.hash}`)
     }
   }
 }

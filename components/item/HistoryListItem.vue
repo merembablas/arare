@@ -56,11 +56,13 @@
       <div class="text-sm">
         <div>
           <slot></slot>
-          <div class="pt-2 text-gray-400">{{ time }}</div>
+          <div class="pt-2 text-gray-400" :title="$moment(time)">
+            {{ $moment(time).fromNow() }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="flex items-center space-x-2">
+    <div v-if="itemValue && itemValue > 0" class="flex items-center space-x-2">
       <svg
         width="16"
         height="16"
@@ -76,7 +78,9 @@
           fill="white"
         />
       </svg>
-      <div class="text-sm" style="color: #777d90">30 ARA</div>
+      <div class="text-sm" style="color: #777d90">
+        {{ itemValue }}
+      </div>
     </div>
   </div>
 </template>
@@ -86,8 +90,9 @@ export default {
   props: {
     ping: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
-    time: { type: String, required: true },
-    baseColor: { type: String, default: '#0D67E6' }
+    time: { type: Number, required: true },
+    baseColor: { type: String, default: '#0D67E6' },
+    itemValue: { type: Number, default: null }
   }
 }
 </script>

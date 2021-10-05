@@ -65,10 +65,10 @@
           >
             &nbsp;
           </div>
-          <small class="text-green-600">CREATOR</small>
+          <small v-if="user.isCreator" class="text-green-600">CREATOR</small>
 
-          <ItemFieldInfo v-if="user != null" a-key="Bio">
-            <p>{{ user.biography }}</p>
+          <ItemFieldInfo v-if="user != null" a-key="Bio" class="w-full">
+            <p class="p-2 bg-gray-a rounded w-full">{{ user.bio }}</p>
           </ItemFieldInfo>
 
           <div class="flex flex-row items-center justify-center space-x-10">
@@ -77,9 +77,7 @@
             </ItemFieldInfo>
             <ItemFieldInfo a-key="Address">
               <client-only>
-                <NuchainAddress
-                  address="5E5AsQiCsgubinh7DzzzS4LBbtv9H3NvZep7mk1Li3uNNvie"
-                />
+                <NuchainAddress :address="user.primaryAddress" />
               </client-only>
             </ItemFieldInfo>
           </div>
@@ -90,19 +88,29 @@
         v-if="user && user.twitter"
         class="flex items-center justify-center mt-10"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="#0D67E5"
-          class="h-6 w-6"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
-          />
-        </svg>
-        <div class="ml-2">
-          <a :href="`https://twitter.com/${user.twitter}`" target="_blank"
+        <IconTwitter size="22px" />
+
+        <div v-if="user.twitter" class="ml-2">
+          <a
+            class="link-color"
+            :href="`https://twitter.com/${user.twitter}`"
+            target="_blank"
             >@{{ user.twitter }}</a
+          >
+        </div>
+      </div>
+
+      <div
+        v-if="user && user.instagram"
+        class="flex items-center justify-center mt-2"
+      >
+        <IconInstagram size="22px" />
+        <div v-if="user.instagram" class="ml-2">
+          <a
+            class="link-color"
+            :href="`https://instagram.com/${user.instagram}`"
+            target="_blank"
+            >@{{ user.instagram }}</a
           >
         </div>
       </div>
@@ -148,22 +156,40 @@
 
 <script>
 export default {
-  data() {
+  async asyncData({ params, $axios }) {
+    const user = await $axios
+      .get(`/api/accounts/${params.userId}`)
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          alert(error)
+          return
+        }
+        return result
+      })
+    const items = await $axios
+      .get(`/api/accounts/${params.userId}/items`)
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          return
+        }
+        return result
+      })
+    console.log('🚀 ~ file: _userId.vue ~ line 154 ~ asyncData ~ user', user)
     return {
-      items: [],
-      user: null,
-      userId: this.$route.params.userId
-    }
-  },
-  mounted() {
-    this.fetchItems()
-  },
-  methods: {
-    fetchItems() {
-      this.user = this.$dummy.generateUser(this.userId)
-      this.items = this.$dummy.generateItems(20)
+      items,
+      user,
+      userId: params.userId
     }
   }
+  //   mounted() {
+  //     this.fetchItems()
+  //   },
+  //   methods: {
+  //     fetchItems() {
+  //       this.user = this.$dummy.generateUser(this.userId)
+  //       this.items = this.$dummy.generateItems(20)
+  //     }
+  //   }
 }
 </script>
 

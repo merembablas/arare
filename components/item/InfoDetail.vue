@@ -1,6 +1,6 @@
 <template>
   <div class="md:w-2/4 md:ml-10">
-    <div class="pl-2 pr-2">
+    <div v-if="item" class="pl-2 pr-2">
       <div class="hidden md:block">
         <h1 v-if="item" class="font-extrabold text-3xl">
           {{ item.name }}
@@ -12,27 +12,29 @@
       </div>
 
       <ItemFieldInfo
-        a-key="Owner"
-        :value="item.owner.name"
-        value-type="user"
-        :link-to="`/user/${item.owner.id}`"
+        ref="itemValue"
+        a-key="Value"
+        :value="`${itemValue} ARA`"
       />
+
       <ItemFieldInfo
+        a-key="Owner"
+        :value="item.creator.name"
+        value-type="user"
+        :link-to="`/user/${item.creator.id}`"
+      />
+      <!-- <ItemFieldInfo
         a-key="Asset location"
         value="Artamedia Gallery Yogyakarta"
         value-type="location"
-        :link-to="`/gallery/${item.gallery.id}`"
-      />
+        :link-to="`/gallery/${item.creator.id}`"
+      /> -->
       <ItemFieldInfo a-key="Popularity">
         <PopularityMeter :star="3" :total="5" />
       </ItemFieldInfo>
 
       <div class="mt-10">
-        <Button
-          text="Place Bid"
-          :icon-mode="true"
-          @click="placeBidDialogVisible = !placeBidDialogVisible"
-        >
+        <Button text="Place Bid" :icon-mode="true" @click="btnPlaceBidClicked">
           <template #icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +54,11 @@
         </Button>
       </div>
 
-      <ModalPlaceBid v-model="placeBidDialogVisible" :item="item" />
+      <ModalPlaceBid
+        v-model="placeBidDialogVisible"
+        :item="item"
+        @bidPlaced="onBidPlaced"
+      />
     </div>
 
     <!-- TABS -->
@@ -66,19 +72,46 @@
       v-show="currentTab == 'History'"
       :item="item"
     />
-    <div v-show="currentTab == 'Ownership'" class="p-5">Ownership</div>
-    <div v-show="currentTab == 'Bids'" class="p-5">Bids</div>
-    <div v-show="currentTab == 'Comments'" class="p-5">Comments</div>
+    <div v-show="currentTab == 'Ownership'" class="p-5">No data</div>
+    <div v-show="currentTab == 'Bids'" class="p-5">
+      <LazyBidBox v-if="currentTab == 'Bids'" ref="bidBox" :item="item" />
+    </div>
+    <div v-show="currentTab == 'Comments'" class="p-5">
+      <LazyCommentBox v-if="currentTab == 'Comments'" :item="item" />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: { item: { type: Object, required: true } },
   data() {
     return {
       placeBidDialogVisible: false,
-      currentTab: 'History'
+      currentTab: 'History',
+      itemValue: this.item.value
+    }
+  },
+  methods: {
+    ...mapGetters('user', ['getCurrentIdentity']),
+    onBidPlaced(bid) {
+      if (this.currentTab !== 'Bids') {
+        this.currentTab = 'Bids'
+      } else {
+        setTimeout(() => this.$refs.bidBox.add(bid), 500)
+      }
+      this.$refs.itemValue.theValue = `${bid.value} ARA`
+    },
+    btnPlaceBidClicked() {
+      if (!this.getCurrentIdentity()) {
+        alert(
+          'Please set the identity in dashboard > profile first for bidding'
+        )
+        this.$router.push('/dashboard/profile')
+        return
+      }
+      this.placeBidDialogVisible = !this.placeBidDialogVisible
     }
   }
 }

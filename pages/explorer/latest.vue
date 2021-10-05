@@ -1,35 +1,41 @@
 <template>
-  <div class="p-5 relative w-2/3">
-    <h1>LATEST NFTs!</h1>
+  <div class="p-2 md:p-5 relative w-full md:w-2/3">
+    <h1>Latest NFTs!</h1>
+
+    <div class="mt-5">
+      <LoadingBig v-if="!loaded" />
+      <div v-else class="justify-start flex flex-wrap min-w-full">
+        <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import AccountMethods from '~/components/AccountMethods'
 export default {
-  extends: AccountMethods,
   layout: 'explorer',
   data() {
     return {
-      balance: '-',
-      creators: this.$dummy.generateUsers(5)
-    }
-  },
-  // computed: {
-  // account() {
-  //   return this.$store.state.nuchain.currentAccount
-  // }
-  // },
-  watch: {
-    '$store.state.nuchain.currentAccount'(account) {
-      this.fetchBalance()
-    },
-    '$store.state.eth.currentAccount'(account) {
-      this.fetchBalance()
+      loaded: false,
+      items: []
     }
   },
   async mounted() {
-    await this.fetchBalance()
+    await this.fetchLatestItems()
+  },
+  methods: {
+    async fetchLatestItems() {
+      this.items = await this.$arare
+        .fetchLatestItems()
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          return result
+        })
+      this.loaded = true
+    }
   }
 }
 </script>

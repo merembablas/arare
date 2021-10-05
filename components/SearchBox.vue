@@ -1,31 +1,31 @@
 <template>
-  <div
-    class="
-      relative
-      text-gray-400
-      focus-within:text-gray-600
-      flex
-      justify-center
-      border-gray-200 border-2
-      rounded-xl
-    "
-  >
-    <div style="position: absolute; left: 2px; top: 3px">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 text-gray-400 duration-500 ease-in-out color-blue-600"
-        :fill="glassColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-          clip-rule="evenodd"
-        />
-      </svg>
+  <div>
+    <div
+      v-if="!inputBoxMobileVisible"
+      :class="`text-gray-400 bg-gray-200 p-2 md:hidden rounded-xl`"
+      @click="showInputBox(true)"
+    >
+      <IconSearch color="#0d67e5" />
     </div>
-    <input
+    <div
       :class="`
+        relative
+        text-gray-400
+        focus-within:text-gray-600
+        md:flex
+        justify-center
+        border-gray-200 border-2
+        rounded-xl
+        ${inputBoxMobileVisible ? '' : 'hidden'}
+      `"
+    >
+      <div style="position: absolute; left: 2px; top: 3px">
+        <IconSearch :color="glassColor" />
+      </div>
+      <input
+        ref="inputBox"
+        v-model="query"
+        :class="`
         pl-8
         pt-1
         pb-1
@@ -34,15 +34,18 @@
         focus:outline-none
         rounded-xl
         ${inFocus ? 'w-96' : 'w-full'}`"
-      autocomplete="off"
-      :placeholder="placeholder"
-      @focus="onFocus"
-      @blur="onBlur"
-    />
+        autocomplete="off"
+        :placeholder="placeholder"
+        @focus="onFocus"
+        @blur="onBlur"
+        @keypress="onKeypress"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   props: {
     placeholder: {
@@ -54,17 +57,55 @@ export default {
   data() {
     return {
       glassColor: '#cacaca',
-      inFocus: false
+      inFocus: false,
+      inputBoxMobileVisible: false,
+      query: ''
     }
   },
   methods: {
+    ...mapMutations('search', ['setSearchResult', 'setCurrentQuery']),
     onFocus() {
       this.glassColor = '#0D67E5'
       this.inFocus = true
+      this.$refs.inputBox.setSelectionRange(0, this.query.length)
     },
     onBlur() {
       this.glassColor = '#cacaca'
       this.inFocus = false
+      this.showInputBox(false)
+    },
+    showInputBox(state) {
+      this.inputBoxMobileVisible = state
+      if (state) {
+        setTimeout(() => {
+          this.$refs.inputBox.focus()
+        }, 400)
+      }
+    },
+    onKeypress(event) {
+      if (event.keyCode === 13) {
+        if (this.$route.path.startsWith('/search')) {
+          const query = this.query
+          console.log(
+            '🚀 ~ file: SearchBox.vue ~ line 88 ~ onKeypress ~ query',
+            query
+          )
+          this.setCurrentQuery(query)
+          if (query.length > 0) {
+            this.$axios
+              .get(`/api/search/items?q=${query}`)
+              .then(({ data: { error, result } }) => {
+                if (error) {
+                  alert(error)
+                  return
+                }
+                this.setSearchResult(result)
+              })
+          }
+        } else {
+          this.$router.push(`/search?q=${this.query}`)
+        }
+      }
     }
   }
 }

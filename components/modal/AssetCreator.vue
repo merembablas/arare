@@ -12,7 +12,18 @@
           @item-click="onSelectType"
         />
         <div v-if="page === 2">
-          <ModalAssetCreatorUploadPicture v-if="objectType === 'picture'" />
+          <ModalAssetCreatorUploadPicture
+            v-if="objectType === 'picture'"
+            @in-process="onInProcess"
+            @on-success="onUploadPictureSuccess"
+          />
+        </div>
+        <div v-if="page === 3">
+          <LazyModalAssetCreatorSetAttributes
+            ref="attributes"
+            :in-process="inProcess"
+            :thumbnail="thumbnail"
+          />
         </div>
       </div>
     </template>
@@ -32,6 +43,8 @@
           text="Cancel"
           color-class="bg-red-600"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onCancel"
         />
         <Button
@@ -39,13 +52,17 @@
           text="Back"
           color-class="bg-blue-400"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onBack"
         />
         <Button
           v-if="hasNext"
-          text="Next"
+          :text="nextCaption"
           color-class="bg-green-500"
           class="w-42"
+          :loading="inProcess"
+          :disabled="inProcess"
           @click="onNext"
         />
         <!-- <Button text="Next" color-class="bg-green-600" @click="setPage(2)" /> -->
@@ -56,7 +73,9 @@
 
 <script>
 // import { mapMutations } from 'vuex'
+import AccountMethods from '~/components/AccountMethods'
 export default {
+  extends: AccountMethods,
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
   },
@@ -67,7 +86,12 @@ export default {
       prevPage: 0,
       hasNext: false,
       objectType: null,
-      title: 'Select object type'
+      title: 'Select object type',
+      thumbnail:
+        'http://localhost:3000/uploads/up_the_hillside_by_donmalo-d82ehde.png',
+      nextCaption: 'Next',
+      extraData: {},
+      inProcess: false
     }
   },
   watch: {
@@ -87,16 +111,23 @@ export default {
       this.prevPage = 0
       this.hasNext = false
     },
-    onCancel() {
+    close() {
       this.visible = false
       this.reset()
       this.$emit('input', this.visible)
+    },
+    onCancel() {
+      this.close()
     },
     setPage(page) {
       this.prevPage = this.page
       this.page = page
     },
     onSelectType(type) {
+      console.log(
+        '🚀 ~ file: AssetCreator.vue ~ line 119 ~ onSelectType ~ type',
+        type
+      )
       this.setPage(2)
       this.objectType = type
       if (this.page > 1) {
@@ -105,7 +136,7 @@ export default {
         this.title = 'Select object type'
       }
 
-      this.hasNext = this.page > 1 && this.page < 3
+      this.hasNext = this.page > 2 && this.page < 3
     },
     onBack() {
       if (!this.prevPage) {
@@ -114,7 +145,44 @@ export default {
       this.page = this.page - 1
       this.hasNext = this.page > 1 && this.page < 3
     },
-    onNext() {}
+    onNext() {
+      if (this.page === 3) {
+        this.inProcess = true
+        const data = this.$refs.attributes.getMapped()
+        data.hash = this.extraData.hash
+        data.objectType = this.extraData.objectType
+        data.fileExtension = this.extraData.fileExtension
+        data.ownerAddress = this.accountAddressWithPrefix
+        data.creatorId = this.getCurrentIdentity().id
+        console.log(
+          '🚀 ~ file: AssetCreator.vue ~ line 132 ~ onNext ~ data',
+          data
+        )
+        this.$axios
+          .post('/api/item/mint', data)
+          .then(({ data: { error, hash, id } }) => {
+            this.inProcess = false
+            if (error) {
+              alert(error)
+              return
+            }
+            this.$arare.fetchMyItems(0, 20)
+            this.close()
+          })
+      }
+    },
+    onUploadPictureSuccess({ url, hash, fileExtension }) {
+      this.thumbnail = url
+      this.extraData.hash = hash
+      this.extraData.objectType = 'picture'
+      this.extraData.fileExtension = fileExtension
+      this.setPage(3)
+      this.hasNext = true
+      this.nextCaption = 'Mint'
+    },
+    onInProcess(state) {
+      this.inProcess = state
+    }
   }
 }
 </script>

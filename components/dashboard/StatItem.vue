@@ -4,10 +4,12 @@
       flex flex-col
       justify-center
       text-center
-      p-10
+      p-5
+      md:p-10
       stat-item
       counter
       rounded-xl
+      w-full
     "
   >
     <div>{{ name }}</div>

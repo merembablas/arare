@@ -1,7 +1,7 @@
 <template>
   <ModalBaseModal v-model="visible">
     <template #caption>
-      <h3 class="text-xl font-semibold p-0 m-0">Place a bid</h3>
+      <h3 class="text-xl font-semibold p-0 m-0">Place Bid</h3>
     </template>
     <template #body>
       <div
@@ -18,50 +18,58 @@
           <div class="pb-5">
             <p class="text-sm">
               by
-              <ClickableName
-                class="text-sm"
-                name="Galam Zulkifli"
-                link-to="/creator/galam"
-              />
+              <NuxtLink class="link-color" :to="`/user/${item.creator.id}`">{{
+                item.creator.name
+              }}</NuxtLink>
             </p>
           </div>
         </div>
         <div class="text-sm text-gray-500">Highest Bid:</div>
-        <div>30 ARA</div>
+        <div>{{ item.value }} ARA</div>
         <div class="text-sm text-gray-500">(Rp. 9.000.000,-)</div>
         <div
           class="mt-5 flex flex-col items-center justify-center content-center"
         >
-          <div>Your Bid:</div>
+          <!-- <div>Your Bid:</div> -->
           <div class="flex flex-row">
-            <input
-              ref="inputPrice"
-              type="text"
-              class="
-                pl-5
-                pt-2
-                pb-2
-                block
-                border-l border-t border-b border-solid border-gray-400
-                outline-none
-                focus:outline-none
-                rounded-l
-              "
-              placeholder="eg: 100"
-            />
-            <select
-              id="Currency"
-              name="currency"
-              class="
-                border-r border-t border-b border-solid border-gray-400
-                rounded-r
-                outline-none
-                focus:outline-none
-              "
-            >
-              <option>ARA</option>
-              <option>IDR</option>
-            </select>
+            <FormSmartForm ref="form" :disabled="inProcess">
+              <!-- <input
+                ref="inputPrice"
+                type="text"
+                class="
+                  pl-5
+                  pt-2
+                  pb-2
+                  block
+                  border-l border-t border-b border-solid border-gray-400
+                  outline-none
+                  focus:outline-none
+                  rounded-l
+                "
+                placeholder="100"
+              /> -->
+              <FormInputSelect
+                name="Bid for"
+                placeholder="100"
+                :auto-focus="true"
+                type="numeric"
+                use-key="value"
+                :select-items="['ARA', 'ETH']"
+              />
+              <!-- <select
+                id="Currency"
+                name="currency"
+                class="
+                  border-r border-t border-b border-solid border-gray-400
+                  rounded-r
+                  outline-none
+                  focus:outline-none
+                "
+              >
+                <option>ARA</option>
+                <option>IDR</option>
+              </select> -->
+            </FormSmartForm>
           </div>
         </div>
       </div>
@@ -93,7 +101,8 @@ export default {
   },
   data() {
     return {
-      visible: this.value
+      visible: this.value,
+      inProcess: false
     }
   },
   watch: {
@@ -103,17 +112,43 @@ export default {
     },
     visible(visibility) {
       this.$emit('input', visibility)
-      setTimeout(() => this.$refs.inputPrice.focus(), 100)
+      // setTimeout(() => this.$refs.inputPrice.focus(), 100)
     }
   },
   methods: {
-    onCancel() {
+    close() {
       this.visible = false
       this.$emit('input', this.visible)
+      // this.visible = !this.visible
+      //     this.$emit('input', this.visible)
+    },
+    onCancel() {
+      this.close()
     },
     onBid() {
-      this.visible = !this.visible
-      this.$emit('input', this.visible)
+      // const s = this.value.split(' ')
+      const formData = this.$refs.form.toJSON()
+      console.log(
+        '🚀 ~ file: PlaceBid.vue ~ line 125 ~ onBid ~ formData',
+        formData
+      )
+      const s = formData.value.split(' ')
+
+      const value = s[0]
+      const tokenType = s[1]
+      const data = {
+        itemId: this.item.id,
+        value: parseFloat(value),
+        tokenType
+      }
+      this.$axios.post(`/api/bid`, data).then(({ data: { error, result } }) => {
+        if (error) {
+          alert(error)
+          return
+        }
+        this.$emit('bidPlaced', result)
+        this.close()
+      })
     }
   }
 }

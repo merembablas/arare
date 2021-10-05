@@ -1,7 +1,7 @@
 <template>
-  <a :href="linkTo" :class="`text-${color} font-semibold`">
+  <NuxtLink :to="linkTo" :class="`text-${color} font-semibold`">
     <div class="w-32 truncate">{{ name }}</div>
-  </a>
+  </NuxtLink>
 </template>
 
 <script>

@@ -49,8 +49,14 @@
             <div class="ml-2">Share</div>
           </div>
           <div class="flex items-center pl-5">
-            <IconHeart />
-            <div class="ml-2">3515</div>
+            <div @click="like">
+              <IconHeart
+                :color="isLiked ? '#e63e5d' : '#D4D6DF'"
+                class="cursor-pointer"
+              />
+            </div>
+
+            <div class="ml-2">{{ itemLikes }}</div>
           </div>
         </div>
       </div>
@@ -60,13 +66,69 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     item: { type: Object, required: true }
   },
+  data() {
+    return {
+      itemLikes: this.item.likes,
+      likers: this.item.likers,
+      isLiked: false,
+      inProcess: false
+    }
+  },
+  mounted() {
+    this.isLiked = this.isLikedLoad()
+  },
   methods: {
+    ...mapGetters('user', ['getCurrentIdentity']),
     onCreatorClick() {
       this.$router.push(`/user/${this.item.creator.id}`)
+    },
+    like() {
+      if (this.inProcess) {
+        return
+      }
+      this.inProcess = true
+      if (!this.isLiked) {
+        this.$axios
+          .post(`/api/items/${this.item.id}/likes`)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return
+            }
+            this.itemLikes = this.itemLikes + 1
+            this.isLiked = true
+          })
+          .finally(() => {
+            this.inProcess = false
+          })
+      } else {
+        this.$axios
+          .delete(`/api/items/${this.item.id}/likes`)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return
+            }
+            this.itemLikes = this.itemLikes - 1
+            this.isLiked = false
+          })
+          .finally(() => {
+            this.inProcess = false
+          })
+      }
+    },
+    isLikedLoad() {
+      const currentUser = this.getCurrentIdentity()
+      console.log(
+        '🚀 ~ file: PicDetail.vue ~ line 96 ~ isLiked ~ currentUser',
+        currentUser
+      )
+      return (
+        currentUser && this.likers.map((a) => a.userId).includes(currentUser.id)
+      )
     }
   }
 }

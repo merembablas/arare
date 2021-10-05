@@ -78,6 +78,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+const Web3 = require('web3')
 export default {
   props: {
     value: { type: Boolean, default: false } // for visibility toggle
@@ -102,7 +103,9 @@ export default {
     ...mapMutations({
       setCurrentEthAccount: 'eth/setCurrentAccount',
       setCurrentEthAccountBalance: 'eth/setCurrentAccountBalance',
-      setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
+      setCurrentNuchainAccount: 'nuchain/setCurrentAccount',
+      setUserIdentity: 'user/setIdentity',
+      setJwtToken: 'user/setJwtToken'
     }),
     onCancel() {
       this.close()
@@ -112,12 +115,22 @@ export default {
       this.$emit('input', this.visible)
     },
     async connectMetamask() {
+      if (typeof window.ethereum === 'undefined') {
+        alert('Metamask not detected. Please install Metamask first')
+        return
+      }
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts'
       })
       if (accounts && accounts[0]) {
-        this.setCurrentEthAccount(accounts[0])
-        this.close()
+        this.authenticateMetamask(accounts[0], ({ error }) => {
+          if (error) {
+            return alert('Cannot authenticate Metamask')
+          }
+          this.setCurrentEthAccount(accounts[0])
+          this.fetchAccountInfo(accounts[0])
+          this.close()
+        })
       } else {
         alert('Cannot connect :(')
       }
@@ -129,18 +142,99 @@ export default {
         return
       }
       this.accounts = await this.$nuchainJs.web3Accounts()
+      if (this.accounts.length === 0) {
+        alert(
+          'You have no nuchain accounts, please use Nuchain App extension to connect'
+        )
+        return
+      }
       // this.addresses = accounts.map((acc) => acc.address)
       this.page = 2
     },
     selectNuchainAccount(account) {
       // const accounts = await this.$nuchainJs.web3Accounts()
-
       if (account) {
-        this.setCurrentNuchainAccount(account)
+        // authenticate
+        this.authenticate(account, ({ error }) => {
+          if (error) {
+            alert('Cannot authenticate, signature not verified,', error)
+            return
+          }
+          this.setCurrentNuchainAccount(account)
+          this.fetchAccountInfo(account.address)
+        })
+
         this.close()
       } else {
         alert('Cannot connect :(')
       }
+    },
+    getOTPCode() {
+      const duration = Math.floor(new Date().getTime() / 1000 / 30)
+      console.log(
+        '🚀 ~ file: Connect.vue ~ line 152 ~ authenticate ~ otp',
+        duration
+      )
+      return `ch:${duration}`
+    },
+    authenticateMetamask(account, cb) {
+      const message = this.getOTPCode()
+      const web3 = new Web3(window.ethereum)
+      const hash = web3.utils.sha3(message)
+      web3.eth.personal.sign(hash, account).then((signature) => {
+        this.$arare
+          .authenticateMetamask(account, signature)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return alert('Cannot authenticate eth account')
+            }
+            const token = result
+            this.setJwtToken(token)
+            const rv = { error, token }
+            cb(rv)
+          })
+      })
+    },
+    authenticate(account, cb) {
+      // range to 30 seconds
+      const message = this.getOTPCode()
+      this.$nuchain.signer.sign(account, message).then((signature) => {
+        // get jwt token from server by sending our signature
+        this.$arare
+          .authenticate(account.address, signature)
+          .then(({ data: { error, result } }) => {
+            if (error) {
+              return alert('Cannot authenticate your account')
+            }
+            const token = result
+
+            this.setJwtToken(token)
+
+            const rv = { error, token }
+
+            cb(rv)
+          })
+      })
+    },
+    fetchAccountInfo(cryptoAddress) {
+      // untuk mendapatkan informasi account dan
+      // meng-save ke store.user.identity
+      this.$axios
+        .get(`/api/accounts/${cryptoAddress}`)
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          this.setUserIdentity(result)
+        })
+        .catch((err) => {
+          console.log(
+            '🚀 ~ file: Connect.vue ~ line 159 ~ fetchAccountInfo ~ err',
+            err
+          )
+          this.setUserIdentity(null)
+        })
     }
   }
 }

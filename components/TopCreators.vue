@@ -2,6 +2,9 @@
   <div class="bg-gray-200 mt-10 p-10 h-auto w-auto min-w-full">
     <div class="text-2xl font-semibold pb-10">Top Creators</div>
     <div class="justify-center flex flex-wrap min-w-full">
+      <div v-if="!loaded">
+        <LoadingBig />
+      </div>
       <UserListItem
         v-for="creator in creators"
         :id="creator.id.toString()"
@@ -19,8 +22,17 @@
 
 <script>
 export default {
-  props: {
-    creators: { type: Array, required: true }
+  data() {
+    return {
+      loaded: false,
+      creators: []
+    }
+  },
+  mounted() {
+    this.$arare.fetchPopularCreators(0, 5).then(({ data }) => {
+      this.creators = data.result
+      this.loaded = true
+    })
   }
 }
 </script>

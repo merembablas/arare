@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div v-if="loaded">
+    <div v-if="loaded" class="relative">
       <div
         v-if="account"
         class="cursor-pointer bg-gray-200 p-2 rounded"
         @mouseenter="showMenu(true)"
         @mouseleave="showMenu(false)"
+        @click="showMenu(true)"
       >
         <div class="flex items-center">
           <div
@@ -44,7 +45,15 @@
       </button>
       <div
         v-show="showMenuState"
-        class="bg-white absolute p-4 border-2 border-gray-2 rounded-b-xl z-40"
+        class="
+          bg-white
+          absolute
+          p-4
+          border-2 border-gray-2
+          rounded-b-xl
+          z-40
+          personal-menu
+        "
         @mouseenter="showMenu(true)"
         @mouseleave="showMenu(false)"
       >
@@ -137,7 +146,9 @@ export default {
   methods: {
     ...mapMutations({
       setCurrentEthAccount: 'eth/setCurrentAccount',
-      setCurrentNuchainAccount: 'nuchain/setCurrentAccount'
+      setCurrentNuchainAccount: 'nuchain/setCurrentAccount',
+      setIdentity: 'user/setIdentity',
+      setJwtToken: 'user/setJwtToken'
     }),
     onClick() {
       this.showConnectModal = true
@@ -157,11 +168,17 @@ export default {
     logout() {
       this.setCurrentEthAccount(null)
       this.setCurrentNuchainAccount(null)
+      this.setIdentity(null)
+      this.setJwtToken(null)
       this.showMenuState = false
     }
   }
 }
 </script>
 
-<style>
+<style lang="less">
+.personal-menu {
+  right: 5px;
+  top: 39px;
+}
 </style>

@@ -1,10 +1,9 @@
 <template>
   <div>
     <Navbar />
-    <div class="mt-2 md:m-10 h-full">
+    <div v-if="item" class="mt-2 md:m-10 h-full">
       <div class="flex flex-wrap h-full items-start justify-between w-full">
         <div
-          v-if="item"
           class="
             justify-center
             align-center
@@ -27,6 +26,7 @@
               w-full
               items-center
               justify-center
+              pt-5
             "
           >
             <div class="text-color-2 text-sm">This item has been verified</div>
@@ -36,7 +36,7 @@
 
         <div
           class="
-            flex flex-col flex flex-grow
+            flex flex-col flex-grow
             justify-center
             items-center
             md:pr-2
@@ -111,18 +111,19 @@
               v-if="showDescription"
               class="p-5 border-b-2 border-l-2 border-r-2"
             >
-              <p>
+              <!-- <p>
                 At vero eos et accusamus et iusto odio dignissimos ducimus qui
                 blanditiis praesentium voluptatum deleniti atque corrupti quos
                 dolores et quas molestias excepturi sint occaecati cupiditate
                 non provident, similique sunt in culpa qui officia deserunt
                 mollitia animi, id est laborum et dolorum fuga. Et harum quidem
-              </p>
+              </p> -->
+              <p>{{ item.description }}</p>
             </div>
           </div>
         </div>
 
-        <ItemInfoDetail :item="item" />
+        <ItemInfoDetail v-if="item" :item="item" />
       </div>
     </div>
     <Footer />
@@ -131,17 +132,25 @@
 
 <script>
 export default {
+  async asyncData({ params, $axios }) {
+    if (!params.itemId) return
+    const item = await $axios
+      .get(`/api/items/${params.itemId}`)
+      .then(({ data }) => {
+        console.log('🚀 ~ file: _itemId.vue ~ line 163 ~ .then ~ data', data)
+        return data
+      })
+    return {
+      item,
+      showDescription: false
+    }
+  },
   data() {
     return {
-      itemId: this.$route.params.itemId,
       item: null,
       name: '',
       showDescription: false
     }
-  },
-  fetch() {
-    this.name = `Lukisan #${this.itemId}`
-    this.item = this.$dummy.generateItem(this.itemId)
   }
 }
 </script>

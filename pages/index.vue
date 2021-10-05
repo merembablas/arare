@@ -10,7 +10,7 @@
           <div class="headline">NFT for the Real World</div>
           <div class="pt-5">
             <p>
-              Make your digital artworks a valuable assets through the power of
+              Make your digital artworks valuable assets through the power of
               blockchain.
             </p>
           </div>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <TopCreators :creators="creators" />
+    <TopCreators />
 
     <PopularItems />
 
@@ -32,9 +32,7 @@
 <script>
 export default {
   data() {
-    return {
-      creators: this.$dummy.generateUsers(5)
-    }
+    return {}
   }
 }
 </script>

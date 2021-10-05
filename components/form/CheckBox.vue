@@ -3,7 +3,10 @@
     <input
       v-model="dChecked"
       type="checkbox"
-      class="form-checkbox h-5 w-5 text-gray-600 rounded"
+      :disabled="inSaving"
+      :class="`form-checkbox h-5 w-5 text-gray-600 rounded ${
+        inSaving ? 'bg-gray-300' : ''
+      }`"
     /><span class="ml-2 text-gray-700">{{ name }}</span>
   </label>
 </template>
@@ -14,6 +17,7 @@ export default {
   extends: FormHelpers,
   props: {
     name: { type: String, required: true },
+    useKey: { type: String, default: null },
     checked: { type: Boolean, required: false }
   },
   data() {
@@ -24,10 +28,13 @@ export default {
   },
   methods: {
     getKey() {
-      return this.normalizeKey(this.name)
+      return this.useKey || this.normalizeKey(this.name)
     },
     getValue() {
-      return this.checked
+      return this.dChecked
+    },
+    setDisabled(state) {
+      this.inSaving = state
     }
   }
 }

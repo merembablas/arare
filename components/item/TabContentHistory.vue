@@ -1,12 +1,13 @@
 <template>
   <div class="history flex flex-col pt-10">
-    <ItemHistoryListItem :ping="true" :active="true" time="28 April 2021">
+    <LoadingSmall v-if="!loaded" />
+    <!-- <ItemHistoryListItem :ping="true" :active="true" time="28 April 2021">
       <div class="flex">
         <span>Bought by</span>
         <div class="font-semibold text-green-500 ml-1">
           <ClickableName
-            :name="item.owner.name"
-            :link-to="`/user/${item.owner.id}`"
+            :name="item.creator.name"
+            :link-to="`/user/${item.creator.id}`"
           />
         </div>
       </div>
@@ -16,15 +17,18 @@
         <span>Bought by</span>
         <span class="font-semibold text-green-500">Alan Walker</span>
       </div>
-    </ItemHistoryListItem>
+    </ItemHistoryListItem> -->
 
     <!-- minting event -->
     <ItemHistoryListItem
-      time="1 April 2021"
+      v-for="h in histories"
+      :key="h.id"
+      :time="h.timestamp"
       :active="true"
-      base-color="#f0ae3c"
+      :base-color="h.mint ? '#f0ae3c' : ''"
+      :item-value="h.value"
     >
-      <template #icon>
+      <template v-if="h.activity === 'mint'" #icon>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-7 w-7"
@@ -42,8 +46,12 @@
         </svg>
       </template>
       <div>
-        <span>Minted by</span>
-        <span class="font-semibold text-green-500">Alan Walker</span>
+        <span v-if="h.activity === 'mint'">Minted by</span>
+        <span class="font-semibold text-green-500">
+          <NuxtLink :to="`/user/${h.initiatorId}`">{{
+            h.initiatorName
+          }}</NuxtLink>
+        </span>
       </div>
     </ItemHistoryListItem>
     <!-- eof minting event -->
@@ -52,7 +60,26 @@
 
 <script>
 export default {
-  props: { item: { type: Object, required: true } }
+  props: { item: { type: Object, required: true } },
+  data: () => ({
+    loaded: false,
+    histories: []
+  }),
+  mounted() {
+    this.$axios
+      .get(`/api/items/${this.item.id}/histories`)
+      .then(({ data: { error, result } }) => {
+        if (error) {
+          return
+        }
+        this.histories = result
+        console.log(
+          '🚀 ~ file: TabContentHistory.vue ~ line 74 ~ .then ~ result',
+          result
+        )
+      })
+      .finally(() => (this.loaded = true))
+  }
 }
 </script>
 

@@ -14,11 +14,18 @@
       <IconHome color="#0d67e5" />
     </ExplorerMenuItem>
     <ExplorerMenuItem
-      text="Hot Items"
+      text="Popular"
       :active="isActive('explorer/hot')"
       to="/explorer/hot"
     >
       <IconFire color="#d9630f" />
+    </ExplorerMenuItem>
+    <ExplorerMenuItem
+      text="Most Valuable"
+      :active="isActive('explorer/most-valuable')"
+      to="/explorer/most-valuable"
+    >
+      <IconChart color="#0d67e5" />
     </ExplorerMenuItem>
     <ExplorerMenuItem
       text="Latest"

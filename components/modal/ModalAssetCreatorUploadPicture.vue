@@ -10,13 +10,12 @@
       w-96
       bg-gray-a
     "
+    @click="openUploadDialog"
   >
     <div class="flex flex-col justify-center items-center cursor-pointer">
       <div>Drag &amp; Drop</div>
       <div>or</div>
-      <div class="hover:text-blue-500" @click="openUploadDialog">
-        Upload Picture
-      </div>
+      <div class="hover:text-blue-500">Upload Picture</div>
       <div>Here</div>
     </div>
     <form
@@ -47,7 +46,6 @@ export default {
     },
     upload() {
       const formData = new FormData()
-      //   console.log(this.$refs.imageUpload.file)
       formData.append('picture', this.$refs.imageUpload.files[0])
       this.$axios
         .post('/uploader/upload_picture', formData, {
@@ -55,12 +53,13 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        .then(({ data }) => {
-          console.log(
-            '🚀 ~ file: ModalAssetCreatorUploadPicture.vue ~ line 59 ~ .then ~ data',
-            data
-          )
-        })
+        .then(({ data: { error, url, hash, fileExtension } }) => {
+          if (error) {
+            alert(error)
+          } else {
+            this.$emit('on-success', { url, hash, fileExtension })
+          }
+        }).catch(error => {alert(error)})
     }
   }
 }

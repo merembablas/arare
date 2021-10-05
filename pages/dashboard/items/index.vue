@@ -1,6 +1,6 @@
 <template>
-  <div class="p-10 w-2/3">
-    <Button
+  <div class="p-2 md:p-10 w-full md:w-2/3">
+    <!-- <Button
       text="Add"
       :icon-mode="true"
       class="w-24 absolute"
@@ -22,18 +22,36 @@
           />
         </svg>
       </template>
-    </Button>
-    <h2>Items: 300</h2>
+    </Button> -->
+    <h2>Items: {{ ownedItemCount }}</h2>
     <DashboardItemsTable />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   layout: 'dashboard',
   data() {
     return {
-      creators: this.$dummy.generateUsers(5)
+      ownedItemCount: this.getMyItemCount()
+    }
+  },
+  mounted() {
+    this.fetchItemCount()
+  },
+  methods: {
+    ...mapGetters('items', ['getMyItemCount']),
+    fetchItemCount() {
+      this.$axios
+        .get('/api/stats/created-count')
+        .then(({ data: { error, result } }) => {
+          if (error) {
+            alert(error)
+            return
+          }
+          this.ownedItemCount = result
+        })
     }
   }
 }

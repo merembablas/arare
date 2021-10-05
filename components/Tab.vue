@@ -46,6 +46,11 @@ export default {
       currentActive: this.items[this.active]
     }
   },
+  watch: {
+    value(newValue) {
+      this.currentActive = newValue
+    }
+  },
   methods: {
     onClick(i) {
       this.currentActive = i
