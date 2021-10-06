@@ -17,7 +17,7 @@
     "@polkadot/extension-dapp": "^0.40.3",
     "@tailwindcss/forms": "^0.3.4",
     "bignumber.js": "^9.0.1",
-    "core-js": "^3.18.1",
+    "core-js": "^3.18.2",
     "ethereumjs-util": "^7.1.2",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
