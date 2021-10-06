@@ -14,6 +14,7 @@ const Item = new Schema({
   mint: { type: Object, default: null }, // mint information, like when the item is mint, will be set to null if not mint yet
   timestamp: { type: Number, required: true },
   likes: { type: Number, required: true, default: 0 },
+  views: { type: Number, required: true, default: 0 },
   value: { type: Number, required: true, default: 0 },
   verified: { type: Boolean, required: true, default: false },
   serialNumber: { type: Number, required: true, default: 1 },

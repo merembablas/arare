@@ -51,9 +51,9 @@
           <td class="hidden md:block">
             <PopularityMeter :star="3" />
           </td>
-          <td>130 ARA</td>
+          <td>{{ item.value }} ARA</td>
           <td class="hidden md:flex">
-            <div>127</div>
+            <div>{{ item.views || '0' }}</div>
             <IconEye class="ml-2" />
           </td>
         </tr>
