@@ -12,6 +12,7 @@ import { NftItem } from './models/Item'
 const { Router } = require('express')
 const validator = require('express-validator')
 const ItemHistory = require('./models/ItemHistory')
+const ViewHistory = require('./models/ViewHistory')
 
 const router = Router()
 
@@ -390,6 +391,37 @@ const latestItems = [
     }
 ]
 
+const addViewHistory = [
+    validator.param('id', 'Invalid id').isAlphanumeric(),
+    // validator.body('userId', 'Invalid userId').isAlphanumeric(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped() })
+        }
+
+        let view = {
+            itemId: req.params.id,
+            userId: req.currentUser.id,
+            timestamp: getUtcNow()
+        }
+
+        ViewHistory.findOneAndUpdate(
+            { _id: view.itemId },
+            view,
+            { upsert: true },
+            async (err, result) => {
+                if (err) {
+                    console.log('[ERROR]', err)
+                    return res.json({ error: 'cannot save view history' })
+                }
+                console.log('🚀 ~ file: items.js ~ line 414 ~ result', result)
+                return res.json({ result: 'ok' })
+            }
+        )
+    }
+]
+
 // Mint new item
 router.post('/item/mint', isAuthenticated, mint)
 
@@ -403,5 +435,7 @@ router.get('/items/:id/comments', comments)
 router.post('/items/:id/comments', isAuthenticated, addComments)
 router.post('/items/:id/likes', isAuthenticated, addLikes)
 router.delete('/items/:id/likes', isAuthenticated, removeLikes)
+
+router.post('/items/:id/views', isAuthenticated, addViewHistory)
 
 module.exports = router
