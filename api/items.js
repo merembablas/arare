@@ -1,3 +1,5 @@
+import { Types } from 'mongoose'
+
 import ItemMapper from '../lib/ItemMapper'
 
 import { toAddressFilter, accountToApiType } from '../lib/AccountUtil'
@@ -391,6 +393,64 @@ const latestItems = [
     }
 ]
 
+const lastViews = [
+    validator.query('offset', 'Invalid offset').default('0').isInt(),
+    validator.query('limit', 'Invalid limit').default('10').isInt(),
+    (req, res) => {
+        const errors = validator.validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({ error: errors.mapped() })
+        }
+
+        ViewHistory.find({ userId: req.currentUser.id })
+            .sort({ timestamp: -1 })
+            .limit(20)
+            .exec(async (err, itemRefs) => {
+                if (err) {
+                    return res.json({ error: 'Cannot get valued itemRefs' })
+                }
+                const itemIds = itemRefs.map((item) =>
+                    Types.ObjectId(item.itemId)
+                )
+                // const orderingTs = itemRefs.map((item) => [item.itemId, item.timestamp])
+
+                NftItem.find({ _id: { $in: itemIds } })
+                    // .sort({ timestamp: -1 })
+                    .limit(20)
+                    .exec(async (err, items) => {
+                        if (err) {
+                            console.log(
+                                '🚀 ~ file: items.js ~ line 415 ~ NftItem.find ~ err',
+                                err
+                            )
+                            return res.json({ error: 'Cannot get items' })
+                        }
+
+                        const result = await Promise.all(
+                            items.map(async (item) => {
+                                const creator = await Account.findById(
+                                    item.creatorId
+                                ).exec()
+                                const itemRef = itemRefs.find(
+                                    (a) => a.itemId == item._id.toString()
+                                )
+                                item.timestamp = itemRef.timestamp
+                                return ItemMapper(
+                                    item,
+                                    accountToApiType(creator)
+                                )
+                            })
+                        )
+                        return res.json({
+                            result: result.sort(
+                                (a, b) => b.timestamp - a.timestamp
+                            )
+                        })
+                    })
+            })
+    }
+]
+
 const addViewHistory = [
     validator.param('id', 'Invalid id').isAlphanumeric(),
     // validator.body('userId', 'Invalid userId').isAlphanumeric(),
@@ -406,10 +466,11 @@ const addViewHistory = [
             timestamp: getUtcNow()
         }
 
-        ViewHistory.findOneAndUpdate(
-            { _id: view.itemId },
+        ViewHistory.findOneAndReplace(
+            { _id: Types.ObjectId(view.itemId) },
             view,
-            { upsert: true },
+            null,
+            // { upsert: true },
             async (err, result) => {
                 if (err) {
                     console.log('[ERROR]', err)
@@ -428,6 +489,7 @@ router.post('/item/mint', isAuthenticated, mint)
 router.get('/item/popular', popular)
 router.get('/item/valued', valuedItems)
 router.get('/item/latest', latestItems)
+router.get('/item/last-views', isAuthenticated, lastViews)
 
 router.get('/items/:id', getItem)
 router.get('/items/:id/histories', histories)

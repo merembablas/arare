@@ -1,42 +1,48 @@
 <template>
-  <div class="p-5 relative w-2/3">
-    <h1>HISTORY</h1>
-  </div>
+    <div class="p-2 md:p-5 relative w-full md:w-2/3">
+        <h1>History</h1>
+
+        <div class="mt-5">
+            <LoadingBig v-if="!loaded" />
+            <div v-else class="justify-start flex flex-wrap min-w-full">
+                <ItemListItem v-for="i in items" :key="i.id" :item="i" />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import AccountMethods from '~/components/AccountMethods'
 export default {
-  extends: AccountMethods,
-  layout: 'explorer',
-  data() {
-    return {
-      balance: '-',
-      creators: this.$dummy.generateUsers(5)
-    }
-  },
-  // computed: {
-  // account() {
-  //   return this.$store.state.nuchain.currentAccount
-  // }
-  // },
-  watch: {
-    '$store.state.nuchain.currentAccount'(account) {
-      this.fetchBalance()
+    layout: 'explorer',
+    data() {
+        return {
+            loaded: false,
+            items: []
+        }
     },
-    '$store.state.eth.currentAccount'(account) {
-      this.fetchBalance()
+    async mounted() {
+        await this.fetchItems()
+    },
+    methods: {
+        async fetchItems() {
+            this.items = await this.$axios
+                .get('/api/item/last-views')
+                .then(({ data: { error, result } }) => {
+                    if (error) {
+                        alert(error)
+                        return
+                    }
+                    return result
+                })
+            this.loaded = true
+        }
     }
-  },
-  async mounted() {
-    await this.fetchBalance()
-  }
 }
 </script>
 
 
 <style lang="less" scoped>
 p {
-  color: #6c7080;
+    color: #6c7080;
 }
 </style>

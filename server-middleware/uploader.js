@@ -40,12 +40,14 @@ app.post('/upload_picture', (req, res) => {
     }).single('picture')
 
     upload(req, res, async function (err) {
+        if (err) {
+            console.log('[ERROR]', err)
+            return res.send({ error: 'No picture uploaded' })
+        }
+
         if (req.fileValidationError) {
             return res.send(req.fileValidationError)
         } else if (!req.file) {
-            if (err) {
-                console.log('[ERROR]', err)
-            }
             return res.send({ error: 'No picture uploaded' })
         } else if (err instanceof multer.MulterError) {
             return res.json({ error: err })
