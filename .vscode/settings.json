@@ -1,25 +1,25 @@
 {
-    "eslint.format.enable": true,
-    "vetur.format.defaultFormatter.html": "prettier",
-    "eslint.validate": [
-        {
-            "language": "vue",
-            "autoFix": true
-        },
-        {
-            "language": "html",
-            "autoFix": true
-        },
-        {
-            "language": "javascript",
-            "autoFix": true
-        },
-        {
-            "language": "javascriptreact",
-            "autoFix": true
-        }
-    ],
-    "eslint.autoFixOnSave": true,
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4
+  "eslint.format.enable": true,
+  "vetur.format.defaultFormatter.html": "prettier",
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    }
+  ],
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2
 }
