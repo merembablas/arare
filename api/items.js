@@ -443,7 +443,7 @@ const addViewHistory = [
     ViewHistory.findOneAndReplace(
       { _id: Types.ObjectId(view.itemId) },
       view,
-      null,
+      { upsert: true },
       (err, result) => {
         if (err) {
           console.log('[ERROR]', err)
