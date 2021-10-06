@@ -405,7 +405,7 @@ const lastViews = [
         ViewHistory.find({ userId: req.currentUser.id })
             .sort({ timestamp: -1 })
             .limit(20)
-            .exec(async (err, itemRefs) => {
+            .exec((err, itemRefs) => {
                 if (err) {
                     return res.json({ error: 'Cannot get valued itemRefs' })
                 }
@@ -432,7 +432,7 @@ const lastViews = [
                                     item.creatorId
                                 ).exec()
                                 const itemRef = itemRefs.find(
-                                    (a) => a.itemId == item._id.toString()
+                                    (a) => a.itemId === item._id.toString()
                                 )
                                 item.timestamp = itemRef.timestamp
                                 return ItemMapper(
@@ -460,7 +460,7 @@ const addViewHistory = [
             return res.json({ error: errors.mapped() })
         }
 
-        let view = {
+        const view = {
             itemId: req.params.id,
             userId: req.currentUser.id,
             timestamp: getUtcNow()
@@ -470,8 +470,7 @@ const addViewHistory = [
             { _id: Types.ObjectId(view.itemId) },
             view,
             null,
-            // { upsert: true },
-            async (err, result) => {
+            (err, result) => {
                 if (err) {
                     console.log('[ERROR]', err)
                     return res.json({ error: 'cannot save view history' })
