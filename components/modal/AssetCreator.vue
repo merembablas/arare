@@ -4,9 +4,7 @@
       <h3 class="text-xl font-semibold p-0 m-0">{{ title }}</h3>
     </template>
     <template #body>
-      <div
-        class="text-lg flex flex-col items-start justify-start leading-relaxed"
-      >
+      <div class="text-lg flex flex-col leading-relaxed">
         <ModalCreateAssetSelectAsset
           v-if="page === 1"
           @item-click="onSelectType"
@@ -43,7 +41,6 @@
           text="Cancel"
           color-class="bg-red-600"
           class="w-42"
-          :loading="inProcess"
           :disabled="inProcess"
           @click="onCancel"
         />
@@ -52,7 +49,6 @@
           text="Back"
           color-class="bg-blue-400"
           class="w-42"
-          :loading="inProcess"
           :disabled="inProcess"
           @click="onBack"
         />
@@ -168,6 +164,12 @@ export default {
             }
             this.$arare.fetchMyItems(0, 20)
             this.close()
+          })
+          .catch((error) => {
+            alert(error)
+          })
+          .finally(() => {
+            this.inProcess = false
           })
       }
     },

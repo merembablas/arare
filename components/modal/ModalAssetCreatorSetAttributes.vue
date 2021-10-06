@@ -22,25 +22,26 @@
         </div>
 
         <FormSmartForm ref="form1" :disabled="disabled">
-          <FormCheckBox name="Has physical asset" />
+          <FormInputText name="Name" :auto-focus="true" />
+          <FormInputText name="Description" :multi-line="true" />
+          <FormInputText name="Count" type="numeric" />
+        </FormSmartForm>
+      </div>
+      <div class="flex flex-col items-start justify-start">
+        <FormSmartForm ref="form2" :disabled="disabled">
+          <FormCheckBox name="Has physical asset" use-key="hasPhysicalAsset" />
+          <FormInputText name="Royalties" type="percentage" />
+          <FormSelect
+            name="Collections"
+            :items="['JogjaRockarta', 'Seroja One']"
+          />
+
           <FormSelect
             name="Asset location"
             :disabled="disabled"
             :items="['Gallery ArtJog', 'Gallery Artmedia', 'Gallery ISI']"
           />
           <FormInputText name="Custom address" :multi-line="true" />
-        </FormSmartForm>
-      </div>
-      <div class="flex flex-col items-start justify-start">
-        <FormSmartForm ref="form2" :disabled="disabled">
-          <FormInputText name="Name" :auto-focus="true" />
-          <FormInputText name="Description" :multi-line="true" />
-          <FormInputText name="Royalties" type="percentage" />
-          <FormSelect
-            name="Collections"
-            :items="['JogjaRockarta', 'Seroja One']"
-          />
-          <FormInputText name="Count" type="numeric" />
         </FormSmartForm>
       </div>
     </div>

@@ -28,7 +28,23 @@
               </NuxtLink>
               <div class="ml-5 flex flex-col">
                 <NuxtLink :to="`/items/${item.hash}`">{{ item.name }}</NuxtLink>
-                <PopularityMeter class="md:hidden block" :star="3" :size="4" />
+                <PopularityMeter
+                  class="md:hidden block"
+                  :star="3"
+                  size="14px"
+                />
+                <div
+                  class="
+                    flex
+                    justify-start
+                    items-center
+                    space-x-1
+                    text-gray-400
+                  "
+                  :title="$moment(item.timestamp)"
+                >
+                  <small>{{ $moment(item.timestamp).calendar() }}</small>
+                </div>
               </div>
             </div>
           </td>

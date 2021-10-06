@@ -7,7 +7,8 @@
       justify-center
       border-2 border-blue-200
       rounded-xl
-      w-96
+      w-full
+      md:w-96
       bg-gray-a
     "
     @click="openUploadDialog"
@@ -27,6 +28,7 @@
       <input
         ref="imageUpload"
         type="file"
+        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
         name="picture"
         style="display: none"
         @change="onChange"
@@ -59,7 +61,10 @@ export default {
           } else {
             this.$emit('on-success', { url, hash, fileExtension })
           }
-        }).catch(error => {alert(error)})
+        })
+        .catch((error) => {
+          alert(error)
+        })
     }
   }
 }

@@ -11,7 +11,6 @@
         outline-none
         focus:outline-none
         justify-center
-        items-center
         flex
       "
     >
@@ -94,6 +93,17 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+div.modal-elm {
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh; /* I changed this one only */
+  overflow: auto;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+}
 </style>
 
