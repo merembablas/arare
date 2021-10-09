@@ -65,6 +65,11 @@ const update = [
     .body('instagram', 'Invalid instagram')
     .optional()
     .isLength({ min: 3, max: 500 }),
+  validator
+    .body('image', 'Invalid image')
+    .optional()
+    .isLength({ min: 10, max: 1000 })
+    .matches(/^(hash|https?):.*$/),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -87,6 +92,9 @@ const update = [
     }
     if (req.body.twitter) {
       updateQuery.$set = { twitter: req.body.twitter }
+    }
+    if (req.body.image) {
+      updateQuery.$set = { image: req.body.image }
     }
 
     Account.findByIdAndUpdate(

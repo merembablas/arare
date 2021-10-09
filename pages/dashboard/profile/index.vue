@@ -2,8 +2,30 @@
   <div class="p-2 md:p-10">
     <div class="flex flex-col md:flex-row">
       <div v-if="identity" class="flex flex-col">
-        <img :src="identity.pic" alt="dummy" class="w-64 h-64 rounded-xl" />
-        <Button text="Change Photo" class="mt-5 w-full" />
+        <img :src="identityPic" alt="dummy" class="w-64 h-64 rounded-xl" />
+
+        <form
+          ref="formUpload"
+          class="hidden"
+          action="/uploader/upload_picture"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input
+            ref="imageUpload"
+            type="file"
+            accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+            name="picture"
+            style="display: none"
+            @change="onChange"
+          />
+        </form>
+        <Button
+          text="Change Photo"
+          class="mt-5 w-full"
+          @click="openFileSelector"
+        />
+
         <div class="flex text-center justify-center mt-5">
           <NuxtLink class="link-color" :to="`/user/${identity.id}`">
             view profile page
@@ -102,6 +124,7 @@ export default {
   data() {
     return {
       showRegisterDialog: false,
+      identityPic: this.identity ? this.identity.pic : null,
       userBio:
         'Creator of minimalistic bold graphic and digital artwork. ✹ Artist / Creative Director ✹ #NFT minting'
     }
@@ -121,6 +144,7 @@ export default {
   },
   mounted() {
     console.log('this.getCurrentIdentity():', this.getCurrentIdentity())
+    this.identityPic = this.identity?.pic
   },
   methods: {
     ...mapMutations('user', ['setIdentity', 'setIdentityAttr']),
@@ -156,11 +180,50 @@ export default {
     },
     async updateAccount(updateQuery) {
       return await this.$axios.post('/api/account/update', updateQuery)
+    },
+    openFileSelector() {
+      this.$refs.imageUpload.click()
+    },
+    onChange() {
+      this.upload()
+    },
+    upload() {
+      const formData = new FormData()
+      formData.append('picture', this.$refs.imageUpload.files[0])
+      this.$axios
+        .post('/uploader/upload_picture', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(({ data: { error, url, hash, fileExtension } }) => {
+          if (error) {
+            alert(error)
+          } else {
+            // this.$emit('on-success', { url, hash, fileExtension })
+            console.log(
+              '🚀 ~ file: index.vue ~ line 202 ~ .then ~ { url, hash, fileExtension }',
+              { url, hash, fileExtension }
+            )
+            this.$axios
+              .post('/api/account/update', {
+                image: `hash://${hash}${fileExtension}`
+              })
+              .then(({ data: { error } }) => {
+                if (error) {
+                  alert(error)
+                }
+                this.identityPic = `${process.env.baseUploadUrl}/${hash}${fileExtension}`
+                this.setIdentityAttr({ key: 'pic', value: this.identityPic })
+              })
+          }
+        })
+        .catch((error) => {
+          alert(error)
+        })
     }
   }
 }
 </script>
 
-
-<style lang="less">
-</style>
+<style lang="less"></style>
