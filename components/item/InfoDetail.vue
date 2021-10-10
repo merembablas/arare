@@ -51,7 +51,7 @@
         <div>this item has physical asset</div>
       </div>
 
-      <div class="mt-10">
+      <div v-if="!isCreatedByCurrentUser" class="mt-10">
         <Button text="Place Bid" :icon-mode="true" @click="btnPlaceBidClicked">
           <template #icon>
             <svg
@@ -111,6 +111,11 @@ export default {
       itemValue: this.item.value
     }
   },
+  computed: {
+    isCreatedByCurrentUser() {
+      return this.getCurrentIdentity()?.id === this.item.creator.id
+    }
+  },
   methods: {
     ...mapGetters('user', ['getCurrentIdentity']),
     onBidPlaced(bid) {
@@ -135,5 +140,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

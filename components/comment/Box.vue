@@ -5,6 +5,7 @@
       v-for="comment in comments"
       :id="comment.id"
       :key="comment.id"
+      :creator-id="comment.creator.id"
       :creator-name="comment.creator.name"
       :creator-pic="comment.creator.pic"
       :time="comment.timestamp"

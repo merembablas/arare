@@ -63,6 +63,7 @@
 export default {
   props: {
     id: { type: String, required: true },
+    creatorId: { type: String, required: true },
     creatorName: { type: String, required: true },
     creatorPic: { type: String, required: true },
     time: { type: Number, required: true },
@@ -70,7 +71,7 @@ export default {
   },
   methods: {
     onCreatorClick() {
-      this.$router.push(`/user/${this.item.creator.id}`)
+      this.$router.push(`/user/${this.creatorId}`)
     }
   }
 }
