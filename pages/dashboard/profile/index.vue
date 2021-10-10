@@ -140,6 +140,9 @@ export default {
     },
     user(newUser) {
       console.log('🚀 ~ file: index.vue ~ line 63 ~ user ~ newUser', newUser)
+    },
+    '$store.state.user.identity'(identity) {
+      this.identityPic = identity.pic
     }
   },
   mounted() {
