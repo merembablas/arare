@@ -4,8 +4,7 @@
       rounded
       bg-gray-100
       w-full
-      md:w-64
-      md:h-64
+      md:w-64 md:h-64
       flex flex-col
       justify-top
       shadow-md
@@ -24,7 +23,7 @@
       <div>
         <div class="h-6 w-40 truncate text-left">{{ item.name }}</div>
 
-        <div class="flex items-center">
+        <div class="flex items-start">
           <div
             class="w-7 h-7 rounded-full"
             :style="`
@@ -36,9 +35,13 @@
           </div>
         </div>
 
-        <PopularityMeter class="pt-2 pb-2" :star="3" :total="5" size="4" />
+        <!-- <div style="width: 77px"> -->
+        <PopularityMeter class="pt-2 pb-2" :star="3" :total="5" size="15px" />
+        <!-- </div> -->
       </div>
-      <div class="font-semibold">{{ item.value }} ARA</div>
+      <div class="font-semibold value">
+        {{ $formatter.formatBalance(item.value) }}
+      </div>
     </div>
   </div>
 </template>
@@ -59,5 +62,8 @@ export default {
 <style scoped>
 .creator-name {
   font-size: 12px !important;
+}
+.value {
+  font-size: 0.6em;
 }
 </style>

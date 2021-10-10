@@ -7,6 +7,10 @@ const NETWORK_TOKEN_CODES = {
   ethereum: 'ETH'
 }
 
+function numberWithCommas(x) {
+  return x.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 export default ({ app }, inject) => {
   inject('formatter', {
     truncateCryptoAddress(address) {
@@ -23,7 +27,7 @@ export default ({ app }, inject) => {
         addr.length
       )}`
     },
-    formatBalance(balance, network) {
+    formatBalance(balance, options = { truncate: true, network: 'nuchain' }) {
       console.log(
         '🚀 ~ file: formatter.client.js ~ line 27 ~ formatBalance ~ balance',
         balance
@@ -31,11 +35,24 @@ export default ({ app }, inject) => {
 
       let bal = balance
 
-      if (network === 'nuchain') {
-        bal = bal.dividedBy(DECIMAL)
+      if (options.network === 'nuchain') {
+        if (bal.dividedBy) {
+          bal = bal.dividedBy(DECIMAL)
+        }
       }
 
-      return bal.toFixed(2).toString(10) + ' ' + NETWORK_TOKEN_CODES[network]
+      let balStr = bal.toFixed(2).toString(10)
+
+      if (options.truncate) {
+        balStr = balStr.split('.')[0]
+        if (balStr.length > 3) {
+          balStr = balStr.substring(0, balStr.length - 3) + 'k'
+        }
+      }
+
+      return (
+        numberWithCommas(balStr) + ' ' + NETWORK_TOKEN_CODES[options.network]
+      )
 
       // if (typeof balance === typeof BigNumber(0)) {
       //   return balance.toString(10) + ' ' + NETWORK_TOKEN_CODES[network]

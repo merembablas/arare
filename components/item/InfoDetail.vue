@@ -11,11 +11,9 @@
         </div>
       </div>
 
-      <ItemFieldInfo
-        ref="itemValue"
-        a-key="Value"
-        :value="`${itemValue} ARA`"
-      />
+      <client-only>
+        <ItemFieldInfo ref="itemValue" a-key="Value" :value="itemValueFmtd" />
+      </client-only>
 
       <ItemFieldInfo
         a-key="Owner"
@@ -114,6 +112,12 @@ export default {
   computed: {
     isCreatedByCurrentUser() {
       return this.getCurrentIdentity()?.id === this.item.creator.id
+    },
+    itemValueFmtd() {
+      return this.$formatter?.formatBalance(this.itemValue, {
+        truncate: false,
+        network: 'nuchain'
+      })
     }
   },
   methods: {
