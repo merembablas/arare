@@ -140,8 +140,8 @@ const accountInfo = [
 
 const items = [
   validator.param('accountId', 'Invalid id').isAlphanumeric(),
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -173,8 +173,8 @@ const items = [
 ]
 
 const popular = [
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {

@@ -135,7 +135,7 @@ export default {
       })
     return {
       item,
-      showDescription: false
+      showDescription: true
     }
   },
   data() {
@@ -161,6 +161,4 @@ export default {
 }
 </script>
 
-
-<style lang="less">
-</style>
+<style lang="less"></style>

@@ -151,8 +151,8 @@ const getItem = [
 
 const histories = [
   validator.param('id', 'Invalid id').isAlphanumeric(),
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -183,8 +183,8 @@ const itemToApiType = async (item, creatorId) => {
 
 const comments = [
   validator.param('id', 'Invalid id').isAlphanumeric(),
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -295,8 +295,8 @@ const removeLikes = [
 ]
 
 const popular = [
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -325,8 +325,8 @@ const popular = [
 ]
 
 const valuedItems = [
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -354,8 +354,8 @@ const valuedItems = [
 ]
 
 const latestItems = [
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
@@ -383,8 +383,8 @@ const latestItems = [
 ]
 
 const lastViews = [
-  validator.query('offset', 'Invalid offset').default('0').isInt(),
-  validator.query('limit', 'Invalid limit').default('10').isInt(),
+  validator.query('offset', 'Invalid offset').default('0').isInt().toInt(),
+  validator.query('limit', 'Invalid limit').default('10').isInt().toInt(),
   (req, res) => {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
