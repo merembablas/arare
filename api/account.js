@@ -182,12 +182,15 @@ const popular = [
     }
 
     // @TODO: add filtering
-    Account.find({}, (err, accounts) => {
-      if (err) {
-        return res.status(500).json({ error: err })
-      }
-      return res.json({ error: null, result: accounts.map(accountToApiType) })
-    })
+    Account.find({})
+      .skip(req.query.offset)
+      .limit(req.query.limit)
+      .exec((err, accounts) => {
+        if (err) {
+          return res.status(500).json({ error: err })
+        }
+        return res.json({ error: null, result: accounts.map(accountToApiType) })
+      })
   }
 ]
 
