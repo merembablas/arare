@@ -28,7 +28,7 @@
               </NuxtLink>
               <div class="ml-5 flex flex-col">
                 <NuxtLink :to="`/items/${item.hash}`">{{ item.name }}</NuxtLink>
-                <PopularityMeter class="md:hidden block" :star="3" :size="4" />
+                <PopularityMeter class="md:hidden block" :star="3" size="4px" />
               </div>
             </div>
           </td>
@@ -48,7 +48,10 @@
 
 <script>
 export default {
-  props: { items: { type: Array, required: true } }
+  props: { items: { type: Array, required: true } },
+  data: () => ({
+    baseUploadUrl: process.env.baseUploadUrl
+  })
 }
 </script>
 

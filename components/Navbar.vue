@@ -29,7 +29,7 @@
         <div class="flex space-x-2 justify-end pl-2 items-center">
           <!-- <NotifIcon :count="0" /> -->
           <ExploreButton />
-          <client-only>
+          <client-only v-if="isCreator">
             <CreateButton v-if="connected" @click="showAssetCreator" />
           </client-only>
           <ConnectButton />
@@ -54,6 +54,11 @@ export default {
   data() {
     return {
       assetCreatorVisible: false
+    }
+  },
+  computed: {
+    isCreator() {
+      return this.getCurrentIdentity()?.isCreator
     }
   },
   methods: {

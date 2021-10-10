@@ -24,17 +24,27 @@
       :active="isActive('dashboard/collection')"
       @click="$router.push('/dashboard/collection')"
     />
-    <DashboardMenuItem
-      text="Items"
-      :active="isActive('dashboard/items')"
-      @click="$router.push('/dashboard/items')"
-    />
+    <client-only>
+      <DashboardMenuItem
+        v-if="isCreator"
+        text="Items"
+        :active="isActive('dashboard/items')"
+        @click="$router.push('/dashboard/items')"
+      />
+    </client-only>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    isCreator() {
+      return this.getCurrentIdentity()?.isCreator
+    }
+  },
   methods: {
+    ...mapGetters('user', ['getCurrentIdentity']),
     isActive(path) {
       return this.$route.path === `/${path}` || this.$route.path === `/${path}/`
     }

@@ -1,6 +1,7 @@
 <template>
-  <div class="p-2 md:p-10 w-full md:w-2/3">
-    <!-- <Button
+  <client-only>
+    <div v-if="isCreator" class="p-2 md:p-10 w-full md:w-2/3">
+      <!-- <Button
       text="Add"
       :icon-mode="true"
       class="w-24 absolute"
@@ -23,9 +24,17 @@
         </svg>
       </template>
     </Button> -->
-    <h2>Items: {{ ownedItemCount }}</h2>
-    <DashboardItemsTable />
-  </div>
+      <h2>Items: {{ ownedItemCount }}</h2>
+      <DashboardItemsTable />
+    </div>
+    <div v-else class="p-2 w-full md:w-2/3">
+      <div class="flex flex-col h-screen items-center ml-10 pt-2 justify-top">
+        <div class="bg-yellow-200 rounded-xl p-10 w-2/3 h-42">
+          You are not creator
+        </div>
+      </div>
+    </div>
+  </client-only>
 </template>
 
 <script>
@@ -37,11 +46,17 @@ export default {
       ownedItemCount: this.getMyItemCount()
     }
   },
+  computed: {
+    isCreator() {
+      return this.getCurrentIdentity()?.isCreator
+    }
+  },
   mounted() {
     this.fetchItemCount()
   },
   methods: {
     ...mapGetters('items', ['getMyItemCount']),
+    ...mapGetters('user', ['getCurrentIdentity']),
     fetchItemCount() {
       this.$axios
         .get('/api/stats/created-count')
@@ -57,6 +72,4 @@ export default {
 }
 </script>
 
-
-<style lang="less">
-</style>
+<style lang="less"></style>

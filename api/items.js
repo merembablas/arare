@@ -46,7 +46,13 @@ const mint = [
       return res.status(400).json({ error: errors.mapped() })
     }
 
-    console.log('currentUser:', req.currentUser)
+    // console.log('currentUser:', req.currentUser)
+
+    if (!req.currentUser.isCreator) {
+      return res.json({
+        error: 'You are not a creator. You can set creator in profile settings.'
+      })
+    }
 
     const item = new NftItem({
       name: req.body.name,
