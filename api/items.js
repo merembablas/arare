@@ -46,12 +46,18 @@ const mint = [
       return res.status(400).json({ error: errors.mapped() })
     }
 
-    // console.log('currentUser:', req.currentUser)
+    const currentUser = await getAccountById(req.currentUser.id)
 
-    if (!req.currentUser.isCreator) {
+    if (!currentUser.isCreator) {
       return res.json({
         error: 'You are not a creator. You can set creator in profile settings.'
       })
+    }
+
+    const alreadyExists = (await NftItem.count({ hash: req.body.hash })) > 0
+
+    if (alreadyExists) {
+      return res.json({ error: 'Item already exists' })
     }
 
     const item = new NftItem({
@@ -111,7 +117,7 @@ const mint = [
         result: createdItem
       })
     } catch (err) {
-      console.log('🚀 ~ file: items.js ~ line 79 ~ err', err)
+      console.log('🚀 ~ file: items.js ~ line 125 ~ err', err)
       return res.status(500).json({ error: 'Cannot save data' })
     }
   }
