@@ -310,7 +310,8 @@ const popular = [
     }
     NftItem.find({})
       .sort({ likes: -1 })
-      .limit(10)
+      .skip(req.query.offset)
+      .limit(req.query.limit)
       .exec(async (err, items) => {
         if (err) {
           return res.status(500).json({ errors: 'Cannot get items' })
