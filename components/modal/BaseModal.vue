@@ -3,16 +3,15 @@
     <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
 
     <div
-      class="
-        overflow-x-hidden overflow-y-auto
+      :class="`overflow-x-hidden overflow-y-auto
         fixed
         inset-0
         z-50
         outline-none
         focus:outline-none
         justify-center
-        flex
-      "
+        ${customClass}
+        flex`"
     >
       <div class="relative w-full md:w-auto md:max-w-6xl">
         <div class="relative flex flex-col bg-white w-full rounded-xl">
@@ -69,7 +68,8 @@
 <script>
 export default {
   props: {
-    value: { type: Boolean, default: false } // for visibility toggle
+    value: { type: Boolean, default: false }, // for visibility toggle
+    customClass: { type: String, default: '' }
   },
   data() {
     return {

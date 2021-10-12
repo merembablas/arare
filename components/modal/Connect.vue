@@ -1,10 +1,10 @@
 <template>
-  <ModalBaseModal v-model="visible">
+  <ModalBaseModal v-model="visible" custom-class="items-center">
     <template #caption>
       <h3 class="text-xl font-semibold p-0 m-0">Connect Account</h3>
     </template>
     <template #body>
-      <client-only>
+      <client-only v-if="!showSignMessageWaitingDialog">
         <!-- PAGE 1 -->
         <div v-show="page === 1" class="flex space-x-10 w-96 justify-center">
           <div
@@ -72,6 +72,22 @@
           </div>
         </div>
       </client-only>
+      <div
+        v-if="showSignMessageWaitingDialog"
+        class="flex flex-col justify-center items-center"
+      >
+        <div class="w-96 text-center">
+          <h2>
+            Please sign the message contains OTP code in your wallet to
+            continue.
+          </h2>
+          <LoadingSmall />
+          <p class="mt-2 pt-2">
+            Arare.one uses this technique to verify that you’re the owner of the
+            given address.
+          </p>
+        </div>
+      </div>
     </template>
   </ModalBaseModal>
 </template>
@@ -87,7 +103,8 @@ export default {
     return {
       visible: this.value,
       page: 1,
-      accounts: []
+      accounts: [],
+      showSignMessageWaitingDialog: false
     }
   },
   watch: {
@@ -162,9 +179,11 @@ export default {
           }
           this.setCurrentNuchainAccount(account)
           this.fetchAccountInfo(account.address)
+
+          this.close()
         })
 
-        this.close()
+        // this.close()
       } else {
         alert('Cannot connect :(')
       }
@@ -175,46 +194,58 @@ export default {
         '🚀 ~ file: Connect.vue ~ line 152 ~ authenticate ~ otp',
         duration
       )
-      return `ch:${duration}`
+      return `${duration}`
     },
     authenticateMetamask(account, cb) {
-      const message = this.getOTPCode()
+      const otp = this.getOTPCode()
+      const message = `Please sign this message: ${otp}`
       const web3 = new Web3(window.ethereum)
-      const hash = web3.utils.sha3(message)
-      web3.eth.personal.sign(hash, account).then((signature) => {
-        this.$arare
-          .authenticateMetamask(account, signature)
-          .then(({ data: { error, result } }) => {
-            if (error) {
-              return alert('Cannot authenticate eth account')
-            }
-            const token = result
-            this.setJwtToken(token)
-            const rv = { error, token }
-            cb(rv)
-          })
-      })
+      this.showSignMessageWaitingDialog = true
+      // const hash = web3.utils.sha3(message)
+      web3.eth.personal
+        .sign(message, account)
+        .then((signature) => {
+          this.$arare
+            .authenticateMetamask(account, signature)
+            .then(({ data: { error, result } }) => {
+              if (error) {
+                return alert('Cannot authenticate eth account')
+              }
+              const token = result
+              this.setJwtToken(token)
+              const rv = { error, token }
+              cb(rv)
+            })
+        })
+        .finally(() => (this.showSignMessageWaitingDialog = false))
     },
     authenticate(account, cb) {
-      // range to 30 seconds
-      const message = this.getOTPCode()
-      this.$nuchain.signer.sign(account, message).then((signature) => {
-        // get jwt token from server by sending our signature
-        this.$arare
-          .authenticate(account.address, signature)
-          .then(({ data: { error, result } }) => {
-            if (error) {
-              return alert('Cannot authenticate your account')
-            }
-            const token = result
+      this.showSignMessageWaitingDialog = true
 
-            this.setJwtToken(token)
+      // generate OTP code for for 30 seconds toleration
+      const otp = this.getOTPCode()
+      const message = `${otp}`
 
-            const rv = { error, token }
+      this.$nuchain.signer
+        .sign(account, message)
+        .then((signature) => {
+          // get jwt token from server by sending our signature
+          this.$arare
+            .authenticate(account.address, signature)
+            .then(({ data: { error, result } }) => {
+              if (error) {
+                return alert('Cannot authenticate your account')
+              }
+              const token = result
 
-            cb(rv)
-          })
-      })
+              this.setJwtToken(token)
+
+              const rv = { error, token }
+
+              cb(rv)
+            })
+        })
+        .finally(() => (this.showSignMessageWaitingDialog = false))
     },
     fetchAccountInfo(cryptoAddress) {
       // untuk mendapatkan informasi account dan
@@ -240,5 +271,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+h2 {
+  color: @text-color-1;
+}
 </style>

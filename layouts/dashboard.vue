@@ -34,7 +34,8 @@ export default {
   computed: {
     hasBalance() {
       if (this.isNuchain) {
-        return this.$store.state.nuchain.hasBalance
+        // return this.$store.state.nuchain.hasBalance
+        return true
       }
       if (this.isMetamask) {
         // @TODO: add balance check here
