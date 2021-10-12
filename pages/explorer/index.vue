@@ -3,7 +3,19 @@
     <div class="flex flex-col">
       <div class="rounded-xl w-full">
         <h2>Popular</h2>
-        <LoadingBig v-if="!loaded" />
+        <div
+          v-if="!loaded"
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll overflow-y-hidden
+            h-64
+          "
+        >
+          <ItemLoadingListItem v-for="i in 4" :key="i" />
+        </div>
         <div
           v-else
           class="
@@ -21,7 +33,19 @@
 
       <div class="rounded-xl w-full mt-10">
         <h2>Most Valuable</h2>
-        <LoadingBig v-if="!loaded" />
+        <div
+          v-if="!loaded"
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll overflow-y-hidden
+            h-64
+          "
+        >
+          <ItemLoadingListItem v-for="i in 4" :key="i" />
+        </div>
         <div
           v-else
           class="
@@ -39,7 +63,19 @@
 
       <div class="rounded-xl w-full mt-10">
         <h2>Latest</h2>
-        <LoadingBig v-if="!loaded" />
+        <div
+          v-if="!loaded"
+          class="
+            justify-start
+            flex
+            md:flex-row
+            min-w-full
+            overflow-x-scroll overflow-y-hidden
+            h-64
+          "
+        >
+          <ItemLoadingListItem v-for="i in 4" :key="i" />
+        </div>
         <div
           v-else
           class="

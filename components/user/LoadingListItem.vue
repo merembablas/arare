@@ -34,8 +34,11 @@
         style="height: 2px"
       ></div>
       <div class="flex flex-col items-center pt-5">
-        <div :class="`rounded-full w-24 h-24 bg-${bgColor}-300`"></div>
-        <div class="font-semibold mt-3 h-6 w-20 text-center bg-gray-400"></div>
+        <div
+          class="rounded-full w-24 h-24"
+          :style="`background-color: ${bgColor}`"
+        ></div>
+        <div class="font-semibold mt-3 h-6 w-20 bg-gray-400"></div>
         <div class="text-sm w-32 h-4 bg-gray-300"></div>
       </div>
     </div>
@@ -47,7 +50,7 @@ export default {
   props: {},
   computed: {
     bgColor() {
-      return ['blue', 'pink', 'green', 'yellow', 'gray', 'purple'][
+      return ['#ffedd1', '#f6cfff', '#97c78f', '#fffdd6', '#cff8ff', '#e4cfff'][
         Math.floor(Math.random() * 6)
       ]
     }

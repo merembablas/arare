@@ -14,7 +14,8 @@
     "
   >
     <div
-      :class="`w-full h-96 md:h-40 rounded-t shadow-inner bg-${bgColor}-100`"
+      class="w-full h-96 md:h-40 rounded-t shadow-inner"
+      :style="`background-color: ${bgColor}`"
     ></div>
     <div class="pl-2 pr-2 flex justify-between items-center">
       <div>
@@ -39,7 +40,7 @@ export default {
   props: {},
   computed: {
     bgColor() {
-      return ['blue', 'pink', 'green', 'yellow', 'gray', 'purple'][
+      return ['#ffedd1', '#f6cfff', '#97c78f', '#fffdd6', '#cff8ff', '#e4cfff'][
         Math.floor(Math.random() * 6)
       ]
     }

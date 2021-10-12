@@ -3,7 +3,9 @@
     <h1>Latest NFTs!</h1>
 
     <div class="mt-5">
-      <LoadingBig v-if="!loaded" />
+      <div v-if="!loaded" class="justify-start flex flex-wrap min-w-full">
+        <ItemLoadingListItem v-for="i in 6" :key="i" />
+      </div>
       <div v-else class="justify-start flex flex-wrap min-w-full">
         <ItemListItem v-for="i in items" :key="i.id" :item="i" />
       </div>
