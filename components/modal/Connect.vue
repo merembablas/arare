@@ -84,7 +84,7 @@
           <LoadingSmall />
           <p class="mt-2 pt-2">
             Arare.one uses this technique to verify that you’re the owner of the
-            given address.
+            given address. The OTP code will expire in ~30 seconds.
           </p>
         </div>
       </div>
@@ -217,7 +217,9 @@ export default {
               cb(rv)
             })
         })
-        .finally(() => (this.showSignMessageWaitingDialog = false))
+        .finally(() =>
+          setTimeout(() => (this.showSignMessageWaitingDialog = false), 100)
+        )
     },
     authenticate(account, cb) {
       this.showSignMessageWaitingDialog = true
@@ -245,7 +247,9 @@ export default {
               cb(rv)
             })
         })
-        .finally(() => (this.showSignMessageWaitingDialog = false))
+        .finally(() =>
+          setTimeout(() => (this.showSignMessageWaitingDialog = false), 100)
+        )
     },
     fetchAccountInfo(cryptoAddress) {
       // untuk mendapatkan informasi account dan
