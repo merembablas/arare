@@ -20,7 +20,7 @@
     "core-js": "^3.18.2",
     "ethereumjs-util": "^7.1.2",
     "express": "^4.17.1",
-    "express-validator": "^6.12.2",
+    "express-validator": "^6.13.0",
     "hasha": "^5.2.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.10",
